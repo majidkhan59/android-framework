@@ -7,15 +7,19 @@ package android.framework;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
+import javax.swing.event.MouseInputAdapter;
 import org.netbeans.api.visual.graph.GraphScene;
 
 /**
@@ -32,6 +36,11 @@ public class AndroidFramework extends JPanel {
         setLayout(new BorderLayout());
         JScrollPane scrollPane = new JScrollPane();
         add(scrollPane, BorderLayout.CENTER);
+        
+        JPanel phonePanel = new JPanel(new FlowLayout());
+        phonePanel.setPreferredSize(new Dimension(150, 300));       // SET PHONE PANEL
+        
+        scrollPane.add(new JPanel());
         //Create the GraphSceneImpl:
         GraphScene scene = new GraphSceneImpl();
         //Add it to the JScrollPane:
@@ -42,12 +51,23 @@ public class AndroidFramework extends JPanel {
         JToolBar toolbar = new JToolBar("Controls", JToolBar.VERTICAL);
         toolbar.setLayout(new FlowLayout());
         toolbar.setBackground(Color.white);
+        toolbar.setPreferredSize(new Dimension(150,150));
+        
         JButton button = new JButton("Build APK");
         button.setPreferredSize(new Dimension(100, 100));
-
-        toolbar.add(button, BorderLayout.NORTH);
+        button.setToolTipText("Generate APK");
+        toolbar.add(button);
+        
+        JButton button2 = new JButton("Add Button");
+        button2.setPreferredSize(new Dimension(100, 100));
+        toolbar.add(button2);
+        
+        JButton button3 = new JButton("Add Label");
+        button3.setPreferredSize(new Dimension(100, 100));
+        toolbar.add(button3);
+        
         toolbar.setFloatable(false);
-        toolbar.addSeparator();
+     //   toolbar.addSeparator();
         add(toolbar, BorderLayout.EAST);
        
     }
@@ -57,17 +77,32 @@ public class AndroidFramework extends JPanel {
             @Override
             public void run() {
                 JFrame frame = new JFrame();
-                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                int height = screenSize.height;
-                int width = screenSize.width;
-                frame.setSize(width / 2, height / 2);
-                frame.setLocationRelativeTo(null);
-                frame.setMinimumSize(new Dimension(800, 500));
+                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();            
+                frame.setSize(screenSize.width, screenSize.height);
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setContentPane(new AndroidFramework());
-                frame.pack();
                 frame.setVisible(true);
             }
         });
     }
+}
+
+class DragListener extends MouseInputAdapter
+{
+    Point location;
+    MouseEvent pressed;
+ 
+    public void mousePressed(MouseEvent me)
+    {
+        pressed = me;
+    }
+ 
+    public void mouseDragged(MouseEvent me)
+    {
+        Component component = me.getComponent();
+        location = component.getLocation(location);
+        int x = location.x - pressed.getX() + me.getX();
+        int y = (location.y - pressed.getY() + me.getY());
+        component.setLocation(x, y);
+     }
 }
