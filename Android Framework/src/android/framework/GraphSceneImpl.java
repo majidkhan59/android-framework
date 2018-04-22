@@ -7,6 +7,7 @@ package android.framework;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Toolkit;
 import javax.swing.JPanel;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.ConnectProvider;
@@ -19,7 +20,6 @@ import org.netbeans.api.visual.widget.LayerWidget;
 import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
 import org.netbeans.api.visual.widget.general.IconNodeWidget;
-import org.netbeans.modules.visual.layout.AbsoluteLayout;
 import org.openide.util.ImageUtilities;
 
 /**
@@ -41,22 +41,25 @@ public class GraphSceneImpl extends GraphScene<String, String> {
         addChild(interactionLayer);
 
         Widget w1 = addNode("Button 1");
-        w1.setPreferredLocation(new Point(10, 100));
+        w1.setPreferredLocation(new Point(110, 110));
         Widget w2 = addNode("Button 2");
-        w2.setPreferredLocation(new Point(100, 250));
+        w2.setPreferredLocation(new Point(110, 180));
         Widget w3 = addNode("Button 3");
-        w3.setPreferredLocation(new Point(250, 250));
+        w3.setPreferredLocation(new Point(110, 250));
         Widget w4 = addNode("Button 4");
-        w4.setPreferredLocation(new Point(250, 350));
+        w4.setPreferredLocation(new Point(110, 320));
          
         JPanel panel = new JPanel();
         panel.setPreferredSize(new Dimension(200, 200));
                 
-        MobileScreen screen = new MobileScreen("CHECK",this);
-        screen.setScreenSize(200, 400);
-        screen.setScreenPosition(this.getBounds().x / 2, this.getBounds().y / 2);
-       
+        MobileScreen screen = new MobileScreen("VERY very long title will come here",this);
+        
         addChild(screen.getWidget());
+       
+        screen.setScreenSize(200, 400);
+        screen.setScreenPosition(50, 50);
+        
+                
         
         screen.getWidget().bringToBack();
         getActions().addAction(ActionFactory.createZoomAction());
