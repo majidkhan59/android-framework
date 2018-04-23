@@ -5,17 +5,17 @@
  */
 package android.framework;
 
-import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Point;
-import java.awt.Toolkit;
-import javax.swing.JPanel;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.ConnectProvider;
 import org.netbeans.api.visual.action.ConnectorState;
 import org.netbeans.api.visual.anchor.AnchorFactory;
 import org.netbeans.api.visual.anchor.AnchorShape;
+import org.netbeans.api.visual.border.BorderFactory;
 import org.netbeans.api.visual.graph.GraphScene;
 import org.netbeans.api.visual.widget.ConnectionWidget;
+import org.netbeans.api.visual.widget.LabelWidget;
 import org.netbeans.api.visual.widget.LayerWidget;
 import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
@@ -23,8 +23,9 @@ import org.netbeans.api.visual.widget.general.IconNodeWidget;
 import org.openide.util.ImageUtilities;
 
 /**
- *
- * @author shoaibahmed
+ * This class manages the main scene of the application.
+ * 
+ * @author shoaib ahmed
  */
 public class GraphSceneImpl extends GraphScene<String, String> {
 
@@ -40,29 +41,25 @@ public class GraphSceneImpl extends GraphScene<String, String> {
         addChild(connectionLayer);
         addChild(interactionLayer);
 
-        Widget w1 = addNode("Button 1");
+        Widget w1 = new LabelWidget(this, "Button 1");
+        w1.setFont(new Font("", 0, 14));
         w1.setPreferredLocation(new Point(110, 110));
-        Widget w2 = addNode("Button 2");
-        w2.setPreferredLocation(new Point(110, 180));
-        Widget w3 = addNode("Button 3");
-        w3.setPreferredLocation(new Point(110, 250));
-        Widget w4 = addNode("Button 4");
-        w4.setPreferredLocation(new Point(110, 320));
-         
-        JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(200, 200));
-                
-        MobileScreen screen = new MobileScreen("VERY very long title will come here",this);
+        w1.getActions().addAction(ActionFactory.createMoveAction());
+        w1.setBorder(BorderFactory.createLineBorder(2));
+        MobileScreen screen = new MobileScreen("Main Screen",this);
         
-        addChild(screen.getWidget());
+        mainLayer.addChild(screen.getWidget());
        
         screen.setScreenSize(200, 400);
+
         screen.setScreenPosition(50, 50);
+        screen.getWidget().getActions().addAction(ActionFactory.createMoveAction());
         
-                
+        screen.getWidget().addChild(w1);
         
         screen.getWidget().bringToBack();
         getActions().addAction(ActionFactory.createZoomAction());
+
     }
 
     

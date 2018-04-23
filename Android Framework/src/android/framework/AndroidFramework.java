@@ -7,24 +7,21 @@ package android.framework;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
-import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
-import javax.swing.event.MouseInputAdapter;
 import org.netbeans.api.visual.graph.GraphScene;
 
 /**
- *
- * @author shoaibahmed
+ * This is the main class of the application.
+ * 
+ * @author shoaib ahmed
  */
 public class AndroidFramework extends JPanel {
 
@@ -37,10 +34,6 @@ public class AndroidFramework extends JPanel {
         JScrollPane scrollPane = new JScrollPane();
         add(scrollPane, BorderLayout.CENTER);
         
-        JPanel phonePanel = new JPanel(new FlowLayout());
-        phonePanel.setPreferredSize(new Dimension(150, 300));       // SET PHONE PANEL
-        
-        scrollPane.add(new JPanel());
         //Create the GraphSceneImpl:
         GraphScene scene = new GraphSceneImpl();
         //Add it to the JScrollPane:
@@ -85,24 +78,4 @@ public class AndroidFramework extends JPanel {
             }
         });
     }
-}
-
-class DragListener extends MouseInputAdapter
-{
-    Point location;
-    MouseEvent pressed;
- 
-    public void mousePressed(MouseEvent me)
-    {
-        pressed = me;
-    }
- 
-    public void mouseDragged(MouseEvent me)
-    {
-        Component component = me.getComponent();
-        location = component.getLocation(location);
-        int x = location.x - pressed.getX() + me.getX();
-        int y = (location.y - pressed.getY() + me.getY());
-        component.setLocation(x, y);
-     }
 }

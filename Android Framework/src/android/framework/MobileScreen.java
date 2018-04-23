@@ -6,6 +6,8 @@
 package android.framework;
 
 import java.awt.Dimension;
+import java.awt.Point;
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import org.netbeans.api.visual.widget.ComponentWidget;
 import org.netbeans.api.visual.widget.Scene;
@@ -28,6 +30,7 @@ public class MobileScreen {
      */
     public MobileScreen(String title,Scene scene) {
         screen = new JPanel();
+
         screenTitle = title;
         widget = new ComponentWidget(scene, screen);
     }
@@ -40,6 +43,7 @@ public class MobileScreen {
      */
     public void setScreenSize(int width, int height){
         screen.setPreferredSize(new Dimension(width, height));
+        screen.setBorder(BorderFactory.createTitledBorder(screenTitle));
     }
     
     /**
@@ -49,7 +53,7 @@ public class MobileScreen {
      * @param y Value of y-axis.
      */
     public void setScreenPosition(int x, int y){
-       screen.setBounds(x, y, screen.getWidth(), screen.getHeight());
+        widget.setPreferredLocation(new Point(x, y));
     }
     
     /**
