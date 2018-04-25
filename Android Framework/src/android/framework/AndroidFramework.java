@@ -46,7 +46,7 @@ public class AndroidFramework extends JPanel {
         toolbar.addButton("Build APK", "Generate APK", 100, 100);
         toolbar.addButton("Add Button", "Add new button", 100, 100);
         toolbar.addButton("Add Label", "Add new label", 100, 100);
-        toolbar.addButton("Remove", "Remove the control", 100, 100);
+
         
      //   toolbar.addSeparator();
         add(toolbar, BorderLayout.EAST);
