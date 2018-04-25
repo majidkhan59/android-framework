@@ -41,23 +41,16 @@ public class GraphSceneImpl extends GraphScene<String, String> {
         addChild(connectionLayer);
         addChild(interactionLayer);
 
-        Widget w1 = new LabelWidget(this, "Button 1");
-        w1.setFont(new Font("", 0, 14));
-        w1.setPreferredLocation(new Point(110, 110));
-        w1.getActions().addAction(ActionFactory.createMoveAction());
-        w1.setBorder(BorderFactory.createLineBorder(2));
-        MobileScreen screen = new MobileScreen("Main Screen",this);
         
+        MobileScreen screen = new MobileScreen("Main Screen",this);
         mainLayer.addChild(screen.getWidget());
-       
         screen.setScreenSize(200, 400);
-
         screen.setScreenPosition(50, 50);
         screen.getWidget().getActions().addAction(ActionFactory.createMoveAction());
-        
-        screen.getWidget().addChild(w1);
-        
         screen.getWidget().bringToBack();
+        
+        screen.addButton("Button 1", 110, 110);
+        
         getActions().addAction(ActionFactory.createZoomAction());
 
     }

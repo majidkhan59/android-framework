@@ -25,13 +25,18 @@ public class MoveWithinFrameStrategy implements MoveStrategy{
 
     @Override
     public Point locationSuggested(Widget widget, Point point, Point point1) { // SELECT LOCATION THING
-        System.err.println("Or " + point.toString());
-        System.err.println("loc " + point1.toString());
-        if(point1.x > (frameBounds.x + (frameBounds.width - widget.getBounds().width))){
-            return point1;
+        System.out.println("Or " + point.toString());
+        System.out.println("Lo " + point1.toString());
+        System.out.println("fb " + frameBounds.toString());
+        
+        if(point1.x < 0 || point1.y < 0){
+          return point;
         }
+     /*   if(point1.x > frameBounds.x + frameBounds.width){
+            return point;
+        }*/
       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        return point;
+        return point1;
     }
     
 }
