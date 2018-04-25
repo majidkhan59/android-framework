@@ -49,8 +49,9 @@ public class GraphSceneImpl extends GraphScene<String, String> {
         screen.getWidget().getActions().addAction(ActionFactory.createMoveAction());
         screen.getWidget().bringToBack();
         
-        screen.addButton("Button 1", 110, 110);
-        
+        screen.addButton("Button 1", 60, 110);
+        screen.addButton("Button 2", 60, 150);
+        System.out.println(screen.getWidget().getLocation().toString());
         getActions().addAction(ActionFactory.createZoomAction());
 
     }

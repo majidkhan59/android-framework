@@ -8,12 +8,14 @@ package android.framework;
 import android.framework.utilities.MoveWithinFrameStrategy;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Point;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.widget.ComponentWidget;
 import org.netbeans.api.visual.widget.LabelWidget;
+import org.netbeans.api.visual.widget.LayerWidget;
 import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
 
@@ -27,6 +29,7 @@ public class MobileScreen {
     private String screenTitle;
     private ComponentWidget widget;
     private Scene mainScene;
+    
 
     /**
      * This is the default constructor, which generates a Mobile Screen on UI.
@@ -35,7 +38,7 @@ public class MobileScreen {
      * @param scene The scene in which screen is made.
      */
     public MobileScreen(String title,Scene scene) {
-        screen = new JPanel();
+        screen = new JPanel(new GridLayout(0,1));
         mainScene = scene;
         screenTitle = title;
         widget = new ComponentWidget(mainScene, screen);
@@ -75,10 +78,9 @@ public class MobileScreen {
         Widget w = new LabelWidget(mainScene, text);
         w.setFont(new Font("", 0, 14));
         w.setPreferredLocation(new Point(x, y));
-        System.out.println(screen.getPreferredSize().toString());
-        System.out.println(screen.getLocation().toString());
-        w.getActions().addAction(ActionFactory.createMoveAction(new MoveWithinFrameStrategy(screen.getBounds()),ActionFactory.createDefaultMoveProvider()));
-        
+        w.getActions().addAction(ActionFactory.createMoveAction(new MoveWithinFrameStrategy(widget.getPreferredBounds().getSize(),
+                widget.getPreferredLocation().getLocation()),
+                ActionFactory.createDefaultMoveProvider()));
         w.setBorder(org.netbeans.api.visual.border.BorderFactory.createBevelBorder(true));
         widget.addChild(w);
     }
