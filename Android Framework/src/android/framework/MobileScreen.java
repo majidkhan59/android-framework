@@ -117,6 +117,20 @@ public class MobileScreen {
         buttons.add(newButton);
         return newButton;
     }
+    
+    /**
+     * Adds a label on this screen.
+     * 
+     * @param text The text of the label
+     *
+     */
+    public void addLabel(String text) {
+        Widget newLabel = new LabelWidget(mainScene, text);
+        newLabel.setFont(new Font("", 0, 14));
+        newLabel.getActions().addAction(ActionFactory.createPopupMenuAction(new ControlPopupMenu()));
+        widget.addChild(newLabel);
+        labels.add(newLabel);
+    }
 
     /**
      * Returns if this screen is selected by user.

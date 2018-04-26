@@ -63,6 +63,20 @@ public class AndroidFramework extends JPanel {
             }
         });
         
+        addLabel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MobileScreen selectedMobileScreen = scene.getSelectedScreen();
+                if(selectedMobileScreen == null){
+                    JOptionPane.showMessageDialog(null, "Please Select a Screen First!","Select a Screen", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    String labelText = JOptionPane.showInputDialog("Please Enter Label Text: ");
+                    selectedMobileScreen.addLabel(labelText);
+                  
+                }
+            }
+        });
+        
         add(toolbar, BorderLayout.EAST);
     }
 
