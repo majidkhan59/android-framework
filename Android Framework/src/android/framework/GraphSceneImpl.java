@@ -7,6 +7,8 @@ package android.framework;
 
 import java.awt.Point;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.ConnectProvider;
 import org.netbeans.api.visual.action.ConnectorState;
@@ -29,8 +31,8 @@ public class GraphSceneImpl extends GraphScene<String, String> {
     private LayerWidget mainLayer;
     private LayerWidget connectionLayer;
     private LayerWidget interactionLayer;
-    private HashMap<Widget,MobileScreen> mobileScreens = new HashMap<>();
-    
+    private Map<Widget, MobileScreen> mobileScreens = new HashMap<>();
+
     public GraphSceneImpl() {
         mainLayer = new LayerWidget(this);
         connectionLayer = new LayerWidget(this);
@@ -56,9 +58,11 @@ public class GraphSceneImpl extends GraphScene<String, String> {
      * @return The mobile screen selected by user.
      */
     public MobileScreen getSelectedScreen() {
-        for (int i = 0; i < mobileScreens.size(); i++) {
-            if (mobileScreens.get(i).isSelected()) {
-                return mobileScreens.get(i);
+        Iterator<MobileScreen> screenIter = mobileScreens.values().iterator();
+        while(screenIter.hasNext()){
+            MobileScreen nextScreen = screenIter.next();
+            if (nextScreen.isSelected()) {
+                return nextScreen;
             }
         }
         return null;
@@ -74,7 +78,8 @@ public class GraphSceneImpl extends GraphScene<String, String> {
     public void addMobileScreen(MobileScreen screenToAdd, Widget buttonToConnect) {
         int totalScreens = mobileScreens.size();
         if (totalScreens > 0) {
-            Point lastScreenPosition = mobileScreens.get(totalScreens - 1).getScreenPosition();
+            MobileScreen lastScreen = (MobileScreen)mobileScreens.values().toArray()[totalScreens - 1];
+            Point lastScreenPosition = lastScreen.getScreenPosition();
             screenToAdd.setScreenPosition(lastScreenPosition.x + 300, lastScreenPosition.y);
         }
         if (buttonToConnect != null) {
@@ -85,7 +90,7 @@ public class GraphSceneImpl extends GraphScene<String, String> {
             connectionLayer.addChild(conn);
         }
         mainLayer.addChild(screenToAdd.getWidget());
-        mobileScreens.put(buttonToConnect,screenToAdd);
+        mobileScreens.put(buttonToConnect, screenToAdd);
     }
 
     @Override
