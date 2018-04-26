@@ -5,26 +5,23 @@
  */
 package android.framework;
 
-import java.awt.Font;
 import java.awt.Point;
+import java.util.HashMap;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.ConnectProvider;
 import org.netbeans.api.visual.action.ConnectorState;
 import org.netbeans.api.visual.anchor.AnchorFactory;
 import org.netbeans.api.visual.anchor.AnchorShape;
-import org.netbeans.api.visual.border.BorderFactory;
 import org.netbeans.api.visual.graph.GraphScene;
 import org.netbeans.api.visual.widget.ConnectionWidget;
-import org.netbeans.api.visual.widget.LabelWidget;
 import org.netbeans.api.visual.widget.LayerWidget;
 import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
 import org.netbeans.api.visual.widget.general.IconNodeWidget;
-import org.openide.util.ImageUtilities;
 
 /**
  * This class manages the main scene of the application.
- * 
+ *
  * @author shoaib ahmed
  */
 public class GraphSceneImpl extends GraphScene<String, String> {
@@ -32,7 +29,8 @@ public class GraphSceneImpl extends GraphScene<String, String> {
     private LayerWidget mainLayer;
     private LayerWidget connectionLayer;
     private LayerWidget interactionLayer;
-
+    private HashMap<Widget,MobileScreen> mobileScreens = new HashMap<>();
+    
     public GraphSceneImpl() {
         mainLayer = new LayerWidget(this);
         connectionLayer = new LayerWidget(this);
@@ -41,32 +39,59 @@ public class GraphSceneImpl extends GraphScene<String, String> {
         addChild(connectionLayer);
         addChild(interactionLayer);
 
-        
-        MobileScreen screen = new MobileScreen("Main Screen",this);
-        mainLayer.addChild(screen.getWidget());
-        screen.setScreenSize(200, 400);
-        screen.setScreenPosition(50, 50);
-        screen.getWidget().getActions().addAction(ActionFactory.createMoveAction());
-        screen.getWidget().bringToBack();
-        
-        screen.addButton("Button 1", 60, 110);
-        screen.addButton("Button 2", 60, 150);
-        System.out.println(screen.getWidget().getLocation().toString());
+        MobileScreen mainScreen = new MobileScreen("Main Screen", this);
+        mainScreen.setScreenPosition(50, 50);
+        mainScreen.getWidget().bringToBack();
+
+        mainScreen.addButton("Button 1");
+        mainScreen.addButton("Button 2");
+        addMobileScreen(mainScreen, null);
         getActions().addAction(ActionFactory.createZoomAction());
 
     }
 
-    
+    /**
+     * This function finds and returns selected mobile screen.
+     *
+     * @return The mobile screen selected by user.
+     */
+    public MobileScreen getSelectedScreen() {
+        for (int i = 0; i < mobileScreens.size(); i++) {
+            if (mobileScreens.get(i).isSelected()) {
+                return mobileScreens.get(i);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Adds the mobile screen in the main scene.
+     *
+     * @param screenToAdd The mobile screen to add.
+     * @param buttonToConnect The button which is connected to the mobile
+     * screen.
+     */
+    public void addMobileScreen(MobileScreen screenToAdd, Widget buttonToConnect) {
+        int totalScreens = mobileScreens.size();
+        if (totalScreens > 0) {
+            Point lastScreenPosition = mobileScreens.get(totalScreens - 1).getScreenPosition();
+            screenToAdd.setScreenPosition(lastScreenPosition.x + 300, lastScreenPosition.y);
+        }
+        if (buttonToConnect != null) {
+            ConnectionWidget conn = new ConnectionWidget(this);
+            conn.setTargetAnchorShape(AnchorShape.TRIANGLE_FILLED);
+            conn.setTargetAnchor(AnchorFactory.createRectangularAnchor(screenToAdd.getWidget()));
+            conn.setSourceAnchor(AnchorFactory.createRectangularAnchor(buttonToConnect));
+            connectionLayer.addChild(conn);
+        }
+        mainLayer.addChild(screenToAdd.getWidget());
+        mobileScreens.put(buttonToConnect,screenToAdd);
+    }
+
     @Override
     protected Widget attachNodeWidget(String arg) {
         IconNodeWidget widget = new IconNodeWidget(this);
-        if (arg.startsWith("1")) {
-            widget.setImage(ImageUtilities.loadImage("vislibdemo/red.gif"));
-        } else if (arg.startsWith("2")) {
-            widget.setImage(ImageUtilities.loadImage("vislibdemo/green.gif"));
-        } else {
-            widget.setImage(ImageUtilities.loadImage("vislibdemo/blue.gif"));
-        }
+
         widget.getActions().addAction(
                 ActionFactory.createExtendedConnectAction(
                         connectionLayer, new MyConnectProvider()));

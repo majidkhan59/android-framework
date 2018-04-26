@@ -17,7 +17,7 @@ import javax.swing.JToolBar;
  * 
  * @author shoaibahmed
  */
-public class Toolbar extends JToolBar{
+public class Toolbar extends JToolBar {
     
     private ArrayList<JButton> buttons = new ArrayList<>();
   
@@ -42,15 +42,14 @@ public class Toolbar extends JToolBar{
      * @param tooltip The tooltip text of the button to be displayed.
      * @param height The height of the button.
      * @param width The width of the button.
+     * @return The button added to the toolbar.
      */
-    public void addButton(String text, String tooltip, int width, int height){
+    public final JButton addToolbarButton(String text, String tooltip, int width, int height){
         JButton buttonToAdd = new JButton(text);
         buttonToAdd.setToolTipText(tooltip);
         buttonToAdd.setPreferredSize(new Dimension(width, height));
         buttons.add(buttonToAdd);
         add(buttonToAdd);
+        return buttonToAdd;
     }
-    
-    
-    
 }

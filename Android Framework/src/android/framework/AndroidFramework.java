@@ -6,17 +6,18 @@
 package android.framework;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
-import org.netbeans.api.visual.graph.GraphScene;
+import org.netbeans.api.visual.widget.Widget;
 
 /**
  * This is the main class of the application.
@@ -35,22 +36,34 @@ public class AndroidFramework extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
         
         //Create the GraphSceneImpl:
-        GraphScene scene = new GraphSceneImpl();
+        GraphSceneImpl scene = new GraphSceneImpl();
         //Add it to the JScrollPane:
         scrollPane.setViewportView(scene.createView());
         //Add the SatellitView to the scene:
         add(scene.createSatelliteView(), BorderLayout.WEST);
         
         Toolbar toolbar = new Toolbar("Controls", JToolBar.VERTICAL);
-         
-        toolbar.addButton("Build APK", "Generate APK", 100, 100);
-        toolbar.addButton("Add Button", "Add new button", 100, 100);
-        toolbar.addButton("Add Label", "Add new label", 100, 100);
-
+        JButton buildAPK = toolbar.addToolbarButton("Build APK", "Generate APK", 100, 100);
+        JButton addButton = toolbar.addToolbarButton("Add Button", "Add new button", 100, 100);
+        JButton addLabel = toolbar.addToolbarButton("Add Label", "Add new label", 100, 100);
         
-     //   toolbar.addSeparator();
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MobileScreen selectedMobileScreen = scene.getSelectedScreen();
+                if(selectedMobileScreen == null){
+                    JOptionPane.showMessageDialog(null, "Please Select a Screen First!","Select a Screen", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    String buttonText = JOptionPane.showInputDialog("Please Enter Button Text: ");
+                    Widget newButton = selectedMobileScreen.addButton(buttonText);
+                    MobileScreen newScreen = new MobileScreen(buttonText, scene);
+                   
+                    scene.addMobileScreen(newScreen,newButton);
+                }
+            }
+        });
+        
         add(toolbar, BorderLayout.EAST);
-       
     }
 
     public static void main(String args[]) {
