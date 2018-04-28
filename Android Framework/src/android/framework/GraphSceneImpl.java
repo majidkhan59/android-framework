@@ -5,6 +5,7 @@
  */
 package android.framework;
 
+import android.framework.utilities.ControlPopupMenu;
 import java.awt.Point;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -45,8 +46,8 @@ public class GraphSceneImpl extends GraphScene<String, String> {
         mainScreen.setScreenPosition(50, 50);
         mainScreen.getWidget().bringToBack();
 
-        mainScreen.addButton("Button 1");
-        mainScreen.addButton("Button 2");
+        // mainScreen.addButton("Button 1");
+        //   mainScreen.addButton("Button 2");
         addMobileScreen(mainScreen, null);
         getActions().addAction(ActionFactory.createZoomAction());
 
@@ -59,7 +60,7 @@ public class GraphSceneImpl extends GraphScene<String, String> {
      */
     public MobileScreen getSelectedScreen() {
         Iterator<MobileScreen> screenIter = mobileScreens.values().iterator();
-        while(screenIter.hasNext()){
+        while (screenIter.hasNext()) {
             MobileScreen nextScreen = screenIter.next();
             if (nextScreen.isSelected()) {
                 return nextScreen;
@@ -77,18 +78,21 @@ public class GraphSceneImpl extends GraphScene<String, String> {
      */
     public void addMobileScreen(MobileScreen screenToAdd, Widget buttonToConnect) {
         int totalScreens = mobileScreens.size();
+        ConnectionWidget conn = new ConnectionWidget(this);
         if (totalScreens > 0) {
-            MobileScreen lastScreen = (MobileScreen)mobileScreens.values().toArray()[totalScreens - 1];
+            MobileScreen lastScreen = (MobileScreen) mobileScreens.values().toArray()[totalScreens - 1];
             Point lastScreenPosition = lastScreen.getScreenPosition();
             screenToAdd.setScreenPosition(lastScreenPosition.x + 300, lastScreenPosition.y);
         }
         if (buttonToConnect != null) {
-            ConnectionWidget conn = new ConnectionWidget(this);
             conn.setTargetAnchorShape(AnchorShape.TRIANGLE_FILLED);
             conn.setTargetAnchor(AnchorFactory.createRectangularAnchor(screenToAdd.getWidget()));
             conn.setSourceAnchor(AnchorFactory.createRectangularAnchor(buttonToConnect));
             connectionLayer.addChild(conn);
+            
+            buttonToConnect.getActions().addAction(ActionFactory.createPopupMenuAction(new ControlPopupMenu(conn, screenToAdd)));
         }
+
         mainLayer.addChild(screenToAdd.getWidget());
         mobileScreens.put(buttonToConnect, screenToAdd);
     }

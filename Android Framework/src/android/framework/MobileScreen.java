@@ -106,12 +106,6 @@ public class MobileScreen {
     public Widget addButton(String text) {
         Widget newButton = new LabelWidget(mainScene, text);
         newButton.setFont(new Font("", 0, 14));
-        //w.setPreferredLocation(new Point(x, y));
-        // newButton.getActions().addAction(ActionFactory.createMoveAction(new MoveWithinFrameStrategy(widget.getPreferredBounds().getSize(),
-        //         widget.getPreferredLocation().getLocation()),
-        //         ActionFactory.createDefaultMoveProvider()));
-
-        newButton.getActions().addAction(ActionFactory.createPopupMenuAction(new ControlPopupMenu()));
         newButton.setBorder(org.netbeans.api.visual.border.BorderFactory.createBevelBorder(true));
         widget.addChild(newButton);
         buttons.add(newButton);
@@ -130,6 +124,18 @@ public class MobileScreen {
         newLabel.getActions().addAction(ActionFactory.createPopupMenuAction(new ControlPopupMenu()));
         widget.addChild(newLabel);
         labels.add(newLabel);
+    }
+    
+    /**
+     * Removes this screen.
+     * 
+     */
+    public void removeScreen() {
+        for(Widget button:buttons){
+            // REMOVE BUTTON CONNECTIONS.
+        }
+        widget.removeChildren();
+        widget.removeFromParent();
     }
 
     /**
