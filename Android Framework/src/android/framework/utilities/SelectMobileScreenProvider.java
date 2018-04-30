@@ -7,10 +7,8 @@ package android.framework.utilities;
 
 import android.framework.MainScene;
 import android.framework.MobileScreen;
-import java.awt.Color;
 import java.awt.Point;
 import org.netbeans.api.visual.action.SelectProvider;
-import org.netbeans.api.visual.border.BorderFactory;
 import org.netbeans.api.visual.widget.Widget;
 
 /**

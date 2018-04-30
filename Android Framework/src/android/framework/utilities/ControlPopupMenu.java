@@ -6,6 +6,7 @@
 package android.framework.utilities;
 
 import android.framework.Button;
+import android.framework.MainScene;
 import android.framework.MobileScreen;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -45,6 +46,8 @@ public class ControlPopupMenu implements PopupMenuProvider {
                 if (widget instanceof Button) {
                     Button toRemove = (Button) widget;
                     toRemove.getConnector().removeFromParent();
+                    MobileScreen screenWithButton = MainScene.getMainScene().getMobileScreenByWidget(toRemove.getParentWidget());
+                    screenWithButton.removeButton(toRemove);
                 } else {
                   screenToRemove.removeLabel(widget);
                 }

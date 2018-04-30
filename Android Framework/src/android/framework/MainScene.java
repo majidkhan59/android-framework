@@ -98,8 +98,31 @@ public class MainScene extends GraphScene<String, String> {
 
     }
 
+    /**
+     * Gets Mobile Screen which is connected to given button.
+     *
+     * @param button The button to search screen for.
+     * @return The screen found using button.
+     */
     public MobileScreen getMobileScreenByButton(Button button) {
         return mobileScreens.get(button);
+    }
+
+    /**
+     * Gets Mobile Screen which is connected to given widget.
+     * 
+     * @param screenWidget The widget to search for.
+     * @return The screen found using widget.
+     */
+    public MobileScreen getMobileScreenByWidget(Widget screenWidget) {
+        Iterator<MobileScreen> screenIter = mobileScreens.values().iterator();
+        while (screenIter.hasNext()) {
+            MobileScreen nextScreen = screenIter.next();
+            if (nextScreen.getWidget().equals(screenWidget)) {
+                return nextScreen;
+            }
+        }
+        return null;
     }
 
     /**
@@ -122,9 +145,9 @@ public class MainScene extends GraphScene<String, String> {
             conn.setTargetAnchor(AnchorFactory.createRectangularAnchor(screenToAdd.getWidget()));
             conn.setSourceAnchor(AnchorFactory.createRectangularAnchor(buttonToConnect));
             connectionLayer.addChild(conn);
-            
+
             buttonToConnect.setConnector(conn);
-            buttonToConnect.getActions().addAction(ActionFactory.createPopupMenuAction(new ControlPopupMenu(screenToAdd,true)));
+            buttonToConnect.getActions().addAction(ActionFactory.createPopupMenuAction(new ControlPopupMenu(screenToAdd, true)));
         }
 
         mainLayer.addChild(screenToAdd.getWidget());

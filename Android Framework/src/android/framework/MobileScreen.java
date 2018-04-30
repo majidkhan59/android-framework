@@ -98,6 +98,15 @@ public class MobileScreen {
     }
 
     /**
+     * Returns the title of this screen.
+     *
+     * @return The title of this screen.
+     */
+    public String getScreenTitle() {
+        return screenTitle;
+    }
+
+    /**
      * Adds a button on this screen.
      *
      * @param text The title of the button.
@@ -109,6 +118,7 @@ public class MobileScreen {
         newButton.setBorder(org.netbeans.api.visual.border.BorderFactory.createBevelBorder(true));
         widget.addChild(newButton);
         buttons.add(newButton);
+        System.out.println("Screen " + screenTitle + " But " + buttons.toString());
         mainScene.validate();
         return newButton;
     }
@@ -122,7 +132,7 @@ public class MobileScreen {
     public void addLabel(String text) {
         Widget newLabel = new LabelWidget(mainScene, text);
         newLabel.setFont(new Font("", 0, 14));
-        newLabel.getActions().addAction(ActionFactory.createPopupMenuAction(new ControlPopupMenu(this,false)));
+        newLabel.getActions().addAction(ActionFactory.createPopupMenuAction(new ControlPopupMenu(this, false)));
         widget.addChild(newLabel);
         labels.add(newLabel);
         mainScene.validate();
@@ -135,29 +145,37 @@ public class MobileScreen {
     public void removeScreen() {
         labels.clear();
         Iterator<Button> buttonIter = buttons.iterator();
+
         while (buttonIter.hasNext()) {
             Button button = buttonIter.next();
             button.getConnector().removeFromParent();
             MobileScreen childScreen = mainScene.getMobileScreenByButton(button);
             childScreen.removeScreen();
-            buttonIter.remove();
-            mainScene.removeMobileScreen(childScreen);
+            //mainScene.removeMobileScreen(childScreen);
         }
         widget.removeChildren();
         widget.removeFromParent();
         mainScene.validate();
-//        mainScene.removeMobileScreen(this);
+        mainScene.removeMobileScreen(this);
     }
-    
+
     /**
      * Removes the given label from the screen.
      *
-     * @param labelToRemove
+     * @param labelToRemove The label to remove.
      */
     public void removeLabel(Widget labelToRemove) {
         labels.remove(labelToRemove);
     }
-    
+
+    /**
+     * Removes the given button from the screen.
+     *
+     * @param buttonToRemove The button to remove.
+     */
+    public void removeButton(Button buttonToRemove) {
+        buttons.remove(buttonToRemove);
+    }
 
     /**
      * Returns if this screen is selected by user.
@@ -175,5 +193,10 @@ public class MobileScreen {
      */
     public void setSelectionStatus(boolean isSelected) {
         this.isSelected = isSelected;
+    }
+
+    @Override
+    public String toString() {
+        return screenTitle;
     }
 }

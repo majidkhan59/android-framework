@@ -34,5 +34,9 @@ public class Button extends LabelWidget{
     public ConnectionWidget getConnector() {
         return connector;
     }
-            
+
+    @Override
+    public String toString() {
+        return getLabel();
+    }     
 }

@@ -17,7 +17,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
-import org.netbeans.api.visual.widget.Widget;
 
 /**
  * This is the main class of the application.
@@ -55,6 +54,9 @@ public class AndroidFramework extends JPanel {
                     JOptionPane.showMessageDialog(null, "Please Select a Screen First!","Select a Screen", JOptionPane.ERROR_MESSAGE);
                 } else {
                     String buttonText = JOptionPane.showInputDialog("Please Enter Button Text: ");
+                    while(buttonText.isEmpty()){
+                        buttonText = JOptionPane.showInputDialog("Please Enter Button Text: ");
+                    }
                     Button newButton = selectedMobileScreen.addButton(buttonText);
                     MobileScreen newScreen = new MobileScreen(buttonText, scene);
                    
@@ -77,6 +79,9 @@ public class AndroidFramework extends JPanel {
                     JOptionPane.showMessageDialog(null, "Please Select a Screen First!","Select a Screen", JOptionPane.ERROR_MESSAGE);
                 } else {
                     String labelText = JOptionPane.showInputDialog("Please Enter Label Text: ");
+                    while(labelText.isEmpty()){
+                        labelText = JOptionPane.showInputDialog("Please Enter Label Text: ");
+                    }
                     selectedMobileScreen.addLabel(labelText);
                   
                 }
