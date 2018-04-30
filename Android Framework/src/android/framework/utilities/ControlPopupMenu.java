@@ -5,6 +5,7 @@
  */
 package android.framework.utilities;
 
+import android.framework.Button;
 import android.framework.MobileScreen;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -12,7 +13,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import org.netbeans.api.visual.action.PopupMenuProvider;
-import org.netbeans.api.visual.widget.ConnectionWidget;
 import org.netbeans.api.visual.widget.Widget;
 
 /**
@@ -22,17 +22,17 @@ import org.netbeans.api.visual.widget.Widget;
  */
 public class ControlPopupMenu implements PopupMenuProvider {
 
-    ConnectionWidget connectionToRemove;
     MobileScreen screenToRemove;
+    boolean removeScreen;
 
     public ControlPopupMenu() {
-        this.connectionToRemove = null;
         this.screenToRemove = null;
     }
 
-    public ControlPopupMenu(ConnectionWidget connectionToRemove, MobileScreen screenToRemove) {
-        this.connectionToRemove = connectionToRemove;
+    public ControlPopupMenu(MobileScreen screenToRemove,boolean removeScreen) {
+
         this.screenToRemove = screenToRemove;
+        this.removeScreen = removeScreen;
     }
 
     @Override
@@ -42,19 +42,21 @@ public class ControlPopupMenu implements PopupMenuProvider {
         removeItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                widget.removeFromParent();
-                if (connectionToRemove != null) {
-                    connectionToRemove.removeFromParent();
-                }  if (screenToRemove != null) {
+                if (widget instanceof Button) {
+                    Button toRemove = (Button) widget;
+                    toRemove.getConnector().removeFromParent();
+                } else {
+                  screenToRemove.removeLabel(widget);
+                }
+                if (removeScreen) {
                     screenToRemove.setSelectionStatus(false);
                     screenToRemove.removeScreen();
-                }     
+                }
+                widget.removeFromParent();
             }
         });
 
         return menu;
     }
-    
-    
 
 }

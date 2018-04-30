@@ -35,7 +35,7 @@ public class MainScene extends GraphScene<String, String> {
     private LayerWidget mainLayer;
     private LayerWidget connectionLayer;
     private LayerWidget interactionLayer;
-    private Map<Widget, MobileScreen> mobileScreens = new HashMap<>();
+    private Map<Button, MobileScreen> mobileScreens = new HashMap<>();
 
     private MainScene() {
         mainLayer = new LayerWidget(this);
@@ -49,8 +49,6 @@ public class MainScene extends GraphScene<String, String> {
         mainScreen.setScreenPosition(50, 50);
         mainScreen.getWidget().bringToBack();
 
-        // mainScreen.addButton("Button 1");
-        //   mainScreen.addButton("Button 2");
         addMobileScreen(mainScreen, null);
         getActions().addAction(ActionFactory.createZoomAction());
 
@@ -100,6 +98,10 @@ public class MainScene extends GraphScene<String, String> {
 
     }
 
+    public MobileScreen getMobileScreenByButton(Button button) {
+        return mobileScreens.get(button);
+    }
+
     /**
      * Adds the mobile screen in the main scene.
      *
@@ -107,7 +109,7 @@ public class MainScene extends GraphScene<String, String> {
      * @param buttonToConnect The button which is connected to the mobile
      * screen.
      */
-    public void addMobileScreen(MobileScreen screenToAdd, Widget buttonToConnect) {
+    public void addMobileScreen(MobileScreen screenToAdd, Button buttonToConnect) {
         int totalScreens = mobileScreens.size();
         ConnectionWidget conn = new ConnectionWidget(this);
         if (totalScreens > 0) {
@@ -120,24 +122,29 @@ public class MainScene extends GraphScene<String, String> {
             conn.setTargetAnchor(AnchorFactory.createRectangularAnchor(screenToAdd.getWidget()));
             conn.setSourceAnchor(AnchorFactory.createRectangularAnchor(buttonToConnect));
             connectionLayer.addChild(conn);
-
-            buttonToConnect.getActions().addAction(ActionFactory.createPopupMenuAction(new ControlPopupMenu(conn, screenToAdd)));
+            
+            buttonToConnect.setConnector(conn);
+            buttonToConnect.getActions().addAction(ActionFactory.createPopupMenuAction(new ControlPopupMenu(screenToAdd,true)));
         }
 
         mainLayer.addChild(screenToAdd.getWidget());
         mobileScreens.put(buttonToConnect, screenToAdd);
-    //    System.out.println(mobileScreens.toString());
     }
 
+    /**
+     * Removes Mobile Screen from the List.
+     *
+     * @param screenToRemove The screen to remove.
+     */
     public void removeMobileScreen(MobileScreen screenToRemove) {
-        Iterator<Map.Entry<Widget, MobileScreen>> iter = mobileScreens.entrySet().iterator();
+        Iterator<Map.Entry<Button, MobileScreen>> iter = mobileScreens.entrySet().iterator();
         while (iter.hasNext()) {
             MobileScreen value = iter.next().getValue();
             if (screenToRemove.equals(value)) {
                 iter.remove();
                 break;
             }
-        } 
+        }
     }
 
     @Override

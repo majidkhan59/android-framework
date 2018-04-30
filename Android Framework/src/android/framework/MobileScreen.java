@@ -11,13 +11,13 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.JPanel;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.border.BorderFactory;
 import org.netbeans.api.visual.layout.LayoutFactory;
 import org.netbeans.api.visual.widget.ComponentWidget;
 import org.netbeans.api.visual.widget.LabelWidget;
-import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
 
 /**
@@ -33,7 +33,7 @@ public class MobileScreen {
     private ComponentWidget widget;
     private MainScene mainScene;
     private boolean isSelected;
-    private ArrayList<Widget> buttons = new ArrayList<>();
+    private ArrayList<Button> buttons = new ArrayList<>();
     private ArrayList<Widget> labels = new ArrayList<>();
 
     /**
@@ -45,15 +45,15 @@ public class MobileScreen {
     public MobileScreen(String title, MainScene scene) {
         screen = new JPanel();
         screen.setPreferredSize(new Dimension(200, 400));
-       
+
         isSelected = false;
         mainScene = scene;
         screenTitle = title;
-       
+
         widget = new ComponentWidget(mainScene, screen);
         widget.setLayout(LayoutFactory.createVerticalFlowLayout(LayoutFactory.SerialAlignment.CENTER, 10));
         widget.setBorder(BorderFactory.createLineBorder());
-        widget.getActions().addAction(ActionFactory.createSelectAction(new SelectMobileScreenProvider(this,scene)));
+        widget.getActions().addAction(ActionFactory.createSelectAction(new SelectMobileScreenProvider(this, scene)));
         widget.getActions().addAction(ActionFactory.createMoveAction());
         widget.addChild(new LabelWidget(scene));
         widget.addChild(new LabelWidget(scene, title));
@@ -78,13 +78,13 @@ public class MobileScreen {
     public void setScreenPosition(int x, int y) {
         widget.setPreferredLocation(new Point(x, y));
     }
-    
+
     /**
      * Gets position of the mobile screen.
-     * 
+     *
      * @return The position as a Point object.
      */
-    public Point getScreenPosition(){
+    public Point getScreenPosition() {
         return widget.getPreferredLocation();
     }
 
@@ -99,61 +99,81 @@ public class MobileScreen {
 
     /**
      * Adds a button on this screen.
-     * 
+     *
      * @param text The title of the button.
      * @return Returns the new widget made.
      */
-    public Widget addButton(String text) {
-        Widget newButton = new LabelWidget(mainScene, text);
+    public Button addButton(String text) {
+        Button newButton = new Button(mainScene, text);
         newButton.setFont(new Font("", 0, 14));
         newButton.setBorder(org.netbeans.api.visual.border.BorderFactory.createBevelBorder(true));
         widget.addChild(newButton);
         buttons.add(newButton);
+        mainScene.validate();
         return newButton;
     }
-    
+
     /**
      * Adds a label on this screen.
-     * 
+     *
      * @param text The text of the label
      *
      */
     public void addLabel(String text) {
         Widget newLabel = new LabelWidget(mainScene, text);
         newLabel.setFont(new Font("", 0, 14));
-        newLabel.getActions().addAction(ActionFactory.createPopupMenuAction(new ControlPopupMenu()));
+        newLabel.getActions().addAction(ActionFactory.createPopupMenuAction(new ControlPopupMenu(this,false)));
         widget.addChild(newLabel);
         labels.add(newLabel);
-    }
-    
-    /**
-     * Removes this screen.
-     * 
-     */
-    public void removeScreen() {
-        for(Widget button:buttons){
-            // REMOVE BUTTON CONNECTIONS.
-        }
-        widget.removeChildren();
-        widget.removeFromParent();
         mainScene.validate();
     }
 
     /**
-     * Returns if this screen is selected by user.
-     * 
-     * @return The selection status of this screen.
+     * Removes this screen and its children from the scene.
+     *
      */
-    public boolean isSelected(){
-       return isSelected;
-   }
+    public void removeScreen() {
+        labels.clear();
+        Iterator<Button> buttonIter = buttons.iterator();
+        while (buttonIter.hasNext()) {
+            Button button = buttonIter.next();
+            button.getConnector().removeFromParent();
+            MobileScreen childScreen = mainScene.getMobileScreenByButton(button);
+            childScreen.removeScreen();
+            buttonIter.remove();
+            mainScene.removeMobileScreen(childScreen);
+        }
+        widget.removeChildren();
+        widget.removeFromParent();
+        mainScene.validate();
+//        mainScene.removeMobileScreen(this);
+    }
     
     /**
+     * Removes the given label from the screen.
+     *
+     * @param labelToRemove
+     */
+    public void removeLabel(Widget labelToRemove) {
+        labels.remove(labelToRemove);
+    }
+    
+
+    /**
+     * Returns if this screen is selected by user.
+     *
+     * @return The selection status of this screen.
+     */
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    /**
      * Sets the selection status of this screen.
-     * 
+     *
      * @param isSelected The selection status of this screen.
      */
-    public void setSelectionStatus(boolean isSelected){
+    public void setSelectionStatus(boolean isSelected) {
         this.isSelected = isSelected;
     }
 }

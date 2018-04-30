@@ -55,17 +55,16 @@ public class AndroidFramework extends JPanel {
                     JOptionPane.showMessageDialog(null, "Please Select a Screen First!","Select a Screen", JOptionPane.ERROR_MESSAGE);
                 } else {
                     String buttonText = JOptionPane.showInputDialog("Please Enter Button Text: ");
-                    Widget newButton = selectedMobileScreen.addButton(buttonText);
+                    Button newButton = selectedMobileScreen.addButton(buttonText);
                     MobileScreen newScreen = new MobileScreen(buttonText, scene);
                    
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                           scene.addMobileScreen(newScreen,newButton);
+                          scene.validate();
                         }
                     }).run();
-                    
-                    scene.validate();
                 }
             }
         });
