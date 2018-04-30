@@ -5,11 +5,13 @@
  */
 package android.framework.utilities;
 
+import android.framework.MainScene;
 import android.framework.MobileScreen;
 import java.awt.Color;
 import java.awt.Point;
 import org.netbeans.api.visual.action.SelectProvider;
 import org.netbeans.api.visual.border.BorderFactory;
+import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
 
 /**
@@ -20,9 +22,11 @@ import org.netbeans.api.visual.widget.Widget;
 public class SelectMobileScreenProvider implements SelectProvider {
     
     MobileScreen screenToBeSelected;
+    MainScene sceneOfScreen;
 
-    public SelectMobileScreenProvider(MobileScreen screen) {
+    public SelectMobileScreenProvider(MobileScreen screen, MainScene scene) {
         screenToBeSelected = screen;
+        sceneOfScreen = scene;
     }
     
     @Override

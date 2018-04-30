@@ -47,12 +47,15 @@ public class ControlPopupMenu implements PopupMenuProvider {
                     connectionToRemove.removeFromParent();
               //      connectionToRemove.getTargetAnchor().getRelatedWidget().removeFromParent();
                 }  if (screenToRemove != null) {
+                    screenToRemove.setSelectionStatus(false);
                     screenToRemove.removeScreen();
-                }
+                }     
             }
         });
 
         return menu;
     }
+    
+    
 
 }

@@ -27,14 +27,15 @@ import org.netbeans.api.visual.widget.general.IconNodeWidget;
  *
  * @author shoaib ahmed
  */
-public class GraphSceneImpl extends GraphScene<String, String> {
+public class MainScene extends GraphScene<String, String> {
 
+    private static MainScene mainScene;
     private LayerWidget mainLayer;
     private LayerWidget connectionLayer;
     private LayerWidget interactionLayer;
     private Map<Widget, MobileScreen> mobileScreens = new HashMap<>();
 
-    public GraphSceneImpl() {
+    private MainScene() {
         mainLayer = new LayerWidget(this);
         connectionLayer = new LayerWidget(this);
         interactionLayer = new LayerWidget(this);
@@ -51,6 +52,14 @@ public class GraphSceneImpl extends GraphScene<String, String> {
         addMobileScreen(mainScreen, null);
         getActions().addAction(ActionFactory.createZoomAction());
 
+    }
+    
+    public static MainScene getMainScene(){
+        if(mainScene == null){
+            mainScene = new MainScene();
+        }
+        
+        return mainScene;
     }
 
     /**
@@ -99,18 +108,7 @@ public class GraphSceneImpl extends GraphScene<String, String> {
 
     @Override
     protected Widget attachNodeWidget(String arg) {
-        IconNodeWidget widget = new IconNodeWidget(this);
-
-        widget.getActions().addAction(
-                ActionFactory.createExtendedConnectAction(
-                        connectionLayer, new MyConnectProvider()));
-        widget.getActions().addAction(
-                ActionFactory.createAlignWithMoveAction(
-                        mainLayer, interactionLayer,
-                        ActionFactory.createDefaultAlignWithMoveDecorator()));
-        widget.setLabel(arg);
-        mainLayer.addChild(widget);
-        return widget;
+         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
@@ -147,7 +145,7 @@ public class GraphSceneImpl extends GraphScene<String, String> {
         }
 
         public void createConnection(Widget source, Widget target) {
-            ConnectionWidget conn = new ConnectionWidget(GraphSceneImpl.this);
+            ConnectionWidget conn = new ConnectionWidget(MainScene.this);
             conn.setTargetAnchorShape(AnchorShape.TRIANGLE_FILLED);
             conn.setTargetAnchor(AnchorFactory.createRectangularAnchor(target));
             conn.setSourceAnchor(AnchorFactory.createRectangularAnchor(source));

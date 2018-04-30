@@ -31,7 +31,7 @@ public class MobileScreen {
     private JPanel screen;
     private String screenTitle;
     private ComponentWidget widget;
-    private Scene mainScene;
+    private MainScene mainScene;
     private boolean isSelected;
     private ArrayList<Widget> buttons = new ArrayList<>();
     private ArrayList<Widget> labels = new ArrayList<>();
@@ -42,7 +42,7 @@ public class MobileScreen {
      * @param title The title of the Mobile Screen.
      * @param scene The scene in which screen is made.
      */
-    public MobileScreen(String title, Scene scene) {
+    public MobileScreen(String title, MainScene scene) {
         screen = new JPanel();
         screen.setPreferredSize(new Dimension(200, 400));
        
@@ -53,7 +53,7 @@ public class MobileScreen {
         widget = new ComponentWidget(mainScene, screen);
         widget.setLayout(LayoutFactory.createVerticalFlowLayout(LayoutFactory.SerialAlignment.CENTER, 10));
         widget.setBorder(BorderFactory.createLineBorder());
-        widget.getActions().addAction(ActionFactory.createSelectAction(new SelectMobileScreenProvider(this)));
+        widget.getActions().addAction(ActionFactory.createSelectAction(new SelectMobileScreenProvider(this,scene)));
         widget.getActions().addAction(ActionFactory.createMoveAction());
         widget.addChild(new LabelWidget(scene));
         widget.addChild(new LabelWidget(scene, title));
@@ -85,7 +85,7 @@ public class MobileScreen {
      * @return The position as a Point object.
      */
     public Point getScreenPosition(){
-        return widget.getLocation();
+        return widget.getPreferredLocation();
     }
 
     /**
@@ -136,6 +136,7 @@ public class MobileScreen {
         }
         widget.removeChildren();
         widget.removeFromParent();
+        mainScene.validate();
     }
 
     /**

@@ -35,8 +35,8 @@ public class AndroidFramework extends JPanel {
         JScrollPane scrollPane = new JScrollPane();
         add(scrollPane, BorderLayout.CENTER);
         
-        //Create the GraphSceneImpl:
-        GraphSceneImpl scene = new GraphSceneImpl();
+        //Create the MainScene:
+        MainScene scene = MainScene.getMainScene();
         //Add it to the JScrollPane:
         scrollPane.setViewportView(scene.createView());
         //Add the SatellitView to the scene:
@@ -58,7 +58,14 @@ public class AndroidFramework extends JPanel {
                     Widget newButton = selectedMobileScreen.addButton(buttonText);
                     MobileScreen newScreen = new MobileScreen(buttonText, scene);
                    
-                    scene.addMobileScreen(newScreen,newButton);
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                          scene.addMobileScreen(newScreen,newButton);
+                        }
+                    }).run();
+                    
+                    scene.validate();
                 }
             }
         });
