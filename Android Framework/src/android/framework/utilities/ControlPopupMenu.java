@@ -45,7 +45,6 @@ public class ControlPopupMenu implements PopupMenuProvider {
                 widget.removeFromParent();
                 if (connectionToRemove != null) {
                     connectionToRemove.removeFromParent();
-              //      connectionToRemove.getTargetAnchor().getRelatedWidget().removeFromParent();
                 }  if (screenToRemove != null) {
                     screenToRemove.setSelectionStatus(false);
                     screenToRemove.removeScreen();

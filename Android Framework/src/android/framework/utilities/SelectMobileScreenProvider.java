@@ -11,7 +11,6 @@ import java.awt.Color;
 import java.awt.Point;
 import org.netbeans.api.visual.action.SelectProvider;
 import org.netbeans.api.visual.border.BorderFactory;
-import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
 
 /**
@@ -40,14 +39,8 @@ public class SelectMobileScreenProvider implements SelectProvider {
     }
 
     @Override
-    public void select(Widget widget, Point point, boolean bln) {
-        if (screenToBeSelected.isSelected()) {
-            widget.setBorder(BorderFactory.createLineBorder());
-            screenToBeSelected.setSelectionStatus(false);
-        } else {
-            widget.setBorder(BorderFactory.createLineBorder(2,Color.RED));
-            screenToBeSelected.setSelectionStatus(true);
-        }
+    public void select(Widget widget, Point point, boolean bln) {        
+        sceneOfScreen.setSelectedScreen(screenToBeSelected);
     }
 
 }

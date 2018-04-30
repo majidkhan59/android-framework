@@ -6,6 +6,7 @@
 package android.framework;
 
 import android.framework.utilities.ControlPopupMenu;
+import java.awt.Color;
 import java.awt.Point;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -15,6 +16,7 @@ import org.netbeans.api.visual.action.ConnectProvider;
 import org.netbeans.api.visual.action.ConnectorState;
 import org.netbeans.api.visual.anchor.AnchorFactory;
 import org.netbeans.api.visual.anchor.AnchorShape;
+import org.netbeans.api.visual.border.BorderFactory;
 import org.netbeans.api.visual.graph.GraphScene;
 import org.netbeans.api.visual.widget.ConnectionWidget;
 import org.netbeans.api.visual.widget.LayerWidget;
@@ -53,12 +55,12 @@ public class MainScene extends GraphScene<String, String> {
         getActions().addAction(ActionFactory.createZoomAction());
 
     }
-    
-    public static MainScene getMainScene(){
-        if(mainScene == null){
+
+    public static MainScene getMainScene() {
+        if (mainScene == null) {
             mainScene = new MainScene();
         }
-        
+
         return mainScene;
     }
 
@@ -76,6 +78,26 @@ public class MainScene extends GraphScene<String, String> {
             }
         }
         return null;
+    }
+
+    /**
+     * Sets selected screen in the scene.
+     *
+     * @param selectedScreen The screen to be selected.
+     */
+    public void setSelectedScreen(MobileScreen selectedScreen) {
+        Iterator<MobileScreen> screenIter = mobileScreens.values().iterator();
+        while (screenIter.hasNext()) {
+            MobileScreen nextScreen = screenIter.next();
+            if (nextScreen.equals(selectedScreen)) {
+                nextScreen.setSelectionStatus(true);
+                nextScreen.getWidget().setBorder(BorderFactory.createLineBorder(2, Color.RED));
+            } else {
+                nextScreen.setSelectionStatus(false);
+                nextScreen.getWidget().setBorder(BorderFactory.createLineBorder());
+            }
+        }
+
     }
 
     /**
@@ -98,17 +120,29 @@ public class MainScene extends GraphScene<String, String> {
             conn.setTargetAnchor(AnchorFactory.createRectangularAnchor(screenToAdd.getWidget()));
             conn.setSourceAnchor(AnchorFactory.createRectangularAnchor(buttonToConnect));
             connectionLayer.addChild(conn);
-            
+
             buttonToConnect.getActions().addAction(ActionFactory.createPopupMenuAction(new ControlPopupMenu(conn, screenToAdd)));
         }
 
         mainLayer.addChild(screenToAdd.getWidget());
         mobileScreens.put(buttonToConnect, screenToAdd);
+    //    System.out.println(mobileScreens.toString());
+    }
+
+    public void removeMobileScreen(MobileScreen screenToRemove) {
+        Iterator<Map.Entry<Widget, MobileScreen>> iter = mobileScreens.entrySet().iterator();
+        while (iter.hasNext()) {
+            MobileScreen value = iter.next().getValue();
+            if (screenToRemove.equals(value)) {
+                iter.remove();
+                break;
+            }
+        } 
     }
 
     @Override
     protected Widget attachNodeWidget(String arg) {
-         throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
