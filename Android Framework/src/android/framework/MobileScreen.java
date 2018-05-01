@@ -7,12 +7,14 @@ package android.framework;
 
 import android.framework.utilities.ControlPopupMenu;
 import android.framework.utilities.SelectMobileScreenProvider;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.border.BorderFactory;
 import org.netbeans.api.visual.layout.LayoutFactory;
@@ -130,9 +132,22 @@ public class MobileScreen {
      *
      */
     public void addLabel(String text) {
-        Widget newLabel = new LabelWidget(mainScene, text);
+        /*JTextArea label = new JTextArea(2,0);
+        label.setEditable(false);
+        label.setLineWrap(true);
+        label.setWrapStyleWord(true);
+        label.setOpaque(false);
+        label.setAlignmentX(JTextArea.CENTER_ALIGNMENT);
+        label.setAlignmentY(JTextArea.CENTER_ALIGNMENT);
+        label.setText(text);
+        
+        ComponentWidget newLabel = new ComponentWidget(mainScene, label);
+       */
+        Widget newLabel = new LabelWidget(mainScene,text);
         newLabel.setFont(new Font("", 0, 14));
         newLabel.getActions().addAction(ActionFactory.createPopupMenuAction(new ControlPopupMenu(this, false)));
+        //newLabel.setBorder(BorderFactory.createLineBorder(2, Color.yellow));
+        
         widget.addChild(newLabel);
         labels.add(newLabel);
         mainScene.validate();

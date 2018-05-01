@@ -5,6 +5,7 @@
  */
 package android.framework;
 
+import andriod.framework.sdk.CodeGenerator;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -85,6 +86,17 @@ public class AndroidFramework extends JPanel {
                     selectedMobileScreen.addLabel(labelText);
                   
                 }
+            }
+        });
+        
+        buildAPK.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MobileScreen selectedMobileScreen = scene.getSelectedScreen();
+                CodeGenerator.manifestGenerate();
+                CodeGenerator.javaFileGenerate("Send a button");
+                      CodeGenerator.layoutGenerate();
+                            CodeGenerator.resourceGenerate("APP_NAME_GOES_HERE");
             }
         });
         
