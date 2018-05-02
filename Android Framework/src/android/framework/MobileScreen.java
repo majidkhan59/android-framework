@@ -7,14 +7,14 @@ package android.framework;
 
 import android.framework.utilities.ControlPopupMenu;
 import android.framework.utilities.SelectMobileScreenProvider;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
+import java.awt.ScrollPane;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
+import org.jdesktop.swingx.JXLabel;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.border.BorderFactory;
 import org.netbeans.api.visual.layout.LayoutFactory;
@@ -35,8 +35,7 @@ public class MobileScreen {
     private ComponentWidget widget;
     private MainScene mainScene;
     private boolean isSelected;
-    private ArrayList<Button> buttons = new ArrayList<>();
-    private ArrayList<Widget> labels = new ArrayList<>();
+    private ArrayList<Widget> screenComponents = new ArrayList<>();
 
     /**
      * This is the default constructor, which generates a Mobile Screen on UI.
@@ -119,8 +118,8 @@ public class MobileScreen {
         newButton.setFont(new Font("", 0, 14));
         newButton.setBorder(org.netbeans.api.visual.border.BorderFactory.createBevelBorder(true));
         widget.addChild(newButton);
-        buttons.add(newButton);
-        System.out.println("Screen " + screenTitle + " But " + buttons.toString());
+        screenComponents.add(newButton);
+        System.out.println("Screen " + screenTitle + " But " + screenComponents.toString());
         mainScene.validate();
         return newButton;
     }
@@ -141,15 +140,28 @@ public class MobileScreen {
         label.setAlignmentY(JTextArea.CENTER_ALIGNMENT);
         label.setText(text);
         
+        String labelText ="<html>";
+        for(int i = 0; i < text.length();i+=10){
+            labelText += text.substring(i, i+10);
+            labelText += "<br>";
+        }
+        labelText += "</html>";
+        JLabel label = new JLabel(labelText);*/
+        JXLabel label = new JXLabel(text);
+        label.setLineWrap(true);
+        label.setMaxLineSpan(180);
+        label.setMinimumSize(new Dimension(0, 10));
+        JXLabel.MultiLineSupport.createView(label);
+        
         ComponentWidget newLabel = new ComponentWidget(mainScene, label);
-       */
-        Widget newLabel = new LabelWidget(mainScene,text);
+        
+        //Widget newLabel = new LabelWidget(mainScene, text);
         newLabel.setFont(new Font("", 0, 14));
         newLabel.getActions().addAction(ActionFactory.createPopupMenuAction(new ControlPopupMenu(this, false)));
         //newLabel.setBorder(BorderFactory.createLineBorder(2, Color.yellow));
-        
+
         widget.addChild(newLabel);
-        labels.add(newLabel);
+        screenComponents.add(newLabel);
         mainScene.validate();
     }
 
@@ -158,14 +170,20 @@ public class MobileScreen {
      *
      */
     public void removeScreen() {
-        labels.clear();
-        Iterator<Button> buttonIter = buttons.iterator();
+        Iterator<Widget> compIter = screenComponents.iterator();
 
-        while (buttonIter.hasNext()) {
-            Button button = buttonIter.next();
-            button.getConnector().removeFromParent();
-            MobileScreen childScreen = mainScene.getMobileScreenByButton(button);
-            childScreen.removeScreen();
+        while (compIter.hasNext()) {
+            Widget thisComponent = compIter.next();
+            if (thisComponent instanceof Button) {
+                Button button = (Button) thisComponent;
+                button.getConnector().removeFromParent();
+                MobileScreen childScreen = mainScene.getMobileScreenByButton(button);
+                childScreen.removeScreen();
+            } else {
+                thisComponent.removeFromParent();
+                screenComponents.remove(thisComponent);
+            }
+
             //mainScene.removeMobileScreen(childScreen);
         }
         widget.removeChildren();
@@ -180,7 +198,7 @@ public class MobileScreen {
      * @param labelToRemove The label to remove.
      */
     public void removeLabel(Widget labelToRemove) {
-        labels.remove(labelToRemove);
+        screenComponents.remove(labelToRemove);
     }
 
     /**
@@ -189,7 +207,7 @@ public class MobileScreen {
      * @param buttonToRemove The button to remove.
      */
     public void removeButton(Button buttonToRemove) {
-        buttons.remove(buttonToRemove);
+        screenComponents.remove(buttonToRemove);
     }
 
     /**

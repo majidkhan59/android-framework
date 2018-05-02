@@ -45,7 +45,7 @@ public class AndroidFramework extends JPanel {
         Toolbar toolbar = new Toolbar("Controls", JToolBar.VERTICAL);
         JButton buildAPK = toolbar.addToolbarButton("Build APK", "Generate APK", 100, 100);
         JButton addButton = toolbar.addToolbarButton("Add Button", "Add new button", 100, 100);
-        JButton addLabel = toolbar.addToolbarButton("Add Label", "Add new label", 100, 100);
+        JButton addLabel = toolbar.addToolbarButton("Add Text", "Add new label", 100, 100);
         
         addButton.addActionListener(new ActionListener() {
             @Override
@@ -79,9 +79,9 @@ public class AndroidFramework extends JPanel {
                 if(selectedMobileScreen == null){
                     JOptionPane.showMessageDialog(null, "Please Select a Screen First!","Select a Screen", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    String labelText = JOptionPane.showInputDialog("Please Enter Label Text: ");
+                    String labelText = JOptionPane.showInputDialog("Please Enter Text: ");
                     while(labelText.isEmpty()){
-                        labelText = JOptionPane.showInputDialog("Please Enter Label Text: ");
+                        labelText = JOptionPane.showInputDialog("Please Enter Text: ");
                     }
                     selectedMobileScreen.addLabel(labelText);
                   
