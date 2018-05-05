@@ -12,23 +12,25 @@ import javax.swing.*;
 
 import javax.swing.border.BevelBorder;
 import android.framework.utilities.Database;
+import org.openide.util.Exceptions;
 
 /**
- * 
+ *
  * @author majidkhan
  */
 public class GUI extends javax.swing.JFrame {
 
     JMenuBar menuBar = new JMenuBar();
     FileUtilities user = new FileUtilities();
-   
-    
+    JInternalFrame newProjectWindow;
+
     public GUI() {
         initComponents();
         Database.setMenuItems();
         this.generateMenuItems();
         menuBar.setBorder(new BevelBorder(BevelBorder.RAISED));
         this.setTitle("Android Framework");
+        openNewWindow(Constants.MENU_ITEMS_FORMS.get(0));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
@@ -54,7 +56,7 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        desktopPane.setBackground(new java.awt.Color(Constants.RED , Constants.GREEN , Constants.BLACK));
+        desktopPane.setBackground(javax.swing.UIManager.getDefaults().getColor("window"));
         desktopPane.setAutoscrolls(true);
         desktopPane.setName("frmMDIJDesktop"); // NOI18N
         desktopPane.setLayout(null);
@@ -85,7 +87,7 @@ public class GUI extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_formWindowClosing
 
     private void WindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_WindowClosing
@@ -98,81 +100,98 @@ public class GUI extends javax.swing.JFrame {
     }
 
     public static void main(String[] args) {
-        
-         java.awt.EventQueue.invokeLater(new Runnable() {
+
+        java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
                 GUI gui = new GUI();
-                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();            
+                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                 gui.setSize(screenSize.width, screenSize.height);
                 gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 //frame.setContentPane(new AndroidFramework());
                 gui.setVisible(true);
             }
         });
-        
+
     }
-    
-    
-    
+
     private void generateMenuItems() {
-     
+
         generateMenu();
         this.setJMenuBar(menuBar);
-     
+
     }
 
     public void generateMenu() {
-            //set a general menu with File and Exit
-            JMenu menu = new JMenu();
-            menu.setText("File");
-            menu.setName("File");
-            menu.setMnemonic('F');
-            JMenuItem item = new JMenuItem();
-            
-            
-            //Adding more menu menuItems 
-            HashMap menuItems = Constants.MENU_ITEMS_NAMES; 
-            for (int j = 0; j < menuItems.size(); j++) {
-                item = new JMenuItem();
-                String menuName = (String) menuItems.get(j);
-                
-                item.setText(menuName);
-                item.setName(menuName);          
+        //set a general menu with File and Exit
+        JMenu menu = new JMenu();
+        menu.setText("File");
+        menu.setName("File");
+        menu.setMnemonic('F');
+        JMenuItem item = new JMenuItem();
 
-//                if (menu.getText().equalsIgnoreCase("File") &&
-//                        item.getText().equalsIgnoreCase("Exit")) {
-//                }
-                item.addActionListener(new DetectComp(item.getName(), 
-                        Constants.MENU_ITEMS_FORMS.get(j)));
-                menu.add(item);
-                System.out.println(j + " " +item.getName() + "  "+ Constants.MENU_ITEMS_FORMS.get(j));
-                 
-            }
-            menuBar.add(menu);
-            //Add Exit Button
+        //Adding more menu menuItems 
+        HashMap menuItems = Constants.MENU_ITEMS_NAMES;
+        for (int j = 0; j < menuItems.size(); j++) {
             item = new JMenuItem();
-            item.setText("Exit");
-            item.setName("Exit");
-            item.addActionListener(new ActionListener() {
-            
+            String menuName = (String) menuItems.get(j);
+
+            item.setText(menuName);
+            item.setName(menuName);
+
+            item.addActionListener(new DetectComp(item.getName(),
+                    Constants.MENU_ITEMS_FORMS.get(j)));
+            menu.add(item);
+
+        }
+        menuBar.add(menu);
+        //Add Exit Button
+        item = new JMenuItem();
+        item.setText("Exit");
+        item.setName("Exit");
+        item.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
-                    //DAOFile.closeConnection();
-                    System.exit(0);
-                }
-            });
-            menu.add(item);
-             
-            menuBar.add(menu);
-            
-            
+                //DAOFile.closeConnection();
+                System.exit(0);
+            }
+        });
+        menu.add(item);
+
+        menuBar.add(menu);
+
     }
-        class DetectComp implements ActionListener {
+
+    public void openNewWindow(String className) {
+
+        try {
+            if (newProjectWindow == null) {
+                Class c = Class.forName(className);
+                newProjectWindow = (JInternalFrame) c.newInstance();
+                desktopPane.add(newProjectWindow);
+                newProjectWindow.moveToFront();
+                Dimension desktopSize = desktopPane.getSize();
+                Dimension fmSize = newProjectWindow.getSize();
+                newProjectWindow.setLocation((desktopSize.width - fmSize.width) / 2,
+                        (desktopSize.height - fmSize.height) / 2);
+                newProjectWindow.setVisible(true);
+            } else if(!newProjectWindow.isVisible()) {
+                newProjectWindow.setVisible(true);
+            }
+        } catch (ClassNotFoundException ex) {
+            Exceptions.printStackTrace(ex);
+        } catch (InstantiationException ex) {
+            Exceptions.printStackTrace(ex);
+        } catch (IllegalAccessException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+    }
+
+    class DetectComp implements ActionListener {
 
         String compName;
         String link;
-        
 
         DetectComp(String temp, String link) {
             compName = temp;
@@ -180,21 +199,9 @@ public class GUI extends javax.swing.JFrame {
         }
 
         public void actionPerformed(ActionEvent e) {
-             
-            try {
-                //this.link = "Form.General.frmUserPreferences";
-                Class c = Class.forName(this.link);
-                
-                    JInternalFrame jf = (JInternalFrame) c.newInstance();
-                    desktopPane.add(jf);
-                    jf.moveToFront();
-                    Dimension desktopSize = desktopPane.getSize();
-                    Dimension fmSize = jf.getSize();
-                    jf.setLocation((desktopSize.width - fmSize.width) / 2,
-                            (desktopSize.height - fmSize.height) / 2);
-                    jf.setVisible(true);
-                
 
+            try {
+                openNewWindow(this.link);
             } catch (Exception ex) {
                 System.out.println("Error ");
                 ex.printStackTrace();

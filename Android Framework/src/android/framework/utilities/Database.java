@@ -16,7 +16,7 @@ public class Database {
    
         public static void setMenuItems() {
            
-            Constants.MENU_ITEMS_FORMS.put(0,"Form.General.frmPreferences");
+            Constants.MENU_ITEMS_FORMS.put(0,"android.framework.forms.frmPreferences");
             Constants.MENU_ITEMS_NAMES.put(0,"New Project");
             
             

@@ -15,9 +15,6 @@ import java.util.HashMap;
  */
 public class Constants {
 
-    public static int RED = 169;       
-    public static int GREEN = 190;  
-    public static int BLACK = 236;   
     
     public static String FOOTER_ALL_SCREEN = "APPLIED RESEARCH PROJECT";
     public static String TITLE = "Android Framework";
