@@ -173,7 +173,7 @@ public class GUI extends javax.swing.JFrame {
                 newProjectWindow.moveToFront();
                 Dimension desktopSize = desktopPane.getSize();
                 Dimension fmSize = newProjectWindow.getSize();
-                newProjectWindow.setLocation((desktopSize.width - fmSize.width) / 2,
+                newProjectWindow.setLocation((desktopSize.width - fmSize.width),
                         (desktopSize.height - fmSize.height) / 2);
                 newProjectWindow.setVisible(true);
             } else if(!newProjectWindow.isVisible()) {

@@ -11,7 +11,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Iterator;
 import javax.swing.JPanel;
 import org.jdesktop.swingx.JXLabel;
 import org.netbeans.api.visual.action.ActionFactory;
@@ -147,15 +146,15 @@ public class MobileScreen {
         labelText += "</html>";
         
         JLabel label = new JLabel(labelText);
-        */
+         */
         JXLabel label = new JXLabel(text);
         label.setLineWrap(true);
         label.setMaxLineSpan(180);
         label.setMinimumSize(new Dimension(0, 10));
         JXLabel.MultiLineSupport.createView(label);
-        
+
         ComponentWidget newLabel = new ComponentWidget(mainScene, label);
-        
+
         //Widget newLabel = new LabelWidget(mainScene, text);
         newLabel.setFont(new Font("", 0, 14));
         newLabel.getActions().addAction(ActionFactory.createPopupMenuAction(new ControlPopupMenu(this, false)));
@@ -171,22 +170,25 @@ public class MobileScreen {
      *
      */
     public void removeScreen() {
-        Iterator<Widget> compIter = screenComponents.iterator();
-
-        while (compIter.hasNext()) {
-            Widget thisComponent = compIter.next();
+        // Removes each component from this screen.
+        for (int i = 0; i < screenComponents.size(); i++) {
+            Widget thisComponent = screenComponents.get(i);
+            // Checks if this component is a button.
             if (thisComponent instanceof Button) {
                 Button button = (Button) thisComponent;
                 button.getConnector().removeFromParent();
                 MobileScreen childScreen = mainScene.getMobileScreenByButton(button);
                 childScreen.removeScreen();
-            } else {
+            } 
+            // Else this component is text. 
+            else {
                 thisComponent.removeFromParent();
                 screenComponents.remove(thisComponent);
+                i--;
             }
-
-            //mainScene.removeMobileScreen(childScreen);
         }
+
+        // Removing this screen and their children.
         widget.removeChildren();
         widget.removeFromParent();
         mainScene.validate();

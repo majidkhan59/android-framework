@@ -7,16 +7,11 @@ package android.framework;
 
 import andriod.framework.sdk.CodeGenerator;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 
@@ -46,7 +41,7 @@ public class frmAndroidFramework extends JInternalFrame {
         Toolbar toolbar = new Toolbar("Controls", JToolBar.VERTICAL);
         JButton buildAPK = toolbar.addToolbarButton("Build APK", "Generate APK", 100, 100);
         JButton addButton = toolbar.addToolbarButton("Add Button", "Add new button", 100, 100);
-        JButton addLabel = toolbar.addToolbarButton("Add Label", "Add new label", 100, 100);
+        JButton addLabel = toolbar.addToolbarButton("Add Text", "Add new text", 100, 100);
         
         addButton.addActionListener(new ActionListener() {
             @Override

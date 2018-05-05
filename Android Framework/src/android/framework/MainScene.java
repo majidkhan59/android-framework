@@ -5,6 +5,7 @@
  */
 package android.framework;
 
+import android.framework.utilities.Constants;
 import android.framework.utilities.ControlPopupMenu;
 import java.awt.Color;
 import java.awt.Point;
@@ -45,7 +46,7 @@ public class MainScene extends GraphScene<String, String> {
         addChild(connectionLayer);
         addChild(interactionLayer);
 
-        MobileScreen mainScreen = new MobileScreen("Main Screen", this);
+        MobileScreen mainScreen = new MobileScreen(Constants.PROJECT_NAME, this);
         mainScreen.setScreenPosition(50, 50);
         mainScreen.getWidget().bringToBack();
 

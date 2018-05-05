@@ -7,7 +7,6 @@ import java.awt.Toolkit;
 import java.util.ArrayList;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileSystemView;
 import android.framework.utilities.Constants;
