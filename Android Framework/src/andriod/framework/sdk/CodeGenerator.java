@@ -50,19 +50,19 @@ public class CodeGenerator {
         String start = "";
         String button = "";
         String end = "";
-        start = "package com.temp.usamamaqbool.assignment4task2;"
-                + "import android.content.Intent;"
-                + "import android.support.v7.app.AppCompatActivity;"
-                + "import android.os.Bundle;"
-                + "import android.view.View;"
-                + "import android.widget.Button;"
+        start = "package com.temp.usamamaqbool.assignment4task2;\n"
+                + "import android.content.Intent;\n"
+                + "import android.support.v7.app.AppCompatActivity;\n"
+                + "import android.os.Bundle;\n"
+                + "import android.view.View;\n"
+                + "import android.widget.Button;\n"
                 + "public class MainActivity extends AppCompatActivity {"
                 + "protected void onCreate(Bundle savedInstanceState) {"
-                + "super.onCreate(savedInstanceState);"
-                + "setContentView(R.layout.activity_main);  ";
+                + "super.onCreate(savedInstanceState);\n"
+                + "setContentView(R.layout.activity_main);\n  ";
         for (int i = 0; i < buttons.size(); i++) {
 
-            button += "Button " + buttons.get(i) + "=(Button)findViewById(R.id." + buttons.get(i) + ");";
+            button += "Button " + buttons.get(i) + "=(Button)findViewById(R.id." + buttons.get(i) + ");\n";
         }
         button = button + "}";
 

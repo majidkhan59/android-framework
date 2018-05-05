@@ -10,9 +10,9 @@ import android.framework.utilities.SelectMobileScreenProvider;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
-import java.awt.ScrollPane;
 import java.util.ArrayList;
 import java.util.Iterator;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.jdesktop.swingx.JXLabel;
 import org.netbeans.api.visual.action.ActionFactory;
@@ -139,14 +139,16 @@ public class MobileScreen {
         label.setAlignmentX(JTextArea.CENTER_ALIGNMENT);
         label.setAlignmentY(JTextArea.CENTER_ALIGNMENT);
         label.setText(text);
-        
+       
         String labelText ="<html>";
         for(int i = 0; i < text.length();i+=10){
             labelText += text.substring(i, i+10);
             labelText += "<br>";
         }
         labelText += "</html>";
-        JLabel label = new JLabel(labelText);*/
+        
+        JLabel label = new JLabel(labelText);
+        */
         JXLabel label = new JXLabel(text);
         label.setLineWrap(true);
         label.setMaxLineSpan(180);

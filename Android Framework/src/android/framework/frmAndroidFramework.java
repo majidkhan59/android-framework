@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -24,9 +25,9 @@ import javax.swing.JToolBar;
  * 
  * @author shoaib ahmed
  */
-public class AndroidFramework extends JPanel {
+public class frmAndroidFramework extends JInternalFrame {
 
-    public AndroidFramework() {
+    public frmAndroidFramework() {
         initComponents();
     }
 
@@ -45,7 +46,7 @@ public class AndroidFramework extends JPanel {
         Toolbar toolbar = new Toolbar("Controls", JToolBar.VERTICAL);
         JButton buildAPK = toolbar.addToolbarButton("Build APK", "Generate APK", 100, 100);
         JButton addButton = toolbar.addToolbarButton("Add Button", "Add new button", 100, 100);
-        JButton addLabel = toolbar.addToolbarButton("Add Text", "Add new label", 100, 100);
+        JButton addLabel = toolbar.addToolbarButton("Add Label", "Add new label", 100, 100);
         
         addButton.addActionListener(new ActionListener() {
             @Override
@@ -79,9 +80,9 @@ public class AndroidFramework extends JPanel {
                 if(selectedMobileScreen == null){
                     JOptionPane.showMessageDialog(null, "Please Select a Screen First!","Select a Screen", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    String labelText = JOptionPane.showInputDialog("Please Enter Text: ");
+                    String labelText = JOptionPane.showInputDialog("Please Enter Label Text: ");
                     while(labelText.isEmpty()){
-                        labelText = JOptionPane.showInputDialog("Please Enter Text: ");
+                        labelText = JOptionPane.showInputDialog("Please Enter Label Text: ");
                     }
                     selectedMobileScreen.addLabel(labelText);
                   
@@ -102,18 +103,5 @@ public class AndroidFramework extends JPanel {
         
         add(toolbar, BorderLayout.EAST);
     }
-
-    public static void main(String args[]) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                JFrame frame = new JFrame();
-                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();            
-                frame.setSize(screenSize.width, screenSize.height);
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setContentPane(new AndroidFramework());
-                frame.setVisible(true);
-            }
-        });
-    }
+ 
 }
