@@ -12,7 +12,6 @@ import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.jdesktop.swingx.JXLabel;
 import org.netbeans.api.visual.action.ActionFactory;

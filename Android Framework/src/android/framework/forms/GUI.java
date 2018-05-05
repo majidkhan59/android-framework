@@ -1,17 +1,17 @@
-package Form.General;
+package android.framework.forms;
 
-import Handler.FileHandler;
+import android.framework.utilities.FileUtilities;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 
-import utilities.Constants;
+import android.framework.utilities.Constants;
 import javax.swing.*;
 
 import javax.swing.border.BevelBorder;
-import utilities.Database;
+import android.framework.utilities.Database;
 
 /**
  * 
@@ -20,7 +20,7 @@ import utilities.Database;
 public class GUI extends javax.swing.JFrame {
 
     JMenuBar menuBar = new JMenuBar();
-    FileHandler user = new FileHandler();
+    FileUtilities user = new FileUtilities();
    
     
     public GUI() {

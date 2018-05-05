@@ -3,11 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Handler;
+package android.framework.utilities;
 
 import java.util.ArrayList;
-import utilities.Constants;
-import utilities.Database;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,7 +19,7 @@ import java.io.IOException;
  * 
  * @author majidkhan
  */
-public class FileHandler {
+public class FileUtilities {
 
     public static void readPreferences() {
         String line = "";
@@ -84,13 +82,13 @@ public class FileHandler {
                 
         }
          catch (IOException ex) {
-            Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FileUtilities.class.getName()).log(Level.SEVERE, null, ex);
             ret = false;
         } finally {
             try {
                 writer.close();
             } catch (IOException ex) {
-                Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FileUtilities.class.getName()).log(Level.SEVERE, null, ex);
             }
         } 
         return ret;
