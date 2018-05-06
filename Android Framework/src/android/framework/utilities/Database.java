@@ -25,6 +25,5 @@ public class Database {
     
         }
         
-        public static String prefFile = "preferences.csv";
     
 }

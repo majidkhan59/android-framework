@@ -33,7 +33,8 @@ public class Constants {
     
     public static HashMap MENU_ITEMS_MNEMONIC = new HashMap();
     public static HashMap HASH_USER_MENU_ITEM = new HashMap();
-    public static String PREFERENCES_PATH = "";
+    public static String PROJECT_PATH = "";
+    public static String PREFERENCE_FILE = "preferences.csv";
     
     
     

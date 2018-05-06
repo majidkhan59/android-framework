@@ -10,6 +10,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileSystemView;
 import android.framework.utilities.Constants;
+import java.io.File;
 
 /**
  * 
@@ -193,28 +194,26 @@ public class frmPreferences extends javax.swing.JInternalFrame {
         }
          
         Constants.PROJECT_NAME = fldProjectName.getText();
+        Constants.PROJECT_PATH = fldProjectSavePath.getText() + File.separator + fldProjectName.getText();
          
-        strPref.add(fldProjectSavePath.getText());
         strPref.add(fldProjectName.getText());
         
-        //Now add them in CSV File
-        if (FileUtilities.writePreferencesToCSV(strPref)) {
+        //Now make Project Folder and CSV file to save preferences
+        if (!FileUtilities.createProjectFolder()){
+            JOptionPane.showMessageDialog(null, "Error! Please Select Different Project Name or Path", "Project Exists", JOptionPane.ERROR_MESSAGE);
+        }
+        else if (FileUtilities.writePreferencesToCSV(strPref)) {
             JOptionPane.showMessageDialog(null, "Preferences Saved!"); 
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();            
-            frmAndroidFramework frame = new  frmAndroidFramework();
+            frmAndroidFramework frame = new frmAndroidFramework();
             frame.setSize(screenSize.width, screenSize.height);
             JDesktopPane desktopPane = getDesktopPane();
-            desktopPane.add(frame);//add f1 to desktop pane
-            //System.err.println(screenSize.width + "  "+ screenSize.height);
-            //JDesktopPane desktopPane = getDesktopPane();
-            //desktopPane.add(form); 
-            //desktopPane.setSize(screenSize.width, screenSize.height);
+            desktopPane.add(frame);
             frame.setVisible(true);
-            //form.pack(); 
             this.dispose();
         } else {
-            JOptionPane.showMessageDialog(null, "Error! Unable to save Preferences");
-        }
+             JOptionPane.showMessageDialog(null, "Error! Unable to save Preferences", "Preferences not Saved", JOptionPane.ERROR_MESSAGE);
+       }
 
 }//GEN-LAST:event_btnSaveActionPerformed
 

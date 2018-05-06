@@ -25,7 +25,7 @@ public class FileUtilities {
         String line = "";
         String cvsSplitBy = ",";
 
-        try (BufferedReader br = new BufferedReader(new FileReader(Database.prefFile))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(Constants.PREFERENCE_FILE))) {
 
             while ((line = br.readLine()) != null) {
 
@@ -52,6 +52,10 @@ public class FileUtilities {
 
     }
     
+    public static boolean createProjectFolder(){
+        return new File(Constants.PROJECT_PATH).mkdir();
+    }
+    
     public static boolean writePreferencesToCSV(ArrayList<String> values) {
         char DEFAULT_SEPARATOR = ',';
         boolean ret = false; 
@@ -60,12 +64,11 @@ public class FileUtilities {
         
         try {
             //Create File 
-            String userHome = System.getProperty("user.home");
-            String outputFolder = userHome + File.separator + Database.prefFile;
-            System.out.println("outputFolder = " + outputFolder);
+            String prefFile = Constants.PROJECT_PATH + File.separator + Constants.PREFERENCE_FILE;
+            System.out.println("outputFolder = " + prefFile);
             //Using FileWriter
-            Constants.PREFERENCES_PATH = outputFolder;
-            writer = new FileWriter(outputFolder);
+
+            writer = new FileWriter(prefFile);
             StringBuilder sb = new StringBuilder();
             for (String value : values) {
                 if (!first) {
