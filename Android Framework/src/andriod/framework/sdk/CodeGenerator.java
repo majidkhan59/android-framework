@@ -5,6 +5,7 @@
  */
 package andriod.framework.sdk;
 
+import android.framework.utilities.Constants;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -21,7 +22,7 @@ public class CodeGenerator {
         try {
             File f;
             // if(System.getProperty("os.name").split(" ")[0].equals("MAC"))
-            f = new File(fileName + fileType);
+            f = new File(Constants.PROJECT_PATH + File.separator + fileName + fileType);
 
             if (!f.exists())//check if the file already exists
             {
@@ -81,7 +82,7 @@ public class CodeGenerator {
     //used to generate manifest file of android
     public static void manifestGenerate() {
         String data;
-        data = "<?xml version=\"1.0\" encoding=\"utf-8\"?> <manifest xmlns:android=\"http://schemas.android.com/apk/res/android\" package=\"com.swin.usamamaqbool.@string/app_name\"> <application android:allowBackup=\"true\"android:icon=\"@mipmap/ic_launcher\" android:label=\"@string/app_name\" android:supportsRtl=\"true\" android:theme=\"@style/AppTheme\"> <activity android:name=\".MainActivity\" android:label=\"@string/app_name\"> <intent-filter> <action android:name=\"android.intent.action.MAIN\" /> <category android:name=\"android.intent.category.LAUNCHER\" /> </intent-filter> </activity> </application> </manifest>";
+        data = "<?xml version=\"1.0\" encoding=\"utf-8\"?> <manifest xmlns:android=\"http://schemas.android.com/apk/res/android\" package=\"com.swin.usamamaqbool.@string/app_name\"> <application android:allowBackup=\"true\" android:label=\"@string/app_name\"> <activity android:name=\".MainActivity\" android:label=\"@string/app_name\"> <intent-filter> <action android:name=\"android.intent.action.MAIN\" /> <category android:name=\"android.intent.category.LAUNCHER\" /> </intent-filter> </activity> </application> </manifest>";
         fileCreator(data, "AndroidManifest", ".xml");
     }
     //layout of the application is generated
@@ -118,7 +119,7 @@ public class CodeGenerator {
                     + "            android:layout_centerHorizontal=\"true\"\n"
                     + "            android:layout_marginTop=\"77dp\"\n"
                     + "            android:onClick=\"goTo" + buttons.get(i) + "Activity\"\n"
-                    + "            android:text=\"@+id/" + buttons.get(i) + ">\n";
+                    + "            android:text=\"@+id/" + buttons.get(i) + "\"/>\n";
         }
         end = "    </RelativeLayout>\n"
                 + "</android.support.constraint.ConstraintLayout>";
@@ -135,10 +136,10 @@ public class CodeGenerator {
         String button = "";
         String end = "";
 
-        start = "<resources>\n";
-        button = "    <string name=app_name>" + AppName + "</string>\n";
+        start = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n";
+        button = "    <string name=\"app_name\">" + AppName + "</string>\n";
         for (int i = 0; i < buttons.size(); i++) {
-            button += "    <string name=" + buttons.get(i) + ">" + buttons.get(i) + "</string>\n";
+            button += "    <string name=\"" + buttons.get(i) + "\">" + buttons.get(i) + "</string>\n";
         }
         end = "</resources>";
         fileCreator(start + button + end, "strings", ".xml");
