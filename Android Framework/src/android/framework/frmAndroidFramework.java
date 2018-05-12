@@ -5,7 +5,8 @@
  */
 package android.framework;
 
-import andriod.framework.sdk.CodeGenerator;
+import android.framework.sdk.CodeGenerator;
+import android.framework.utilities.Constants;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -63,7 +64,7 @@ public class frmAndroidFramework extends JInternalFrame {
                           scene.addMobileScreen(newScreen,newButton);
                           scene.validate();
                         }
-                    }).run();
+                    }).start();
                 }
             }
         });
@@ -97,6 +98,14 @@ public class frmAndroidFramework extends JInternalFrame {
         });
         
         add(toolbar, BorderLayout.EAST);
+        
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                  CodeGenerator.createNewAndroidProject();
+              }
+        }).start();
+      
+        
     }
- 
 }

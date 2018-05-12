@@ -56,6 +56,10 @@ public class FileUtilities {
         return new File(Constants.PROJECT_PATH).mkdir();
     }
     
+    public static boolean createAPKFolder(){
+        return new File(Constants.PROJECT_PATH + "/apk").mkdir();
+    }
+    
     public static boolean writePreferencesToCSV(ArrayList<String> values) {
         char DEFAULT_SEPARATOR = ',';
         boolean ret = false; 

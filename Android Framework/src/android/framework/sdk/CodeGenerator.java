@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package andriod.framework.sdk;
+package android.framework.sdk;
 
+import android.framework.utilities.CommandLineUtilities;
 import android.framework.utilities.Constants;
 import java.io.File;
 import java.io.FileWriter;
@@ -143,5 +144,10 @@ public class CodeGenerator {
         }
         end = "</resources>";
         fileCreator(start + button + end, "strings", ".xml");
+    }
+    
+    public static void createNewAndroidProject(){
+        
+       CommandLineUtilities.executeCommand(Constants.CREATE_PROJECT_CMD);   
     }
 }

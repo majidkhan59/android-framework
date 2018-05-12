@@ -1,7 +1,9 @@
 package android.framework.forms;
 
+import android.framework.sdk.CodeGenerator;
 import android.framework.utilities.FileUtilities; 
 import android.framework.frmAndroidFramework;
+import android.framework.utilities.CommandLineUtilities;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
@@ -195,14 +197,15 @@ public class frmPreferences extends javax.swing.JInternalFrame {
          
         Constants.PROJECT_NAME = fldProjectName.getText();
         Constants.PROJECT_PATH = fldProjectSavePath.getText() + File.separator + fldProjectName.getText();
-         
+        Constants.CREATE_PROJECT_CMD += "-n " + Constants.PROJECT_NAME + " --package com.AndroidFramework." + Constants.PROJECT_NAME + " -p " + Constants.PROJECT_PATH + "/apk";
+       
         strPref.add(fldProjectName.getText());
         
         //Now make Project Folder and CSV file to save preferences
         if (!FileUtilities.createProjectFolder()){
             JOptionPane.showMessageDialog(null, "Error! Please Select Different Project Name or Path", "Project Exists", JOptionPane.ERROR_MESSAGE);
         }
-        else if (FileUtilities.writePreferencesToCSV(strPref)) {
+        else if (FileUtilities.createAPKFolder() && FileUtilities.writePreferencesToCSV(strPref)) {
             JOptionPane.showMessageDialog(null, "Preferences Saved!"); 
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();            
             frmAndroidFramework frame = new frmAndroidFramework();

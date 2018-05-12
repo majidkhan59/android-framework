@@ -16,8 +16,8 @@ import java.util.HashMap;
 public class Constants {
 
     
-    public static String FOOTER_ALL_SCREEN = "APPLIED RESEARCH PROJECT";
-    public static String TITLE = "Android Framework";
+    public static final String FOOTER_ALL_SCREEN = "APPLIED RESEARCH PROJECT";
+    public static final String TITLE = "Android Framework";
     public static String PROJECT_NAME = "";
     
     public static String LOV_DESCRIPTION = "DESCRIPTION";
@@ -34,7 +34,9 @@ public class Constants {
     public static HashMap MENU_ITEMS_MNEMONIC = new HashMap();
     public static HashMap HASH_USER_MENU_ITEM = new HashMap();
     public static String PROJECT_PATH = "";
-    public static String PREFERENCE_FILE = "preferences.csv";
+    public static final String PREFERENCE_FILE = "preferences.csv";
+    public static final String SDK_PATH = "/Volumes/Data+Softwares/SoftWare/sdk/tools/";
+    public static String CREATE_PROJECT_CMD = SDK_PATH + "android create project -a MainActivity -t android-19 ";
     
     
     
