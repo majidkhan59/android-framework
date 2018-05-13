@@ -5,13 +5,15 @@
  */
 package android.framework.sdk;
 
-import android.framework.main.Button;
+import android.framework.utilities.Button;
 import android.framework.utilities.CommandLineUtilities;
 import android.framework.utilities.Constants;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import org.jdesktop.swingx.JXLabel;
+import org.netbeans.api.visual.widget.ComponentWidget;
 import org.netbeans.api.visual.widget.Widget;
 import org.openide.util.Exceptions;
 
@@ -21,11 +23,11 @@ import org.openide.util.Exceptions;
  */
 public class CodeGenerator {
     //Used to create file
-    public static void fileCreator(String data, String fileName, String fileType) {
+    public static void fileCreator(String data, String fileName, String fileType,String path) {
         try {
             File f;
             // if(System.getProperty("os.name").split(" ")[0].equals("MAC"))
-            f = new File(Constants.PROJECT_PATH + File.separator + fileName + fileType);
+            f = new File(path + fileName + fileType);
 
             if (!f.exists())//check if the file already exists
             {
@@ -55,13 +57,13 @@ public class CodeGenerator {
         String mid="";
         String end = "";
         start = "package com.AndroidFramework."+Constants.PROJECT_NAME +
-                "\n" +
+                ";\n" +
                 "import android.app.Activity;\n" +
                 "import android.content.Intent;\n" +
                 "import android.os.Bundle;\n" +
                 "import android.view.View;\n" +
                 "import android.widget.Button;\n" +
-                "import android.widget.EditText;\n" +
+                "import android.widget.TextView;\n" +
                 "\n" +
                 "\n" +
                 "public class MainActivity extends Activity {\n" +
@@ -74,11 +76,12 @@ public class CodeGenerator {
                 for (int i = 0; i < wid.size(); i++) {
                     if(wid.get(i) instanceof Button)
                     {
-                        button += "Button " + wid.get(i) + "=(Button)findViewById(R.id." + wid.get(i) + ");\n";
+                        button += "Button button" + i + " =(Button)findViewById(R.id.button" + i + ");\n";
                     }
                     else
-                    {
-                        button += "EditText" + wid.get(i) +"= (EditText) findViewById(R.id." + wid.get(i) + ");\n";
+                    {      
+                        button += "TextView label" + i +" = (TextView) findViewById(R.id.label" + i + ");\n"
+                                + "";
                     }
                 }
                 
@@ -93,15 +96,14 @@ public class CodeGenerator {
                 "                intent.putExtras(bundle);\n" +
                 "                startActivity(intent);\n" +
                 "            }\n" +
-                "        });\n "+
-                "    }\n";
+                "        });\n ";
 
 
 
-        end = "}";
+        end = "}\n}";
 
      
-        fileCreator(start + button + end, "MainActivity", ".java");
+        fileCreator(start + button  + end, "MainActivity", ".java", Constants.PROJECT_PATH + "/apk/src/com/AndroidFramework/"+Constants.PROJECT_NAME + "/");
 
     }
 
@@ -110,7 +112,7 @@ public class CodeGenerator {
         String data;
         data = "<?xml version=\"1.0\" encoding=\"utf-8\"?> <manifest xmlns:android=\"http://schemas.android.com/apk/res/android\" package=\"com.AndroidFramework."+Constants.PROJECT_NAME +
                 "\"> <application android:allowBackup=\"true\" android:label=\"@string/app_name\"> <activity android:name=\".MainActivity\" android:label=\"@string/app_name\"> <intent-filter> <action android:name=\"android.intent.action.MAIN\" /> <category android:name=\"android.intent.category.LAUNCHER\" /> </intent-filter> </activity> </application> </manifest>";
-        fileCreator(data, "AndroidManifest", ".xml");
+        fileCreator(data, "AndroidManifest", ".xml", Constants.PROJECT_PATH + "/apk/");
     }
     //layout of the application is generated
 
@@ -137,25 +139,36 @@ public class CodeGenerator {
                     "    android:text=\""+ wid.get(i)+"\"\n" +
                     "    android:layout_width=\"wrap_content\"\n" +
                     "    android:layout_height=\"wrap_content\"\n" +
-                    "    android:layout_below=\"@+id/tvset\"\n" +
                     "    android:layout_centerHorizontal=\"true\"\n" +
                     "    android:layout_marginTop=\"101dp\"\n" +
-                    "    android:id=\"@+id/" + wid.get(i)+"\"/>\n";
+                    "    android:id=\"@+id/button" + i+"\"/>\n";
                     }
                     else
                     {
-                      button+="    <EditText\n" +
-            "    android:layout_width=\"match_parent\"\n" +
-            "    android:layout_height=\"wrap_content\"\n" +
-             "    android:inputType=\"textMultiLine\"\n"+
-            "    android:layout_alignParentTop=\"true\"\n" +
-            "    android:layout_marginTop=\"27dp\"\n" +
-            "    android:id=\"@+id/" + wid.get(i).getToolTipText()+"\"/>\n";
+                        button +=
+                                "<TextView\n" +
+"      android:id=\"@+id/label"+i+"\"\n" +
+     " android:text=\"@string/label"+i+"\"\n" +
+"      android:layout_width=\"300dp\"\n" +
+"      android:layout_height=\"200dp\"\n" +
+"      android:capitalize=\"characters\"\n" +
+"      android:layout_centerVertical=\"true\"\n" +
+"      android:textSize=\"15dp\"/>\n";
                     }
+//                    {
+//                     
+//                      button+="    <TextView\n" +
+//            "    android:layout_width=\"match_parent\"\n" +
+//            "    android:layout_height=\"wrap_content\"\n" +
+//            "    android:layout_centerHorizontal=\"true\"\n" +
+//             "    android:layout_alignParentTop=\"true\"\n" +
+//            "    android:id=\"@+id/label" + i+"\"/>\n"+
+//           "    android:text=\"@string/label" + i+"\"/>\n";
+//                    }
             }
             end = "    </LinearLayout>\n";
 
-        fileCreator(start + button + end, "activity_main", ".xml");
+        fileCreator(start + button + end, "activity_main", ".xml", Constants.PROJECT_PATH + "/apk/res/layout/");
 
     }
     //resource 
@@ -169,10 +182,21 @@ public class CodeGenerator {
         start = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n";
         str = "    <string name=\"app_name\">" + Constants.PROJECT_NAME + "</string>\n";
         for (int i = 0; i < wid.size(); i++) {
-            str += "    <string name=\"" + wid.get(i) + "\">" + wid.get(i) + "</string>\n";
+           if(wid.get(i) instanceof Button)
+             {
+                 str += "    <string name=\"button" + i + "\">button" + i + "</string>\n";
+             }
+           else
+           {
+                  ComponentWidget labelComp = (ComponentWidget)wid.get(i);
+                        JXLabel label = (JXLabel)labelComp.getComponent();
+                        System.out.println(label.getText());
+                  
+                 str += "    <string name=\"label" + i + "\">" + label.getText() + "</string>\n";
+           }
         }
         end = "</resources>";
-        fileCreator(start + str + end, "strings", ".xml");
+        fileCreator(start + str + end, "strings", ".xml",Constants.PROJECT_PATH + "/apk/res/values/");
     }
     
     public static void createNewAndroidProject(){

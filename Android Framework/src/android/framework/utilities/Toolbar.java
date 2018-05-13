@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package android.framework.main;
+package android.framework.utilities;
 
 import java.awt.Color;
 import java.awt.Dimension;

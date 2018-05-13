@@ -5,6 +5,7 @@
  */
 package android.framework.main;
 
+import android.framework.utilities.Button;
 import android.framework.utilities.ControlPopupMenu;
 import android.framework.utilities.SelectMobileScreenProvider;
 import java.awt.Dimension;
@@ -160,9 +161,9 @@ public class MobileScreen {
         label.setLineWrap(true);
         label.setMaxLineSpan(180);
         label.setMinimumSize(new Dimension(0, 10));
-        JXLabel.MultiLineSupport.createView(label);
 
         ComponentWidget newLabel = new ComponentWidget(mainScene, label);
+        
 
         //Widget newLabel = new LabelWidget(mainScene, text);
         newLabel.setFont(new Font("", 0, 14));
