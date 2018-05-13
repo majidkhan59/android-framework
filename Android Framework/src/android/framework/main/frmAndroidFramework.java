@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package android.framework;
+package android.framework.main;
 
 import android.framework.sdk.CodeGenerator;
 import android.framework.utilities.Constants;
@@ -91,9 +91,9 @@ public class frmAndroidFramework extends JInternalFrame {
             public void actionPerformed(ActionEvent e) {
                 MobileScreen selectedMobileScreen = scene.getSelectedScreen();
                 CodeGenerator.manifestGenerate();
-                CodeGenerator.javaFileGenerate("Send a button");
-                      CodeGenerator.layoutGenerate();
-                            CodeGenerator.resourceGenerate("APP_NAME_GOES_HERE");
+                CodeGenerator.javaFileGenerate(selectedMobileScreen.getComponents());
+                      CodeGenerator.layoutGenerate(selectedMobileScreen.getComponents());
+                            CodeGenerator.resourceGenerate(selectedMobileScreen.getComponents());
             }
         });
         

@@ -2,7 +2,7 @@ package android.framework.forms;
 
 import android.framework.sdk.CodeGenerator;
 import android.framework.utilities.FileUtilities; 
-import android.framework.frmAndroidFramework;
+import android.framework.main.frmAndroidFramework;
 import android.framework.utilities.CommandLineUtilities;
 import java.awt.Dimension;
 import java.awt.Toolkit;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package android.framework;
+package android.framework.main;
 
 import android.framework.utilities.Constants;
 import android.framework.utilities.ControlPopupMenu;

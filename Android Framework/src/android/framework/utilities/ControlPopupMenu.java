@@ -5,9 +5,9 @@
  */
 package android.framework.utilities;
 
-import android.framework.Button;
-import android.framework.MainScene;
-import android.framework.MobileScreen;
+import android.framework.main.Button;
+import android.framework.main.MainScene;
+import android.framework.main.MobileScreen;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

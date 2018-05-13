@@ -18,13 +18,13 @@ import org.openide.util.Exceptions;
  *
  * @author majidkhan
  */
-public class GUI extends javax.swing.JFrame {
+public class mainUI extends javax.swing.JFrame {
 
     JMenuBar menuBar = new JMenuBar();
     FileUtilities user = new FileUtilities();
     JInternalFrame newProjectWindow;
 
-    public GUI() {
+    public mainUI() {
         initComponents();
         Database.setMenuItems();
         this.generateMenuItems();
@@ -104,7 +104,7 @@ public class GUI extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                GUI gui = new GUI();
+                mainUI gui = new mainUI();
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                 gui.setSize(screenSize.width, screenSize.height);
                 gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

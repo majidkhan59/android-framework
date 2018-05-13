@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package android.framework;
+package android.framework.main;
 
 import android.framework.utilities.ControlPopupMenu;
 import android.framework.utilities.SelectMobileScreenProvider;
@@ -103,6 +103,15 @@ public class MobileScreen {
      */
     public String getScreenTitle() {
         return screenTitle;
+    }
+    
+    /**
+     * Returns the components of this screen.
+     *
+     * @return The components of this screen.
+     */
+    public ArrayList<Widget> getComponents() {
+        return screenComponents;
     }
 
     /**
