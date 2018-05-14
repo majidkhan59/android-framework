@@ -94,8 +94,9 @@ public class frmAndroidFramework extends JInternalFrame {
                 MobileScreen selectedMobileScreen = scene.getMobileScreenByButton(null);
                 CodeGenerator.manifestGenerate();
                 CodeGenerator.javaFileGenerate(selectedMobileScreen.getComponents());
-                      CodeGenerator.layoutGenerate(selectedMobileScreen.getComponents());
-                            CodeGenerator.resourceGenerate(selectedMobileScreen.getComponents());
+                CodeGenerator.layoutGenerate(selectedMobileScreen.getComponents());
+                CodeGenerator.resourceGenerate(selectedMobileScreen.getComponents());
+                CodeGenerator.generateAPK();
             }
         });
         

@@ -36,9 +36,8 @@ public class Constants {
     public static String PROJECT_PATH = "";
     public static final String PREFERENCE_FILE = "preferences.csv";
     public static final String SDK_PATH = "/Volumes/Data+Softwares/SoftWare/sdk/tools/";
+    public static final String ANT_PATH = "/Volumes/Data+Softwares/SoftWare/ant/bin/";
     public static String CREATE_PROJECT_CMD = SDK_PATH + "android create project -a MainActivity -t android-19 ";
-    
-    
-    
+    public static String GENERATE_APK_CMD = ANT_PATH + "ant debug -f ";
     
 }
