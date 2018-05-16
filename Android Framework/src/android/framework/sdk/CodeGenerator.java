@@ -28,7 +28,6 @@ public class CodeGenerator {
     public static void fileCreator(String data, String fileName, String fileType, String path) {
         try {
             File f;
-            // if(System.getProperty("os.name").split(" ")[0].equals("MAC"))
             f = new File(path + fileName + fileType);
 
             if (!f.exists())//check if the file already exists
@@ -103,10 +102,20 @@ public class CodeGenerator {
     }
 
     //used to generate manifest file of android
-    public static void manifestGenerate() {
-        String data;
-        data = "<?xml version=\"1.0\" encoding=\"utf-8\"?> <manifest xmlns:android=\"http://schemas.android.com/apk/res/android\" package=\"com.AndroidFramework." + Constants.PROJECT_NAME
-                + "\"> <application android:allowBackup=\"true\" android:label=\"@string/app_name\"> <activity android:name=\".MainActivity\" android:label=\"@string/app_name\"> <intent-filter> <action android:name=\"android.intent.action.MAIN\" /> <category android:name=\"android.intent.category.LAUNCHER\" /> </intent-filter> </activity> </application> </manifest>";
+    public static void manifestGenerate(ArrayList<String> screenTitles) {
+        String data = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                + "<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\" package=\"com.AndroidFramework." + Constants.PROJECT_NAME + "\">\n"
+                + "<application android:allowBackup=\"true\" android:label=\"@string/app_name\">\n"
+                + "<activity android:name=\"MainActivity\" android:label=\"@string/app_name\">\n"
+                + "<intent-filter> <action android:name=\"android.intent.action.MAIN\" />\n"
+                + "<category android:name=\"android.intent.category.LAUNCHER\" />\n"
+                + "</intent-filter>\n"
+                + "</activity>\n";
+        for (int i = 1; i < screenTitles.size(); i++) {
+            data += "<activity android:name=\"activity" + i + "\" android:label=\"@string/activity" + i + "\"/>\n";
+        }
+        data += "</application>\n"
+                + "</manifest>";
         fileCreator(data, "AndroidManifest", ".xml", Constants.PROJECT_PATH + "/apk/");
     }
     //layout of the application is generated
@@ -130,8 +139,8 @@ public class CodeGenerator {
         for (int i = 0; i < wid.size(); i++) {
             if (wid.get(i) instanceof Button) {
                 button
-                        += "    <Button\n"
-                        + "    android:text=\"" + wid.get(i) + "\"\n"
+                        += "   <Button\n"
+                        + "    android:text=\"@string/button" + i + "\"\n"
                         + "    android:layout_width=\"wrap_content\"\n"
                         + "    android:layout_height=\"wrap_content\"\n"
                         + "    android:layout_centerHorizontal=\"true\"\n"
@@ -147,16 +156,6 @@ public class CodeGenerator {
                         + "      android:layout_centerHorizontal=\"true\"\n"
                         + "      android:textSize=\"15dp\"/>\n";
             }
-//                    {
-//                     
-//                      button+="    <TextView\n" +
-//            "    android:layout_width=\"match_parent\"\n" +
-//            "    android:layout_height=\"wrap_content\"\n" +
-//            "    android:layout_centerHorizontal=\"true\"\n" +
-//             "    android:layout_alignParentTop=\"true\"\n" +
-//            "    android:id=\"@+id/label" + i+"\"/>\n"+
-//           "    android:text=\"@string/label" + i+"\"/>\n";
-//                    }
         }
         end = "    </LinearLayout>\n";
 
@@ -165,7 +164,7 @@ public class CodeGenerator {
     }
     //resource 
 
-    public static void resourceGenerate(ArrayList<Widget> wid) {
+    public static void resourceGenerate(ArrayList<Widget> screenComponents, ArrayList<String> screenTitles) {
 
         String start = "";
         String str = "";
@@ -173,35 +172,40 @@ public class CodeGenerator {
 
         start = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n";
         str = "    <string name=\"app_name\">" + Constants.PROJECT_NAME + "</string>\n";
-        for (int i = 0; i < wid.size(); i++) {
-            if (wid.get(i) instanceof Button) {
-                str += "    <string name=\"button" + i + "\">button" + i + "</string>\n";
+        for (int i = 0; i < screenComponents.size(); i++) {
+            if (screenComponents.get(i) instanceof Button) {
+                str += "    <string name=\"button" + i + "\">" + screenComponents.get(i) + "</string>\n";
             } else {
-                ComponentWidget labelComp = (ComponentWidget) wid.get(i);
+                ComponentWidget labelComp = (ComponentWidget) screenComponents.get(i);
                 JXLabel label = (JXLabel) labelComp.getComponent();
                 System.out.println(label.getText());
 
                 str += "    <string name=\"label" + i + "\">" + label.getText() + "</string>\n";
             }
         }
+
+        for (int i = 1; i < screenTitles.size(); i++) {
+            str += "    <string name=\"activity" + i + "\">" + screenTitles.get(i) + "</string>\n";
+        }
+
         end = "</resources>";
         fileCreator(start + str + end, "strings", ".xml", Constants.PROJECT_PATH + "/apk/res/values/");
     }
 
     /**
      * Runs the command to make a new android project at the given project path.
-     * 
+     *
      */
     public static void createNewAndroidProject() {
 
         CommandLineUtilities.executeCommand(Constants.CREATE_PROJECT_CMD);
     }
-    
+
     public static void generateAPK() {
         String cmdResult;
         cmdResult = CommandLineUtilities.executeCommand(Constants.GENERATE_APK_CMD);
-        if(cmdResult.contains("BUILD SUCCESSFUL")){
-            JOptionPane.showMessageDialog(null, "APK Generated Successfully\n\nAPK Path: " + Constants.PROJECT_PATH +"/apk/bin/" + Constants.PROJECT_NAME + "-debug.apk",
+        if (cmdResult.contains("BUILD SUCCESSFUL")) {
+            JOptionPane.showMessageDialog(null, "APK Generated Successfully\n\nAPK Path: " + Constants.PROJECT_PATH + "/apk/bin/" + Constants.PROJECT_NAME + "-debug.apk",
                     "APK Built", JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null, "APK Generation Failed!\n\nPlease see Console Logs!",

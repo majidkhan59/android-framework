@@ -8,7 +8,6 @@ package android.framework.main;
 import android.framework.utilities.Toolbar;
 import android.framework.utilities.Button;
 import android.framework.sdk.CodeGenerator;
-import android.framework.utilities.Constants;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -92,10 +91,10 @@ public class frmAndroidFramework extends JInternalFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 MobileScreen selectedMobileScreen = scene.getMobileScreenByButton(null);
-                CodeGenerator.manifestGenerate();
+                CodeGenerator.manifestGenerate(scene.getMobileScreenTitles());
                 CodeGenerator.javaFileGenerate(selectedMobileScreen.getComponents());
                 CodeGenerator.layoutGenerate(selectedMobileScreen.getComponents());
-                CodeGenerator.resourceGenerate(selectedMobileScreen.getComponents());
+                CodeGenerator.resourceGenerate(selectedMobileScreen.getComponents(),scene.getMobileScreenTitles());
                 CodeGenerator.generateAPK();
             }
         });

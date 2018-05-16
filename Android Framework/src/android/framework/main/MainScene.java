@@ -10,6 +10,7 @@ import android.framework.utilities.Constants;
 import android.framework.utilities.ControlPopupMenu;
 import java.awt.Color;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -56,6 +57,11 @@ public class MainScene extends GraphScene<String, String> {
 
     }
 
+    /**
+     * Gets the main scene instance.
+     * 
+     * @return Returns the Main Scene.
+     */
     public static MainScene getMainScene() {
         if (mainScene == null) {
             mainScene = new MainScene();
@@ -125,6 +131,21 @@ public class MainScene extends GraphScene<String, String> {
             }
         }
         return null;
+    }
+    
+    /**
+     * Gets List of title of all Mobile Screens.
+     * 
+     * @return List of All Screen titles.
+     */
+    public ArrayList<String> getMobileScreenTitles(){
+        ArrayList<String> toReturn = new ArrayList<>();
+        Iterator<MobileScreen> screenIter = mobileScreens.values().iterator();
+        while (screenIter.hasNext()) {
+            MobileScreen nextScreen = screenIter.next();
+            toReturn.add(nextScreen.getScreenTitle());
+        }
+        return toReturn;
     }
     
 
