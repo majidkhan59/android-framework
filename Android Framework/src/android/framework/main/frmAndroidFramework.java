@@ -90,11 +90,19 @@ public class frmAndroidFramework extends JInternalFrame {
         buildAPK.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MobileScreen selectedMobileScreen = scene.getMobileScreenByButton(null);
+                // Generates Android Manifest File along with java classes.
                 CodeGenerator.manifestGenerate(scene.getMobileScreenTitles());
-                CodeGenerator.javaFileGenerate(selectedMobileScreen.getComponents());
-                CodeGenerator.layoutGenerate(selectedMobileScreen.getComponents());
-                CodeGenerator.resourceGenerate(selectedMobileScreen.getComponents(),scene.getMobileScreenTitles());
+                
+                // Generates required Activity files.
+                CodeGenerator.javaFileGenerate(scene.getSceneMap());
+                
+                // Generates required Layout files.
+                CodeGenerator.layoutGenerate(scene.getSceneMap());
+                
+                // Generates required Resource files.
+                CodeGenerator.resourceGenerate(scene.getSceneMap());
+                
+                // Generates APK using above generated files.
                 CodeGenerator.generateAPK();
             }
         });

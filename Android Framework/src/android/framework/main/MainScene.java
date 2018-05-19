@@ -148,6 +148,10 @@ public class MainScene extends GraphScene<String, String> {
         return toReturn;
     }
     
+    public Map<Button, MobileScreen> getSceneMap(){
+        return mobileScreens;
+    }
+    
 
     /**
      * Adds the mobile screen in the main scene.

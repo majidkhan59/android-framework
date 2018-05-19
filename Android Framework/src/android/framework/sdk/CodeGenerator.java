@@ -5,6 +5,7 @@
  */
 package android.framework.sdk;
 
+import android.framework.main.MobileScreen;
 import android.framework.utilities.Button;
 import android.framework.utilities.CommandLineUtilities;
 import android.framework.utilities.Constants;
@@ -12,6 +13,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import org.jdesktop.swingx.JXLabel;
 import org.netbeans.api.visual.widget.ComponentWidget;
@@ -50,55 +52,66 @@ public class CodeGenerator {
     }
 
     //Used to write code in Java file
-    public static void javaFileGenerate(ArrayList<Widget> wid) {
+    public static void javaFileGenerate(Map<Button, MobileScreen> sceneMap) {
 
-        String start = "";
-        String button = "";
-        String mid = "";
-        String end = "";
-        start = "package com.AndroidFramework." + Constants.PROJECT_NAME
-                + ";\n"
-                + "import android.app.Activity;\n"
-                + "import android.content.Intent;\n"
-                + "import android.os.Bundle;\n"
-                + "import android.view.View;\n"
-                + "import android.widget.Button;\n"
-                + "import android.widget.TextView;\n"
-                + "\n"
-                + "\n"
-                + "public class MainActivity extends Activity {\n"
-                + "    \n"
-                + "    @Override\n"
-                + "    protected void onCreate(Bundle savedInstanceState) {\n"
-                + "        super.onCreate(savedInstanceState);\n"
-                + "        setContentView(R.layout.activity_main);\n";
+        ArrayList<Button> buttonQueue = new ArrayList<>();
+        buttonQueue.add(null);
+        int activityNumber = 0;
 
-        for (int i = 0; i < wid.size(); i++) {
-            if (wid.get(i) instanceof Button) {
-                button += "Button button" + i + " =(Button)findViewById(R.id.button" + i + ");\n";
-            } else {
-                button += "TextView label" + i + " = (TextView) findViewById(R.id.label" + i + ");\n"
-                        + "";
+        while (buttonQueue.size() > 0) {
+            String start = "";
+            String component = "";
+            String onclick = "";
+            String end = "";
+
+            MobileScreen thisScreen = sceneMap.get(buttonQueue.get(0));
+            buttonQueue.remove(0);
+            ArrayList<Widget> screenComponents = thisScreen.getComponents();
+
+            start = "package com.AndroidFramework." + Constants.PROJECT_NAME
+                    + ";\n"
+                    + "import android.app.Activity;\n"
+                    + "import android.content.Intent;\n"
+                    + "import android.os.Bundle;\n"
+                    + "import android.view.View;\n"
+                    + "import android.widget.Button;\n"
+                    + "import android.widget.TextView;\n"
+                    + "\n"
+                    + "\n"
+                    + "public class activity" + activityNumber + " extends Activity {\n"
+                    + "    \n"
+                    + "    @Override\n"
+                    + "    protected void onCreate(Bundle savedInstanceState) {\n"
+                    + "        super.onCreate(savedInstanceState);\n"
+                    + "        setContentView(R.layout.activity" + activityNumber + ");\n";
+
+            for (int i = 0; i < screenComponents.size(); i++) {
+                if (screenComponents.get(i) instanceof Button) {
+                    buttonQueue.add((Button) screenComponents.get(i));
+                    component += "Button button" + i + "a" + activityNumber + " =(Button)findViewById(R.id.button" + i + "a" + activityNumber + ");\n";
+                } else {
+                    component += "TextView label" + i + "a" + activityNumber + " = (TextView) findViewById(R.id.label" + i + "a" + activityNumber + ");\n"
+                            + "";
+                }
             }
+
+            for (int i = 0; i < screenComponents.size(); i++) {
+                if (screenComponents.get(i) instanceof Button) {
+                    onclick += "        button" + i + "a" + activityNumber + ".setOnClickListener(new View.OnClickListener() {\n"
+                            + "            @Override\n"
+                            + "            public void onClick(View v) {\n"
+                            + "                \n"
+                            + "                Intent intent = new Intent(MainActivity.this,SecondActivity.class);\n"
+                            + "                startActivity(intent);\n"
+                            + "            }\n"
+                            + "        });\n ";
+                }
+            }
+            end = "}\n}";
+
+            fileCreator(start + component + end, "activity" + activityNumber, ".java", Constants.PROJECT_PATH + "/apk/src/com/AndroidFramework/" + Constants.PROJECT_NAME + "/");
+            activityNumber++;
         }
-
-        mid = "        data.setOnClickListener(new View.OnClickListener() {\n"
-                + "            @Override\n"
-                + "            public void onClick(View v) {\n"
-                + "                \n"
-                + "                String mytext =gettext.getText().toString();\n"
-                + "                Bundle bundle = new Bundle();\n"
-                + "                bundle.putString(\"mytext\",mytext);\n"
-                + "                Intent intent = new Intent(MainActivity.this,SecondActivity.class);\n"
-                + "                intent.putExtras(bundle);\n"
-                + "                startActivity(intent);\n"
-                + "            }\n"
-                + "        });\n ";
-
-        end = "}\n}";
-
-        fileCreator(start + button + end, "MainActivity", ".java", Constants.PROJECT_PATH + "/apk/src/com/AndroidFramework/" + Constants.PROJECT_NAME + "/");
-
     }
 
     //used to generate manifest file of android
@@ -106,7 +119,7 @@ public class CodeGenerator {
         String data = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
                 + "<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\" package=\"com.AndroidFramework." + Constants.PROJECT_NAME + "\">\n"
                 + "<application android:allowBackup=\"true\" android:label=\"@string/app_name\">\n"
-                + "<activity android:name=\"MainActivity\" android:label=\"@string/app_name\">\n"
+                + "<activity android:name=\"activity0\" android:label=\"@string/app_name\">\n"
                 + "<intent-filter> <action android:name=\"android.intent.action.MAIN\" />\n"
                 + "<category android:name=\"android.intent.category.LAUNCHER\" />\n"
                 + "</intent-filter>\n"
@@ -117,79 +130,99 @@ public class CodeGenerator {
         data += "</application>\n"
                 + "</manifest>";
         fileCreator(data, "AndroidManifest", ".xml", Constants.PROJECT_PATH + "/apk/");
+        for (int i = 1; i < screenTitles.size(); i++) {
+            fileCreator("", "activity" + i, ".java", Constants.PROJECT_PATH + "/apk/src/com/AndroidFramework/" + Constants.PROJECT_NAME + "/");
+        }
     }
     //layout of the application is generated
 
-    public static void layoutGenerate(ArrayList<Widget> wid) {
+    public static void layoutGenerate(Map<Button, MobileScreen> sceneMap) {
 
-        String start = "";
-        String button = "";
+        ArrayList<Button> buttonQueue = new ArrayList<>();
+        buttonQueue.add(null);
+        int activityNumber = 0;
+        while (buttonQueue.size() > 0) {
+            String start = "";
+            String component = "";
+            String end = "";
 
-        String end = "";
-        start = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-                + "<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n"
-                + "    xmlns:tools=\"http://schemas.android.com/tools\"\n"
-                + "    android:orientation=\"vertical\""
-                + "    android:id=\"@+id/activity_main\"\n"
-                + "    android:layout_width=\"match_parent\"\n"
-                + "    android:layout_height=\"match_parent\"\n"
-                + "    android:layout_gravity=\"center_horizontal\"\n"
-                + "    tools:context=\"package com.AndroidFramework." + Constants.PROJECT_NAME
-                + "    \">\n";
-        for (int i = 0; i < wid.size(); i++) {
-            if (wid.get(i) instanceof Button) {
-                button
-                        += "   <Button\n"
-                        + "    android:text=\"@string/button" + i + "\"\n"
-                        + "    android:layout_width=\"wrap_content\"\n"
-                        + "    android:layout_height=\"wrap_content\"\n"
-                        + "    android:layout_centerHorizontal=\"true\"\n"
-                        + "    android:id=\"@+id/button" + i + "\"/>\n";
-            } else {
-                button
-                        += "<TextView\n"
-                        + "      android:id=\"@+id/label" + i + "\"\n"
-                        + "      android:text=\"@string/label" + i + "\"\n"
-                        + "      android:layout_width=\"match_parent\"\n"
-                        + "      android:layout_height=\"wrap_content\"\n"
-                        + "      android:capitalize=\"characters\"\n"
-                        + "      android:layout_centerHorizontal=\"true\"\n"
-                        + "      android:textSize=\"15dp\"/>\n";
+            MobileScreen thisScreen = sceneMap.get(buttonQueue.get(0));
+            buttonQueue.remove(0);
+            ArrayList<Widget> screenComponents = thisScreen.getComponents();
+            start = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                    + "<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n"
+                    + "    xmlns:tools=\"http://schemas.android.com/tools\"\n"
+                    + "    android:orientation=\"vertical\""
+                    + "    android:id=\"@+id/activity" + activityNumber + "\"\n"
+                    + "    android:layout_width=\"match_parent\"\n"
+                    + "    android:layout_height=\"match_parent\"\n"
+                    + "    android:layout_gravity=\"center_horizontal\"\n"
+                    + "    tools:context=\"package com.AndroidFramework." + Constants.PROJECT_NAME
+                    + "    \">\n";
+            for (int i = 0; i < screenComponents.size(); i++) {
+                if (screenComponents.get(i) instanceof Button) {
+                    buttonQueue.add((Button) screenComponents.get(i));
+                    component
+                            += "   <Button\n"
+                            + "    android:text=\"@string/button" + i + "a" + activityNumber + "\"\n"
+                            + "    android:layout_width=\"wrap_content\"\n"
+                            + "    android:layout_height=\"wrap_content\"\n"
+                            + "    android:layout_centerHorizontal=\"true\"\n"
+                            + "    android:id=\"@+id/button" + i + "a" + activityNumber + "\"/>\n";
+                } else {
+                    component
+                            += "<TextView\n"
+                            + "      android:id=\"@+id/label" + i + "a" + activityNumber + "\"\n"
+                            + "      android:text=\"@string/label" + i + "a" + activityNumber + "\"\n"
+                            + "      android:layout_width=\"match_parent\"\n"
+                            + "      android:layout_height=\"wrap_content\"\n"
+                            + "      android:capitalize=\"characters\"\n"
+                            + "      android:layout_centerHorizontal=\"true\"\n"
+                            + "      android:textSize=\"15dp\"/>\n";
+                }
             }
+            end = "    </LinearLayout>\n";
+
+            fileCreator(start + component + end, "activity" + activityNumber, ".xml", Constants.PROJECT_PATH + "/apk/res/layout/");
+            activityNumber++;
         }
-        end = "    </LinearLayout>\n";
-
-        fileCreator(start + button + end, "activity_main", ".xml", Constants.PROJECT_PATH + "/apk/res/layout/");
-
     }
-    //resource 
 
-    public static void resourceGenerate(ArrayList<Widget> screenComponents, ArrayList<String> screenTitles) {
+    //resource 
+    public static void resourceGenerate(Map<Button, MobileScreen> sceneMap) {
+
+        ArrayList<Button> buttonQueue = new ArrayList<>();
+        buttonQueue.add(null);
+        int activityNumber = 0;
 
         String start = "";
-        String str = "";
+        String component = "";
         String end = "";
 
         start = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n";
-        str = "    <string name=\"app_name\">" + Constants.PROJECT_NAME + "</string>\n";
-        for (int i = 0; i < screenComponents.size(); i++) {
-            if (screenComponents.get(i) instanceof Button) {
-                str += "    <string name=\"button" + i + "\">" + screenComponents.get(i) + "</string>\n";
-            } else {
-                ComponentWidget labelComp = (ComponentWidget) screenComponents.get(i);
-                JXLabel label = (JXLabel) labelComp.getComponent();
-                System.out.println(label.getText());
 
-                str += "    <string name=\"label" + i + "\">" + label.getText() + "</string>\n";
+        component = "    <string name=\"app_name\">" + Constants.PROJECT_NAME + "</string>\n";
+        while (buttonQueue.size() > 0) {
+            MobileScreen thisScreen = sceneMap.get(buttonQueue.get(0));
+            buttonQueue.remove(0);
+            ArrayList<Widget> screenComponents = thisScreen.getComponents();
+            component += "    <string name=\"activity" + activityNumber + "\">" + thisScreen.getScreenTitle() + "</string>\n";
+            for (int i = 0; i < screenComponents.size(); i++) {
+                if (screenComponents.get(i) instanceof Button) {
+                    buttonQueue.add((Button) screenComponents.get(i));
+                    component += "    <string name=\"button" + i + "a" + activityNumber + "\">" + screenComponents.get(i) + "</string>\n";
+                } else {
+                    ComponentWidget labelComp = (ComponentWidget) screenComponents.get(i);
+                    JXLabel label = (JXLabel) labelComp.getComponent();
+
+                    component += "    <string name=\"label" + i + "a" + activityNumber + "\">" + label.getText() + "</string>\n";
+                }
             }
-        }
-
-        for (int i = 1; i < screenTitles.size(); i++) {
-            str += "    <string name=\"activity" + i + "\">" + screenTitles.get(i) + "</string>\n";
+            activityNumber++;
         }
 
         end = "</resources>";
-        fileCreator(start + str + end, "strings", ".xml", Constants.PROJECT_PATH + "/apk/res/values/");
+        fileCreator(start + component + end, "strings", ".xml", Constants.PROJECT_PATH + "/apk/res/values/");
     }
 
     /**
