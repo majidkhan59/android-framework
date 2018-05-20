@@ -117,7 +117,7 @@ public class frmPreferences extends javax.swing.JInternalFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        btnSave.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnSave.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnSave.setText("Apply");
         btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -126,7 +126,6 @@ public class frmPreferences extends javax.swing.JInternalFrame {
         });
 
         btnExit.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnExit.setForeground(new java.awt.Color(204, 0, 102));
         btnExit.setText("Cancel");
         btnExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

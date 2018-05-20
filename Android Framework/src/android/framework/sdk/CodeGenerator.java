@@ -178,10 +178,14 @@ public class CodeGenerator {
                             += "<TextView\n"
                             + "      android:id=\"@+id/label" + i + "a" + activityNumber + "\"\n"
                             + "      android:text=\"@string/label" + i + "a" + activityNumber + "\"\n"
-                            + "      android:layout_width=\"match_parent\"\n"
+                            + "      android:layout_width=\"fill_parent\"\n"
                             + "      android:layout_height=\"wrap_content\"\n"
                             + "      android:capitalize=\"characters\"\n"
                             + "      android:gravity=\"center\"\n"
+                            + "      android:textIsSelectable=\"false\"\n"
+                            + "      android:clickable=\"false\"\n"
+                            + "      android:longClickable=\"false\"\n"
+                            + "      android:singleLine=\"false\"\n"
                             + "      android:textSize=\"15dp\"/>\n";
                 }
             }

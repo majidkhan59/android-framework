@@ -62,6 +62,7 @@ public class MobileScreen {
         widget.addChild(new LabelWidget(scene));
         widget.addChild(new LabelWidget(scene, title));
         SeparatorWidget separator = new SeparatorWidget(scene, SeparatorWidget.Orientation.HORIZONTAL);
+        separator.setThickness(3);
         separator.setPreferredSize(new Dimension(200, 2));
         widget.addChild(separator);
     }
@@ -170,9 +171,10 @@ public class MobileScreen {
         label.setLineWrap(true);
         label.setMaxLineSpan(180);
         label.setMinimumSize(new Dimension(0, 10));
+        label.setFont(new Font("", 0, 11));
+        label.setTextAlignment(JXLabel.TextAlignment.JUSTIFY);
         ComponentWidget newLabel = new ComponentWidget(mainScene, label);
         
-        newLabel.setFont(new Font("", 0, 14));
         newLabel.getActions().addAction(ActionFactory.createPopupMenuAction(new ControlPopupMenu(this, false)));
         
         widget.addChild(newLabel);
