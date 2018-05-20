@@ -35,6 +35,7 @@ public class MobileScreen {
     private MainScene mainScene;
     private boolean isSelected;
     private ArrayList<Widget> screenComponents = new ArrayList<>();
+    private int activityNumber = 0;
 
     /**
      * This is the default constructor, which generates a Mobile Screen on UI.
@@ -78,6 +79,26 @@ public class MobileScreen {
     public void setScreenPosition(int x, int y) {
         widget.setPreferredLocation(new Point(x, y));
     }
+
+    /**
+     * Gets the activity number of this screen,
+     * 
+     * @return The activity number of the screen.
+     */
+    public int getActivityNumber() {
+        return activityNumber;
+    }
+
+    /**
+     * Sets the activity number of this screen,
+     * 
+     * @param activityNumber The activity number to set.
+     */
+    public void setActivityNumber(int activityNumber) {
+        this.activityNumber = activityNumber;
+    }
+    
+    
 
     /**
      * Gets position of the mobile screen.
@@ -243,6 +264,6 @@ public class MobileScreen {
 
     @Override
     public String toString() {
-        return screenTitle;
+        return screenTitle + "Activity " + activityNumber;
     }
 }

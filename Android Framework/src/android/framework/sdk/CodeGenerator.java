@@ -101,7 +101,7 @@ public class CodeGenerator {
                             + "            @Override\n"
                             + "            public void onClick(View v) {\n"
                             + "                \n"
-                            + "                Intent intent = new Intent(MainActivity.this,SecondActivity.class);\n"
+                            + "                Intent intent = new Intent(activity" + activityNumber + ".this,activity" + sceneMap.get((Button) screenComponents.get(i)).getActivityNumber() + ".class);\n"
                             + "                startActivity(intent);\n"
                             + "            }\n"
                             + "        });\n ";
@@ -109,7 +109,7 @@ public class CodeGenerator {
             }
             end = "}\n}";
 
-            fileCreator(start + component + end, "activity" + activityNumber, ".java", Constants.PROJECT_PATH + "/apk/src/com/AndroidFramework/" + Constants.PROJECT_NAME + "/");
+            fileCreator(start + component + onclick + end, "activity" + activityNumber, ".java", Constants.PROJECT_PATH + "/apk/src/com/AndroidFramework/" + Constants.PROJECT_NAME + "/");
             activityNumber++;
         }
     }
@@ -141,14 +141,18 @@ public class CodeGenerator {
         ArrayList<Button> buttonQueue = new ArrayList<>();
         buttonQueue.add(null);
         int activityNumber = 0;
+
         while (buttonQueue.size() > 0) {
             String start = "";
             String component = "";
             String end = "";
 
             MobileScreen thisScreen = sceneMap.get(buttonQueue.get(0));
+            thisScreen.setActivityNumber(activityNumber);
+            
             buttonQueue.remove(0);
             ArrayList<Widget> screenComponents = thisScreen.getComponents();
+
             start = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
                     + "<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n"
                     + "    xmlns:tools=\"http://schemas.android.com/tools\"\n"
@@ -156,7 +160,7 @@ public class CodeGenerator {
                     + "    android:id=\"@+id/activity" + activityNumber + "\"\n"
                     + "    android:layout_width=\"match_parent\"\n"
                     + "    android:layout_height=\"match_parent\"\n"
-                    + "    android:layout_gravity=\"center_horizontal\"\n"
+                    + "    android:gravity=\"center_horizontal\"\n"
                     + "    tools:context=\"package com.AndroidFramework." + Constants.PROJECT_NAME
                     + "    \">\n";
             for (int i = 0; i < screenComponents.size(); i++) {
@@ -167,7 +171,7 @@ public class CodeGenerator {
                             + "    android:text=\"@string/button" + i + "a" + activityNumber + "\"\n"
                             + "    android:layout_width=\"wrap_content\"\n"
                             + "    android:layout_height=\"wrap_content\"\n"
-                            + "    android:layout_centerHorizontal=\"true\"\n"
+                            + "    android:gravity=\"center\"\n"
                             + "    android:id=\"@+id/button" + i + "a" + activityNumber + "\"/>\n";
                 } else {
                     component
@@ -177,7 +181,7 @@ public class CodeGenerator {
                             + "      android:layout_width=\"match_parent\"\n"
                             + "      android:layout_height=\"wrap_content\"\n"
                             + "      android:capitalize=\"characters\"\n"
-                            + "      android:layout_centerHorizontal=\"true\"\n"
+                            + "      android:gravity=\"center\"\n"
                             + "      android:textSize=\"15dp\"/>\n";
                 }
             }

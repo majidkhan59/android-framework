@@ -148,8 +148,22 @@ public class MainScene extends GraphScene<String, String> {
         return toReturn;
     }
     
+    /**
+     * Gets the mapping of buttons according to screens in this scene.
+     * 
+     * @return The map of buttons according to screen.
+     */
     public Map<Button, MobileScreen> getSceneMap(){
         return mobileScreens;
+    }
+    
+    /**
+     * Sets the mapping of buttons according to screens in this scene
+     * 
+     * @param sceneMap The mapping of buttons according to screen.
+     */
+    public void setSceneMap(Map<Button, MobileScreen> sceneMap){
+        this.mobileScreens = sceneMap;
     }
     
 

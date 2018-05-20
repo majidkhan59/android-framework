@@ -93,15 +93,15 @@ public class frmAndroidFramework extends JInternalFrame {
                 // Generates Android Manifest File along with java classes.
                 CodeGenerator.manifestGenerate(scene.getMobileScreenTitles());
                 
-                // Generates required Activity files.
-                CodeGenerator.javaFileGenerate(scene.getSceneMap());
-                
-                // Generates required Layout files.
+                // Generates required Layout files and updates scene map with the activity number.
                 CodeGenerator.layoutGenerate(scene.getSceneMap());
-                
+                  
                 // Generates required Resource files.
                 CodeGenerator.resourceGenerate(scene.getSceneMap());
                 
+                // Generates required Activity files.
+                CodeGenerator.javaFileGenerate(scene.getSceneMap());
+              
                 // Generates APK using above generated files.
                 CodeGenerator.generateAPK();
             }
