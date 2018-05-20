@@ -53,7 +53,7 @@ public class frmAndroidFramework extends JInternalFrame {
                     JOptionPane.showMessageDialog(null, "Please Select a Screen First!","Select a Screen", JOptionPane.ERROR_MESSAGE);
                 } else {
                     String buttonText = JOptionPane.showInputDialog("Please Enter Button Text: ");
-                    while(buttonText.isEmpty()){
+                    while(buttonText == null || buttonText.isEmpty()){
                         buttonText = JOptionPane.showInputDialog("Please Enter Button Text: ");
                     }
                     Button newButton = selectedMobileScreen.addButton(buttonText);
@@ -78,7 +78,7 @@ public class frmAndroidFramework extends JInternalFrame {
                     JOptionPane.showMessageDialog(null, "Please Select a Screen First!","Select a Screen", JOptionPane.ERROR_MESSAGE);
                 } else {
                     String labelText = JOptionPane.showInputDialog("Please Enter Label Text: ");
-                    while(labelText.isEmpty()){
+                    while(labelText == null || labelText.isEmpty()){
                         labelText = JOptionPane.showInputDialog("Please Enter Label Text: ");
                     }
                     selectedMobileScreen.addLabel(labelText);

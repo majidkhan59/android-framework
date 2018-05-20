@@ -8,8 +8,10 @@ package android.framework.main;
 import android.framework.utilities.Button;
 import android.framework.utilities.ControlPopupMenu;
 import android.framework.utilities.SelectMobileScreenProvider;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Paint;
 import java.awt.Point;
 import java.util.ArrayList;
 import javax.swing.JPanel;
@@ -19,6 +21,7 @@ import org.netbeans.api.visual.border.BorderFactory;
 import org.netbeans.api.visual.layout.LayoutFactory;
 import org.netbeans.api.visual.widget.ComponentWidget;
 import org.netbeans.api.visual.widget.LabelWidget;
+import org.netbeans.api.visual.widget.SeparatorWidget;
 import org.netbeans.api.visual.widget.Widget;
 
 /**
@@ -58,6 +61,9 @@ public class MobileScreen {
         widget.getActions().addAction(ActionFactory.createMoveAction());
         widget.addChild(new LabelWidget(scene));
         widget.addChild(new LabelWidget(scene, title));
+        SeparatorWidget separator = new SeparatorWidget(scene, SeparatorWidget.Orientation.HORIZONTAL);
+        separator.setPreferredSize(new Dimension(200, 2));
+        widget.addChild(separator);
     }
 
     /**
@@ -148,7 +154,6 @@ public class MobileScreen {
         newButton.setBorder(org.netbeans.api.visual.border.BorderFactory.createBevelBorder(true));
         widget.addChild(newButton);
         screenComponents.add(newButton);
-        System.out.println("Screen " + screenTitle + " But " + screenComponents.toString());
         mainScene.validate();
         return newButton;
     }
@@ -160,41 +165,21 @@ public class MobileScreen {
      *
      */
     public void addLabel(String text) {
-        /*JTextArea label = new JTextArea(2,0);
-        label.setEditable(false);
-        label.setLineWrap(true);
-        label.setWrapStyleWord(true);
-        label.setOpaque(false);
-        label.setAlignmentX(JTextArea.CENTER_ALIGNMENT);
-        label.setAlignmentY(JTextArea.CENTER_ALIGNMENT);
-        label.setText(text);
-       
-        String labelText ="<html>";
-        for(int i = 0; i < text.length();i+=10){
-            labelText += text.substring(i, i+10);
-            labelText += "<br>";
-        }
-        labelText += "</html>";
         
-        JLabel label = new JLabel(labelText);
-         */
         JXLabel label = new JXLabel(text);
         label.setLineWrap(true);
         label.setMaxLineSpan(180);
         label.setMinimumSize(new Dimension(0, 10));
-
         ComponentWidget newLabel = new ComponentWidget(mainScene, label);
         
-
-        //Widget newLabel = new LabelWidget(mainScene, text);
         newLabel.setFont(new Font("", 0, 14));
         newLabel.getActions().addAction(ActionFactory.createPopupMenuAction(new ControlPopupMenu(this, false)));
-        //newLabel.setBorder(BorderFactory.createLineBorder(2, Color.yellow));
-
+        
         widget.addChild(newLabel);
         screenComponents.add(newLabel);
         mainScene.validate();
     }
+    
 
     /**
      * Removes this screen and its children from the scene.
