@@ -156,11 +156,13 @@ public class CodeGenerator {
             start = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
                     + "<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n"
                     + "    xmlns:tools=\"http://schemas.android.com/tools\"\n"
-                    + "    android:orientation=\"vertical\""
+                    + "    android:orientation=\"vertical\"\n"
                     + "    android:id=\"@+id/activity" + activityNumber + "\"\n"
                     + "    android:layout_width=\"match_parent\"\n"
                     + "    android:layout_height=\"match_parent\"\n"
                     + "    android:gravity=\"center_horizontal\"\n"
+                    + "    android:paddingLeft=\"16dp\"\n"
+                    + "    android:paddingRight=\"16dp\"\n"
                     + "    tools:context=\"package com.AndroidFramework." + Constants.PROJECT_NAME
                     + "    \">\n";
             for (int i = 0; i < screenComponents.size(); i++) {
@@ -178,7 +180,7 @@ public class CodeGenerator {
                             += "<TextView\n"
                             + "      android:id=\"@+id/label" + i + "a" + activityNumber + "\"\n"
                             + "      android:text=\"@string/label" + i + "a" + activityNumber + "\"\n"
-                            + "      android:layout_width=\"fill_parent\"\n"
+                            + "      android:layout_width=\"wrap_content\"\n"
                             + "      android:layout_height=\"wrap_content\"\n"
                             + "      android:capitalize=\"characters\"\n"
                             + "      android:gravity=\"center\"\n"
