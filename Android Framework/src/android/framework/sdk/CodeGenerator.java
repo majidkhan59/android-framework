@@ -149,13 +149,17 @@ public class CodeGenerator {
 
             MobileScreen thisScreen = sceneMap.get(buttonQueue.get(0));
             thisScreen.setActivityNumber(activityNumber);
-            
+
             buttonQueue.remove(0);
             ArrayList<Widget> screenComponents = thisScreen.getComponents();
 
             start = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-                    + "<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n"
+                    + " <ScrollView xmlns:android=\"http://schemas.android.com/apk/res/android\"\n"
                     + "    xmlns:tools=\"http://schemas.android.com/tools\"\n"
+                    + " android:layout_width=\"fill_parent\" \n"
+                    + " android:layout_height=\"fill_parent\" >"
+                    
+                    + "<LinearLayout\n"
                     + "    android:orientation=\"vertical\"\n"
                     + "    android:id=\"@+id/activity" + activityNumber + "\"\n"
                     + "    android:layout_width=\"match_parent\"\n"
@@ -182,6 +186,7 @@ public class CodeGenerator {
                             + "      android:text=\"@string/label" + i + "a" + activityNumber + "\"\n"
                             + "      android:layout_width=\"wrap_content\"\n"
                             + "      android:layout_height=\"wrap_content\"\n"
+                            + "      android:padding=\"10dp\"\n"
                             + "      android:capitalize=\"characters\"\n"
                             + "      android:gravity=\"center\"\n"
                             + "      android:textIsSelectable=\"false\"\n"
@@ -191,7 +196,7 @@ public class CodeGenerator {
                             + "      android:textSize=\"15dp\"/>\n";
                 }
             }
-            end = "    </LinearLayout>\n";
+            end = "    </LinearLayout>\n</ScrollView>";
 
             fileCreator(start + component + end, "activity" + activityNumber, ".xml", Constants.PROJECT_PATH + "/apk/res/layout/");
             activityNumber++;
