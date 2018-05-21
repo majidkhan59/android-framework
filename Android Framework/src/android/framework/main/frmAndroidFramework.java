@@ -11,6 +11,7 @@ import android.framework.forms.labelInput;
 import android.framework.utilities.Toolbar;
 import android.framework.utilities.Button;
 import android.framework.sdk.CodeGenerator;
+import android.framework.utilities.FileUtilities;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -139,9 +140,12 @@ public class frmAndroidFramework extends JInternalFrame {
                 if (form.okPressed()) {
 
                     String[] formValues = form.getValue();
-
+                    
+                    // Copy Icon file to required folders.
+                    String iconFileName = (formValues[0].isEmpty())?"ic_launcher":FileUtilities.copyIcon(formValues[0]);
+                    
                     // Generates Android Manifest File along with java classes.
-                    CodeGenerator.manifestGenerate(scene.getMobileScreenTitles(), formValues[3]);
+                    CodeGenerator.manifestGenerate(scene.getMobileScreenTitles(), formValues[4],iconFileName);
 
                     // Generates required Layout files and updates scene map with the activity number.
                     CodeGenerator.layoutGenerate(scene.getSceneMap());

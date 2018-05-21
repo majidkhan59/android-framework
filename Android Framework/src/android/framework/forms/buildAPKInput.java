@@ -5,10 +5,11 @@
  */
 package android.framework.forms;
 
-import java.io.File;
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
 /**
@@ -19,6 +20,7 @@ public class buildAPKInput extends javax.swing.JDialog {
 
     String selectedTheme = "Black";
     String pressedButton = "Cancel";
+
     /**
      * Creates new form labelInput
      */
@@ -27,13 +29,14 @@ public class buildAPKInput extends javax.swing.JDialog {
         initComponents();
     }
 
-    public boolean okPressed(){
+    public boolean okPressed() {
         return pressedButton.equals("Ok");
     }
-    public String[] getValue(){
-        return new String[]{keystorePath.getText(),keyAlias.getText(),keyPass.getText(),selectedTheme};
+
+    public String[] getValue() {
+        return new String[]{appIconPath.getText(), keystorePath.getText(), keyAlias.getText(), keyPass.getText(), selectedTheme};
     }
-   
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -58,6 +61,9 @@ public class buildAPKInput extends javax.swing.JDialog {
         themeLight = new javax.swing.JRadioButton();
         themeDark = new javax.swing.JRadioButton();
         themeHolo = new javax.swing.JRadioButton();
+        jLabel6 = new javax.swing.JLabel();
+        appIconPath = new javax.swing.JTextField();
+        browseBTN1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(org.openide.util.NbBundle.getMessage(buildAPKInput.class, "buildAPKInput.title")); // NOI18N
@@ -139,15 +145,36 @@ public class buildAPKInput extends javax.swing.JDialog {
             }
         });
 
+        jLabel6.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel6.setText(org.openide.util.NbBundle.getMessage(buildAPKInput.class, "buildAPKInput.jLabel6.text")); // NOI18N
+
+        appIconPath.setText(org.openide.util.NbBundle.getMessage(buildAPKInput.class, "buildAPKInput.appIconPath.text")); // NOI18N
+
+        browseBTN1.setText(org.openide.util.NbBundle.getMessage(buildAPKInput.class, "buildAPKInput.browseBTN1.text")); // NOI18N
+        browseBTN1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                browseBTN1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(158, 158, 158)
+                .addComponent(OkButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(CancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(15, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -162,32 +189,35 @@ public class buildAPKInput extends javax.swing.JDialog {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(keyPass)
-                                    .addComponent(keyAlias))))
-                        .addContainerGap(15, Short.MAX_VALUE))))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(158, 158, 158)
-                        .addComponent(OkButton)
+                                    .addComponent(keyAlias, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(themeDark)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(themeHolo)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(themeLight)
+                            .addGap(142, 142, 142)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(CancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(appIconPath, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(themeDark)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(themeHolo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(themeLight)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(browseBTN1)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(appIconPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(browseBTN1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(keystorePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -206,11 +236,11 @@ public class buildAPKInput extends javax.swing.JDialog {
                     .addComponent(themeLight)
                     .addComponent(themeHolo)
                     .addComponent(themeDark))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(OkButton)
                     .addComponent(CancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addGap(27, 27, 27))
         );
 
         pack();
@@ -221,12 +251,12 @@ public class buildAPKInput extends javax.swing.JDialog {
     }//GEN-LAST:event_CancelButtonActionPerformed
 
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
-       if(keystorePath.getText().isEmpty() || keyAlias.getText().isEmpty() || keyPass.getText().isEmpty()){
-               JOptionPane.showMessageDialog(this, "Error! Please Input Keystore Information", "Keystore Information Missing", JOptionPane.ERROR_MESSAGE);
-       } else {
-           pressedButton = "Ok";
-           this.dispose();
-       }
+        if (keystorePath.getText().isEmpty() || keyAlias.getText().isEmpty() || keyPass.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Error! Please Input Keystore Information", "Keystore Information Missing", JOptionPane.ERROR_MESSAGE);
+        } else {
+            pressedButton = "Ok";
+            this.dispose();
+        }
     }//GEN-LAST:event_OkButtonActionPerformed
 
     private void themeDarkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_themeDarkActionPerformed
@@ -246,7 +276,11 @@ public class buildAPKInput extends javax.swing.JDialog {
         jfc.setDialogTitle("Choose the keystore for signing APK file: ");
         jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         jfc.setMultiSelectionEnabled(false);
-        
+        FileFilter imageFilter = new FileNameExtensionFilter(
+                "Keystore Files", new String[]{"keystore"});
+        jfc.setFileFilter(imageFilter);
+        jfc.setAcceptAllFileFilterUsed(false);
+
         int returnValue = jfc.showDialog(this, "Select");
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             if (jfc.getSelectedFile().exists()) {
@@ -255,16 +289,36 @@ public class buildAPKInput extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_browseBTNActionPerformed
 
+    private void browseBTN1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseBTN1ActionPerformed
+        JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        jfc.setDialogTitle("Choose the App Icon for APK file: ");
+        jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        jfc.setMultiSelectionEnabled(false);
+        FileFilter imageFilter = new FileNameExtensionFilter(
+                "Image files", ImageIO.getReaderFileSuffixes());
+        jfc.setFileFilter(imageFilter);
+
+        int returnValue = jfc.showDialog(this, "Select");
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            if (jfc.getSelectedFile().exists()) {
+                appIconPath.setText(jfc.getSelectedFile().toString());
+            }
+        }
+    }//GEN-LAST:event_browseBTN1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CancelButton;
     private javax.swing.JButton OkButton;
+    private javax.swing.JTextField appIconPath;
     private javax.swing.JButton browseBTN;
+    private javax.swing.JButton browseBTN1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField keyAlias;
     private javax.swing.JTextField keyPass;
     private javax.swing.JTextField keystorePath;

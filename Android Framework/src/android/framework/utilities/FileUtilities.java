@@ -14,6 +14,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import org.openide.util.Exceptions;
 
 /**
  * 
@@ -100,6 +103,23 @@ public class FileUtilities {
         } 
         return ret;
     }
-  
     
+    public static String copyIcon(String iconPath){
+        String drawablePath = Constants.PROJECT_PATH + "/apk/res/drawable-";
+        String[] drawableTypes = {"ldpi","hdpi","mdpi","xhdpi"};
+        File source = new File(iconPath);
+        String fileName = source.getName().substring(0,source.getName().lastIndexOf(".")).replaceAll(" ", "_").replaceAll("[^A-Za-z0-9]", "").toLowerCase();
+        String fileExt = "." + source.getName().substring(source.getName().lastIndexOf(".") + 1);
+        for(int i = 0; i < drawableTypes.length; i++){
+            try {
+                File dest = new File(drawablePath + drawableTypes[i] + "/" + fileName + fileExt);
+                
+                Files.copy(source.toPath(), dest.toPath(),StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException ex) {
+                Exceptions.printStackTrace(ex);
+            }
+        }
+        
+        return fileName;
+    }
 }

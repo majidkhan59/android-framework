@@ -115,10 +115,10 @@ public class CodeGenerator {
     }
 
     //used to generate manifest file of android
-    public static void manifestGenerate(ArrayList<String> screenTitles, String appTheme) {
+    public static void manifestGenerate(ArrayList<String> screenTitles, String appTheme, String icon) {
         String data = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
                 + "<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\" package=\"com.AndroidFramework." + Constants.PROJECT_NAME + "\">\n"
-                + "<application android:allowBackup=\"true\" android:icon=\"@drawable/ic_launcher\" android:label=\"@string/app_name\" android:theme=\"@android:style/Theme." + appTheme + "\" >\n"
+                + "<application android:allowBackup=\"true\" android:icon=\"@drawable/" + icon + "\" android:label=\"@string/app_name\" android:theme=\"@android:style/Theme." + appTheme + "\" >\n"
                 + "<activity android:name=\"activity0\" android:label=\"@string/app_name\">\n"
                 + "<intent-filter> <action android:name=\"android.intent.action.MAIN\" />\n"
                 + "<category android:name=\"android.intent.category.LAUNCHER\" />\n"
@@ -191,6 +191,7 @@ public class CodeGenerator {
                             + "      android:clickable=\"false\"\n"
                             + "      android:longClickable=\"false\"\n"
                             + "      android:singleLine=\"false\"\n"
+                            + "      android:autoLink=\"web\"\n"
                             + "      android:textSize=\"15dp\"/>\n";
                 }
             }
@@ -258,6 +259,5 @@ public class CodeGenerator {
                     "APK Build Failed", JOptionPane.ERROR_MESSAGE);
             System.out.println(cmdResult);
         }
-
     }
 }
