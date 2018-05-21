@@ -22,6 +22,7 @@ public class labelInput extends javax.swing.JDialog {
     }
 
     public String getText(){
+        //add new line from hereeeeeeeeeeeee
         return textPane.getText();
     }
     /**
