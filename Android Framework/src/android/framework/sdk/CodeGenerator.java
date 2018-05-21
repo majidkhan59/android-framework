@@ -115,10 +115,10 @@ public class CodeGenerator {
     }
 
     //used to generate manifest file of android
-    public static void manifestGenerate(ArrayList<String> screenTitles) {
+    public static void manifestGenerate(ArrayList<String> screenTitles, String appTheme) {
         String data = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
                 + "<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\" package=\"com.AndroidFramework." + Constants.PROJECT_NAME + "\">\n"
-                + "<application android:allowBackup=\"true\" android:icon=\"@drawable/ic_launcher\" android:label=\"@string/app_name\" android:theme=\"@android:style/Theme\" >\n"
+                + "<application android:allowBackup=\"true\" android:icon=\"@drawable/ic_launcher\" android:label=\"@string/app_name\" android:theme=\"@android:style/Theme." + appTheme + "\" >\n"
                 + "<activity android:name=\"activity0\" android:label=\"@string/app_name\">\n"
                 + "<intent-filter> <action android:name=\"android.intent.action.MAIN\" />\n"
                 + "<category android:name=\"android.intent.category.LAUNCHER\" />\n"

@@ -5,7 +5,11 @@
  */
 package android.framework.forms;
 
+import java.io.File;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileSystemView;
 
 /**
  *
@@ -13,6 +17,8 @@ import javax.swing.JOptionPane;
  */
 public class buildAPKInput extends javax.swing.JDialog {
 
+    String selectedTheme = "Black";
+    String pressedButton = "Cancel";
     /**
      * Creates new form labelInput
      */
@@ -21,8 +27,11 @@ public class buildAPKInput extends javax.swing.JDialog {
         initComponents();
     }
 
+    public boolean okPressed(){
+        return pressedButton.equals("Ok");
+    }
     public String[] getValue(){
-        return new String[]{buttonText.getText(),nxtScreenText.getText()};
+        return new String[]{keystorePath.getText(),keyAlias.getText(),keyPass.getText(),selectedTheme};
     }
    
     /**
@@ -34,13 +43,21 @@ public class buildAPKInput extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        themeGroup = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         OkButton = new javax.swing.JButton();
         CancelButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        buttonText = new javax.swing.JTextField();
-        nxtScreenText = new javax.swing.JTextField();
+        keystorePath = new javax.swing.JTextField();
+        keyAlias = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        browseBTN = new javax.swing.JButton();
+        keyPass = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        themeLight = new javax.swing.JRadioButton();
+        themeDark = new javax.swing.JRadioButton();
+        themeHolo = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(org.openide.util.NbBundle.getMessage(buildAPKInput.class, "buildAPKInput.title")); // NOI18N
@@ -72,13 +89,55 @@ public class buildAPKInput extends javax.swing.JDialog {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel2.setText(org.openide.util.NbBundle.getMessage(buildAPKInput.class, "buildAPKInput.jLabel2.text")); // NOI18N
 
-        buttonText.setText(org.openide.util.NbBundle.getMessage(buildAPKInput.class, "buildAPKInput.buttonText.text")); // NOI18N
+        keystorePath.setText(org.openide.util.NbBundle.getMessage(buildAPKInput.class, "buildAPKInput.keystorePath.text")); // NOI18N
 
-        nxtScreenText.setText(org.openide.util.NbBundle.getMessage(buildAPKInput.class, "buildAPKInput.nxtScreenText.text")); // NOI18N
+        keyAlias.setText(org.openide.util.NbBundle.getMessage(buildAPKInput.class, "buildAPKInput.keyAlias.text")); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel3.setText(org.openide.util.NbBundle.getMessage(buildAPKInput.class, "buildAPKInput.jLabel3.text")); // NOI18N
+
+        browseBTN.setText(org.openide.util.NbBundle.getMessage(buildAPKInput.class, "buildAPKInput.browseBTN.text")); // NOI18N
+        browseBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                browseBTNActionPerformed(evt);
+            }
+        });
+
+        keyPass.setText(org.openide.util.NbBundle.getMessage(buildAPKInput.class, "buildAPKInput.keyPass.text")); // NOI18N
+
+        jLabel4.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel4.setText(org.openide.util.NbBundle.getMessage(buildAPKInput.class, "buildAPKInput.jLabel4.text")); // NOI18N
+
+        jLabel5.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel5.setText(org.openide.util.NbBundle.getMessage(buildAPKInput.class, "buildAPKInput.jLabel5.text")); // NOI18N
+
+        themeGroup.add(themeLight);
+        themeLight.setText(org.openide.util.NbBundle.getMessage(buildAPKInput.class, "buildAPKInput.themeLight.text")); // NOI18N
+        themeLight.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                themeLightActionPerformed(evt);
+            }
+        });
+
+        themeGroup.add(themeDark);
+        themeDark.setSelected(true);
+        themeDark.setText(org.openide.util.NbBundle.getMessage(buildAPKInput.class, "buildAPKInput.themeDark.text")); // NOI18N
+        themeDark.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                themeDarkActionPerformed(evt);
+            }
+        });
+
+        themeGroup.add(themeHolo);
+        themeHolo.setText(org.openide.util.NbBundle.getMessage(buildAPKInput.class, "buildAPKInput.themeHolo.text")); // NOI18N
+        themeHolo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                themeHoloActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -87,24 +146,41 @@ public class buildAPKInput extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonText, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                                .addComponent(keystorePath, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(nxtScreenText, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(OkButton)
+                                .addComponent(browseBTN))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(CancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(93, 93, 93)))
-                        .addContainerGap())
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(keyPass)
+                                    .addComponent(keyAlias))))
+                        .addContainerGap(15, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(158, 158, 158)
+                        .addComponent(OkButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(CancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(themeDark)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(themeHolo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(themeLight)))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -114,16 +190,27 @@ public class buildAPKInput extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(buttonText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(keystorePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(browseBTN))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(nxtScreenText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
+                    .addComponent(keyAlias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(OkButton))
-                .addContainerGap(23, Short.MAX_VALUE))
+                    .addComponent(jLabel4)
+                    .addComponent(keyPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(themeLight)
+                    .addComponent(themeHolo)
+                    .addComponent(themeDark))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(OkButton)
+                    .addComponent(CancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         pack();
@@ -134,21 +221,56 @@ public class buildAPKInput extends javax.swing.JDialog {
     }//GEN-LAST:event_CancelButtonActionPerformed
 
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
-       if(buttonText.getText().isEmpty()){
-               JOptionPane.showMessageDialog(this, "Error! Please Input Button Text", "Button Text Not Entered", JOptionPane.ERROR_MESSAGE);
+       if(keystorePath.getText().isEmpty() || keyAlias.getText().isEmpty() || keyPass.getText().isEmpty()){
+               JOptionPane.showMessageDialog(this, "Error! Please Input Keystore Information", "Keystore Information Missing", JOptionPane.ERROR_MESSAGE);
        } else {
+           pressedButton = "Ok";
            this.dispose();
        }
     }//GEN-LAST:event_OkButtonActionPerformed
+
+    private void themeDarkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_themeDarkActionPerformed
+        this.selectedTheme = "Black";
+    }//GEN-LAST:event_themeDarkActionPerformed
+
+    private void themeHoloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_themeHoloActionPerformed
+        this.selectedTheme = "Holo";
+    }//GEN-LAST:event_themeHoloActionPerformed
+
+    private void themeLightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_themeLightActionPerformed
+        this.selectedTheme = "Light";
+    }//GEN-LAST:event_themeLightActionPerformed
+
+    private void browseBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseBTNActionPerformed
+        JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        jfc.setDialogTitle("Choose the keystore for signing APK file: ");
+        jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        jfc.setMultiSelectionEnabled(false);
+        
+        int returnValue = jfc.showDialog(this, "Select");
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            if (jfc.getSelectedFile().exists()) {
+                keystorePath.setText(jfc.getSelectedFile().toString());
+            }
+        }
+    }//GEN-LAST:event_browseBTNActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CancelButton;
     private javax.swing.JButton OkButton;
-    private javax.swing.JTextField buttonText;
+    private javax.swing.JButton browseBTN;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField nxtScreenText;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JTextField keyAlias;
+    private javax.swing.JTextField keyPass;
+    private javax.swing.JTextField keystorePath;
+    private javax.swing.JRadioButton themeDark;
+    private javax.swing.ButtonGroup themeGroup;
+    private javax.swing.JRadioButton themeHolo;
+    private javax.swing.JRadioButton themeLight;
     // End of variables declaration//GEN-END:variables
 }

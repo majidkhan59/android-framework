@@ -5,6 +5,7 @@
  */
 package android.framework.main;
 
+import android.framework.forms.buildAPKInput;
 import android.framework.forms.buttonInput;
 import android.framework.forms.labelInput;
 import android.framework.utilities.Toolbar;
@@ -66,7 +67,6 @@ public class frmAndroidFramework extends JInternalFrame {
                     String buttonText = text[0];
                     String screenTitle = (text[1].isEmpty()) ? buttonText : text[1];
 
-                    System.out.println("TEXT " + text.toString() + " BT " + buttonText + " ST " + screenTitle);
                     Button newButton = selectedMobileScreen.addButton(buttonText);
                     MobileScreen newScreen = new MobileScreen(screenTitle, scene);
 
@@ -105,7 +105,7 @@ public class frmAndroidFramework extends JInternalFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 MobileScreen selectedMobileScreen = scene.getSelectedScreen();
-                    
+
                 if (selectedMobileScreen == null) {
                     JOptionPane.showMessageDialog(null, "Please Select a Screen First!", "Select a Screen", JOptionPane.ERROR_MESSAGE);
                 } else {
@@ -117,8 +117,7 @@ public class frmAndroidFramework extends JInternalFrame {
                     String labelText = form.getText();
                     selectedMobileScreen.addLabel(labelText);
 
-                
-                  /*  String labelText = JOptionPane.showInputDialog("Please Enter Label Text: ");
+                    /*  String labelText = JOptionPane.showInputDialog("Please Enter Label Text: ");
                     while(labelText == null || labelText.isEmpty()){
                         labelText = JOptionPane.showInputDialog("Please Enter Label Text: ");
                     }
@@ -132,20 +131,30 @@ public class frmAndroidFramework extends JInternalFrame {
         buildAPK.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Generates Android Manifest File along with java classes.
-                CodeGenerator.manifestGenerate(scene.getMobileScreenTitles());
+                buildAPKInput form = new buildAPKInput(null, true);
+                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                form.setLocation(screenSize.width / 3, screenSize.height / 3);
+                form.show();
 
-                // Generates required Layout files and updates scene map with the activity number.
-                CodeGenerator.layoutGenerate(scene.getSceneMap());
+                if (form.okPressed()) {
 
-                // Generates required Resource files.
-                CodeGenerator.resourceGenerate(scene.getSceneMap());
+                    String[] formValues = form.getValue();
 
-                // Generates required Activity files.
-                CodeGenerator.javaFileGenerate(scene.getSceneMap());
+                    // Generates Android Manifest File along with java classes.
+                    CodeGenerator.manifestGenerate(scene.getMobileScreenTitles(), formValues[3]);
 
-                // Generates APK using above generated files.
-                CodeGenerator.generateAPK();
+                    // Generates required Layout files and updates scene map with the activity number.
+                    CodeGenerator.layoutGenerate(scene.getSceneMap());
+
+                    // Generates required Resource files.
+                    CodeGenerator.resourceGenerate(scene.getSceneMap());
+
+                    // Generates required Activity files.
+                    CodeGenerator.javaFileGenerate(scene.getSceneMap());
+
+                    // Generates APK using above generated files.
+                    CodeGenerator.generateAPK();
+                }
             }
         });
 
