@@ -24,6 +24,8 @@ public class labelInput extends javax.swing.JDialog {
     public String getText(){
         //add new line from hereeeeeeeeeeeee
         return textPane.getText();
+        
+        
     }
     /**
      * This method is called from within the constructor to initialize the form.
