@@ -13,12 +13,18 @@ import javax.swing.JOptionPane;
  */
 public class labelInput extends javax.swing.JDialog {
 
+    String pressedButton = "Cancel";
+    
     /**
      * Creates new form labelInput
      */
     public labelInput(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+    
+    public boolean okPressed() {
+        return pressedButton.equals("Ok");
     }
 
     public String getText(){
@@ -111,6 +117,7 @@ public class labelInput extends javax.swing.JDialog {
        if(textPane.getText().isEmpty()){
                JOptionPane.showMessageDialog(this, "Error! Please Input Text", "Text Not Entered", JOptionPane.ERROR_MESSAGE);
        } else {
+           pressedButton = "Ok";
            this.dispose();
        }
     }//GEN-LAST:event_OkButtonActionPerformed

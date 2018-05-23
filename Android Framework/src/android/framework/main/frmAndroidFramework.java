@@ -64,21 +64,23 @@ public class frmAndroidFramework extends JInternalFrame {
                     form.setLocation(screenSize.width / 3, screenSize.height / 3);
 
                     form.show();
-                    String[] text = form.getValue();
-                    String buttonText = text[0];
-                    String screenTitle = (text[1].isEmpty()) ? buttonText : text[1];
 
-                    Button newButton = selectedMobileScreen.addButton(buttonText);
-                    MobileScreen newScreen = new MobileScreen(screenTitle, scene);
+                    if (form.okPressed()) {
+                        String[] text = form.getValue();
+                        String buttonText = text[0];
+                        String screenTitle = (text[1].isEmpty()) ? buttonText : text[1];
 
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            scene.addMobileScreen(newScreen, newButton);
-                            scene.validate();
-                        }
-                    }).start();
+                        Button newButton = selectedMobileScreen.addButton(buttonText);
+                        MobileScreen newScreen = new MobileScreen(screenTitle, scene);
 
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                scene.addMobileScreen(newScreen, newButton);
+                                scene.validate();
+                            }
+                        }).start();
+                    }
                     /*
                 if (selectedMobileScreen == null) {
                     JOptionPane.showMessageDialog(null, "Please Select a Screen First!", "Select a Screen", JOptionPane.ERROR_MESSAGE);
@@ -115,8 +117,10 @@ public class frmAndroidFramework extends JInternalFrame {
                     form.setLocation(screenSize.width / 3, screenSize.height / 3);
 
                     form.show();
-                    String labelText = form.getText();
-                    selectedMobileScreen.addLabel(labelText);
+                    if (form.okPressed()) {
+                        String labelText = form.getText();
+                        selectedMobileScreen.addLabel(labelText);
+                    }
 
                     /*  String labelText = JOptionPane.showInputDialog("Please Enter Label Text: ");
                     while(labelText == null || labelText.isEmpty()){
@@ -140,12 +144,12 @@ public class frmAndroidFramework extends JInternalFrame {
                 if (form.okPressed()) {
 
                     String[] formValues = form.getValue();
-                    
+
                     // Copy Icon file to required folders.
-                    String iconFileName = (formValues[0].isEmpty())?"ic_launcher":FileUtilities.copyIcon(formValues[0]);
-                    
+                    String iconFileName = (formValues[0].isEmpty()) ? "ic_launcher" : FileUtilities.copyIcon(formValues[0]);
+
                     // Generates Android Manifest File along with java classes.
-                    CodeGenerator.manifestGenerate(scene.getMobileScreenTitles(), formValues[4],iconFileName);
+                    CodeGenerator.manifestGenerate(scene.getMobileScreenTitles(), formValues[4], iconFileName);
 
                     // Generates required Layout files and updates scene map with the activity number.
                     CodeGenerator.layoutGenerate(scene.getSceneMap());

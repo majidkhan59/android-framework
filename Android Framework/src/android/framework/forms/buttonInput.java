@@ -13,6 +13,8 @@ import javax.swing.JOptionPane;
  */
 public class buttonInput extends javax.swing.JDialog {
 
+    String pressedButton = "Cancel";
+    
     /**
      * Creates new form labelInput
      */
@@ -21,6 +23,10 @@ public class buttonInput extends javax.swing.JDialog {
         initComponents();
     }
 
+    public boolean okPressed() {
+        return pressedButton.equals("Ok");
+    }
+    
     public String[] getValue(){
         return new String[]{buttonText.getText(),nxtScreenText.getText()};
     }
@@ -137,6 +143,7 @@ public class buttonInput extends javax.swing.JDialog {
        if(buttonText.getText().isEmpty()){
                JOptionPane.showMessageDialog(this, "Error! Please Input Button Text", "Button Text Not Entered", JOptionPane.ERROR_MESSAGE);
        } else {
+           pressedButton = "Ok";
            this.dispose();
        }
     }//GEN-LAST:event_OkButtonActionPerformed

@@ -156,16 +156,16 @@ public class CodeGenerator {
             start = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
                     + " <ScrollView xmlns:android=\"http://schemas.android.com/apk/res/android\"\n"
                     + "    xmlns:tools=\"http://schemas.android.com/tools\"\n"
-                    + "    android:layout_width=\"wrap_content\" \n"
+                    + "    android:layout_width=\"match_parent\" \n"
                     + "    android:layout_height=\"wrap_content\" \n"
-                    + "    android:gravity=\"center_horizontal\">\n"
+                    + "    android:gravity=\"center\">\n"
                     
                     + "<LinearLayout\n"
                     + "    android:orientation=\"vertical\"\n"
                     + "    android:id=\"@+id/activity" + activityNumber + "\"\n"
                     + "    android:layout_width=\"match_parent\"\n"
                     + "    android:layout_height=\"match_parent\"\n"
-                    + "    android:gravity=\"center_horizontal\"\n"
+                    + "    android:gravity=\"center\"\n"
                     + "    tools:context=\"package com.AndroidFramework." + Constants.PROJECT_NAME
                     + "    \">\n";
             for (int i = 0; i < screenComponents.size(); i++) {
@@ -186,12 +186,14 @@ public class CodeGenerator {
                             + "      android:layout_width=\"wrap_content\"\n"
                             + "      android:layout_height=\"wrap_content\"\n"
                             + "      android:capitalize=\"characters\"\n"
-                            + "      android:gravity=\"center\"\n"
+                            + "      android:gravity=\"left\"\n"
+                            + "      android:padding=\"10dp\"\n"
                             + "      android:textIsSelectable=\"false\"\n"
                             + "      android:clickable=\"false\"\n"
                             + "      android:longClickable=\"false\"\n"
-                            + "      android:singleLine=\"false\"\n"
-                            + "      android:autoLink=\"web\"\n"
+                            + "      android:autoLink=\"web\"\n"
+                      //      + "      android:singleLine=\"false\"\n"
+                      //      + "      android:autoLink=\"web\"\n"
                             + "      android:textSize=\"15dp\"/>\n";
                 }
             }
