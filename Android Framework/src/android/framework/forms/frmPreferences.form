@@ -170,7 +170,7 @@
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="btnSave" min="-2" pref="87" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="btnExit" min="-2" pref="77" max="-2" attributes="0"/>
+                  <Component id="btnExit" min="-2" pref="90" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="248" max="-2" attributes="0"/>
               </Group>
           </Group>
