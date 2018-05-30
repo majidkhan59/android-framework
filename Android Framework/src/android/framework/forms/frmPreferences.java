@@ -230,10 +230,10 @@ public class frmPreferences extends javax.swing.JInternalFrame {
         
         int returnValue = jfc.showSaveDialog(null);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
-            if (jfc.getCurrentDirectory().isDirectory()) {
-                System.out.println("You selected the directory: " + jfc.getCurrentDirectory());
-                this.setProjectSavePath(jfc.getCurrentDirectory().toString());
-                fldProjectSavePath.setText(jfc.getCurrentDirectory().toString());
+            if (jfc.getSelectedFile().isDirectory()) {
+                System.out.println("You selected the directory: " + jfc.getSelectedFile());
+                this.setProjectSavePath(jfc.getSelectedFile().toString());
+                fldProjectSavePath.setText(jfc.getSelectedFile().toString());
                 btnSave.setEnabled(true);
             }
         }
