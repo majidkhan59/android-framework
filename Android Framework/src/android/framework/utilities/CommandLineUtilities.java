@@ -7,6 +7,7 @@ package android.framework.utilities;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -20,7 +21,7 @@ public class CommandLineUtilities {
 		Process p;
 		try {
 			p = Runtime.getRuntime().exec(command);
-			p.waitFor();
+			p.waitFor(3, TimeUnit.SECONDS);
 			BufferedReader reader = 
                             new BufferedReader(new InputStreamReader(p.getInputStream()));
 
