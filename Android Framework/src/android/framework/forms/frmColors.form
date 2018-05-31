@@ -5,9 +5,6 @@
     <Property name="title" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
       <Connection code="Constants.TITLE+&quot; User Preferences&quot;" type="code"/>
     </Property>
-    <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-      <Connection code="new java.awt.Color(Constants.RED,Constants.GREEN,Constants.BLUE)" type="code"/>
-    </Property>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
