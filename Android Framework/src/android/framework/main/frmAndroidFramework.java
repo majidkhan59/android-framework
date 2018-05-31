@@ -145,23 +145,29 @@ public class frmAndroidFramework extends JInternalFrame {
 
                     String[] formValues = form.getValue();
 
-                    // Copy Icon file to required folders.
-                    String iconFileName = (formValues[0].isEmpty()) ? "ic_launcher" : FileUtilities.copyIcon(formValues[0]);
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
 
-                    // Generates Android Manifest File along with java classes.
-                    CodeGenerator.manifestGenerate(scene.getMobileScreenTitles(), formValues[4], iconFileName);
+                            // Copy Icon file to required folders.
+                            String iconFileName = (formValues[0].isEmpty()) ? "ic_launcher" : FileUtilities.copyIcon(formValues[0]);
 
-                    // Generates required Layout files and updates scene map with the activity number.
-                    CodeGenerator.layoutGenerate(scene.getSceneMap());
+                            // Generates Android Manifest File along with java classes.
+                            CodeGenerator.manifestGenerate(scene.getMobileScreenTitles(), formValues[4], iconFileName);
 
-                    // Generates required Resource files.
-                    CodeGenerator.resourceGenerate(scene.getSceneMap());
+                            // Generates required Layout files and updates scene map with the activity number.
+                            CodeGenerator.layoutGenerate(scene.getSceneMap());
 
-                    // Generates required Activity files.
-                    CodeGenerator.javaFileGenerate(scene.getSceneMap());
+                            // Generates required Resource files.
+                            CodeGenerator.resourceGenerate(scene.getSceneMap());
 
-                    // Generates APK using above generated files.
-                    CodeGenerator.generateAPK();
+                            // Generates required Activity files.
+                            CodeGenerator.javaFileGenerate(scene.getSceneMap());
+
+                            // Generates APK using above generated files.
+                            CodeGenerator.generateAPK();
+                        }
+                    }).start();
                 }
             }
         });

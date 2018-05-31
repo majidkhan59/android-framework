@@ -194,8 +194,8 @@ public class frmPreferences extends javax.swing.JInternalFrame {
          
         Constants.PROJECT_NAME = fldProjectName.getText();
         Constants.PROJECT_PATH = fldProjectSavePath.getText() + File.separator + fldProjectName.getText();
-        Constants.CREATE_PROJECT_CMD += "-n " + Constants.PROJECT_NAME + " --package com.AndroidFramework." + Constants.PROJECT_NAME + " -p " + Constants.PROJECT_PATH + "/apk";
-        Constants.GENERATE_APK_CMD += Constants.PROJECT_PATH + "/apk/build.xml";
+        Constants.CREATE_PROJECT_CMD += "-n " + Constants.PROJECT_NAME + " --package com.AndroidFramework." + Constants.PROJECT_NAME + " -p " + Constants.PROJECT_PATH + "\\apk";
+        Constants.GENERATE_APK_CMD += Constants.PROJECT_PATH + "\\apk\\build.xml";
         
         strPref.add(fldProjectName.getText());
         
@@ -230,10 +230,10 @@ public class frmPreferences extends javax.swing.JInternalFrame {
         
         int returnValue = jfc.showSaveDialog(null);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
-            if (jfc.getCurrentDirectory().isDirectory()) {
-                System.out.println("You selected the directory: " + jfc.getCurrentDirectory());
-                this.setProjectSavePath(jfc.getCurrentDirectory().toString());
-                fldProjectSavePath.setText(jfc.getCurrentDirectory().toString());
+            if (jfc.getSelectedFile().isDirectory()) {
+                System.out.println("You selected the directory: " + jfc.getSelectedFile());
+                this.setProjectSavePath(jfc.getSelectedFile().toString());
+                fldProjectSavePath.setText(jfc.getSelectedFile().toString());
                 btnSave.setEnabled(true);
             }
         }

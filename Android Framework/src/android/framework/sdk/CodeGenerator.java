@@ -26,240 +26,245 @@ import org.openide.util.Exceptions;
  */
 public class CodeGenerator {
 
-    //Used to create file
-    public static void fileCreator(String data, String fileName, String fileType, String path) {
-        try {
-            File f;
-            f = new File(path + fileName + fileType);
+	// Used to create file
+	public static void fileCreator(String data, String fileName, String fileType, String path) {
+		try {
+			File f;
+			f = new File(path + fileName + fileType);
 
-            if (!f.exists())//check if the file already exists
-            {
-                f.createNewFile();
-                FileWriter writer = new FileWriter(f);
-                writer.write(data);
-                writer.close();
-            } else {
-                f.delete();
-                f.createNewFile();
-                FileWriter writer = new FileWriter(f);
-                writer.write(data);
-                writer.close();
-            }
+			if (!f.exists())// check if the file already exists
+			{
+				f.createNewFile();
+				FileWriter writer = new FileWriter(f);
+				writer.write(data);
+				writer.close();
+			} else {
+				f.delete();
+				f.createNewFile();
+				FileWriter writer = new FileWriter(f);
+				writer.write(data);
+				writer.close();
+			}
 
-        } catch (IOException ex) {
-            Exceptions.printStackTrace(ex);
-        }
-    }
+		} catch (IOException ex) {
+			Exceptions.printStackTrace(ex);
+		}
+	}
 
-    //Used to write code in Java file
-    public static void javaFileGenerate(Map<Button, MobileScreen> sceneMap) {
+	// Used to write code in Java file
+	public static void javaFileGenerate(Map<Button, MobileScreen> sceneMap) {
 
-        ArrayList<Button> buttonQueue = new ArrayList<>();
-        buttonQueue.add(null);
-        int activityNumber = 0;
+		ArrayList<Button> buttonQueue = new ArrayList<>();
+		buttonQueue.add(null);
+		int activityNumber = 0;
 
-        while (buttonQueue.size() > 0) {
-            String start = "";
-            String component = "";
-            String onclick = "";
-            String end = "";
+		while (buttonQueue.size() > 0) {
+			String start = "";
+			String component = "";
+			String onclick = "";
+			String end = "";
 
-            MobileScreen thisScreen = sceneMap.get(buttonQueue.get(0));
-            buttonQueue.remove(0);
-            ArrayList<Widget> screenComponents = thisScreen.getComponents();
+			MobileScreen thisScreen = sceneMap.get(buttonQueue.get(0));
+			buttonQueue.remove(0);
+			ArrayList<Widget> screenComponents = thisScreen.getComponents();
 
-            start = "package com.AndroidFramework." + Constants.PROJECT_NAME
-                    + ";\n"
-                    + "import android.app.Activity;\n"
-                    + "import android.content.Intent;\n"
-                    + "import android.os.Bundle;\n"
-                    + "import android.view.View;\n"
-                    + "import android.widget.Button;\n"
-                    + "import android.widget.TextView;\n"
-                    + "\n"
-                    + "\n"
-                    + "public class activity" + activityNumber + " extends Activity {\n"
-                    + "    \n"
-                    + "    @Override\n"
-                    + "    protected void onCreate(Bundle savedInstanceState) {\n"
-                    + "        super.onCreate(savedInstanceState);\n"
-                    + "        setContentView(R.layout.activity" + activityNumber + ");\n";
+			start = "package com.AndroidFramework." + Constants.PROJECT_NAME + ";\n" + "import android.app.Activity;\n"
+					+ "import android.content.Intent;\n" + "import android.os.Bundle;\n"
+					+ " import android.view.KeyEvent;\n"
 
-            for (int i = 0; i < screenComponents.size(); i++) {
-                if (screenComponents.get(i) instanceof Button) {
-                    buttonQueue.add((Button) screenComponents.get(i));
-                    component += "Button button" + i + "a" + activityNumber + " =(Button)findViewById(R.id.button" + i + "a" + activityNumber + ");\n";
-                } else {
-                    component += "TextView label" + i + "a" + activityNumber + " = (TextView) findViewById(R.id.label" + i + "a" + activityNumber + ");\n"
-                            + "";
-                }
-            }
+					+ "import android.view.View;\n"
 
-            for (int i = 0; i < screenComponents.size(); i++) {
-                if (screenComponents.get(i) instanceof Button) {
-                    onclick += "        button" + i + "a" + activityNumber + ".setOnClickListener(new View.OnClickListener() {\n"
-                            + "            @Override\n"
-                            + "            public void onClick(View v) {\n"
-                            + "                \n"
-                            + "                Intent intent = new Intent(activity" + activityNumber + ".this,activity" + sceneMap.get((Button) screenComponents.get(i)).getActivityNumber() + ".class);\n"
-                            + "                startActivity(intent);\n"
-                            + "            }\n"
-                            + "        });\n ";
-                }
-            }
-            end = "}\n}";
+					+ "import android.widget.Button;\n" + "import android.webkit.WebView;\n"
 
-            fileCreator(start + component + onclick + end, "activity" + activityNumber, ".java", Constants.PROJECT_PATH + "/apk/src/com/AndroidFramework/" + Constants.PROJECT_NAME + "/");
-            activityNumber++;
-        }
-    }
+					+ "\n" + "\n" + "public class activity" + activityNumber + " extends Activity {\n" + "    \n"
+					+ "    @Override\n" + "    protected void onCreate(Bundle savedInstanceState) {\n"
+					+ "        super.onCreate(savedInstanceState);\n" + "        setContentView(R.layout.activity"
+					+ activityNumber + ");\n";
 
-    //used to generate manifest file of android
-    public static void manifestGenerate(ArrayList<String> screenTitles, String appTheme, String icon) {
-        String data = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-                + "<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\" package=\"com.AndroidFramework." + Constants.PROJECT_NAME + "\">\n"
-                + "<application android:allowBackup=\"true\" android:icon=\"@drawable/" + icon + "\" android:label=\"@string/app_name\" android:theme=\"@android:style/Theme." + appTheme + "\" >\n"
-                + "<activity android:name=\"activity0\" android:label=\"@string/app_name\">\n"
-                + "<intent-filter> <action android:name=\"android.intent.action.MAIN\" />\n"
-                + "<category android:name=\"android.intent.category.LAUNCHER\" />\n"
-                + "</intent-filter>\n"
-                + "</activity>\n";
-        for (int i = 1; i < screenTitles.size(); i++) {
-            data += "<activity android:name=\"activity" + i + "\" android:label=\"@string/activity" + i + "\"/>\n";
-        }
-        data += "</application>\n"
-                + "</manifest>";
-        fileCreator(data, "AndroidManifest", ".xml", Constants.PROJECT_PATH + "/apk/");
-        for (int i = 1; i < screenTitles.size(); i++) {
-            fileCreator("", "activity" + i, ".java", Constants.PROJECT_PATH + "/apk/src/com/AndroidFramework/" + Constants.PROJECT_NAME + "/");
-        }
-    }
-    //layout of the application is generated
+			for (int i = 0; i < screenComponents.size(); i++) {
+				if (screenComponents.get(i) instanceof Button) {
+					buttonQueue.add((Button) screenComponents.get(i));
+					component += "Button button" + i + "a" + activityNumber + " =(Button)findViewById(R.id.button" + i
+							+ "a" + activityNumber + ");\n";
+				} else {
+					component += "String justifyTag" + i + "a" + activityNumber
+							+ " = \"<html><body style='text-align:justify;'>%s</body></html>\";\n" + "String dataString"
+							+ i + "a" + activityNumber + " = String.format( justifyTag" + i + "a" + activityNumber
+							+ ", getResources().getString(R.string.label" + i + "a" + activityNumber + "));\n"
+							+ "WebView label" + i + "a" + activityNumber + " = (WebView) findViewById(R.id.label" + i
+							+ "a" + activityNumber + ");\n" + "label" + i + "a" + activityNumber
+							+ ".loadData( dataString" + i + "a" + activityNumber + ", \"text/html\", \"iso-8859-1\");"
+							+ "\nlabel" + i + "a" + activityNumber
+							+ ".setOnLongClickListener(new View.OnLongClickListener() {\n @Override\n public boolean onLongClick(View v) {\nreturn true;\n}\n});\nlabel"
+							+ i + "a" + activityNumber + ".setLongClickable(false);";
 
-    public static void layoutGenerate(Map<Button, MobileScreen> sceneMap) {
+				}
+			}
 
-        ArrayList<Button> buttonQueue = new ArrayList<>();
-        buttonQueue.add(null);
-        int activityNumber = 0;
+			for (int i = 0; i < screenComponents.size(); i++) {
+				if (screenComponents.get(i) instanceof Button) {
+					onclick += "        button" + i + "a" + activityNumber
+							+ ".setOnClickListener(new View.OnClickListener() {\n" + "            @Override\n"
+							+ "            public void onClick(View v) {\n" + "                \n"
+							+ "                Intent intent = new Intent(activity" + activityNumber + ".this,activity"
+							+ sceneMap.get((Button) screenComponents.get(i)).getActivityNumber() + ".class);\n"
+							+ "                startActivity(intent);\n" + "            }\n" + "        });\n ";
+				}
+			}
 
-        while (buttonQueue.size() > 0) {
-            String start = "";
-            String component = "";
-            String end = "";
+			end = "}@Override\n" + "public boolean onKeyDown(int keyCode, KeyEvent event)\n" + "{\n"
+					+ "    if ((keyCode == KeyEvent.KEYCODE_BACK))\n" + "    {\n" + "        finish();\n" + "    }\n"
+					+ "    return super.onKeyDown(keyCode, event);\n" + "}\n}";
 
-            MobileScreen thisScreen = sceneMap.get(buttonQueue.get(0));
-            thisScreen.setActivityNumber(activityNumber);
+			fileCreator(start + component + onclick + end, "activity" + activityNumber, ".java",
+					Constants.PROJECT_PATH + "/apk/src/com/AndroidFramework/" + Constants.PROJECT_NAME + "/");
+			activityNumber++;
+		}
+	}
 
-            buttonQueue.remove(0);
-            ArrayList<Widget> screenComponents = thisScreen.getComponents();
+	// used to generate manifest file of android
+	public static void manifestGenerate(ArrayList<String> screenTitles, String appTheme, String icon) {
+		String data = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+				+ "<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\" package=\"com.AndroidFramework."
+				+ Constants.PROJECT_NAME + "\">\n"
+				+ "<application android:allowBackup=\"true\" android:icon=\"@drawable/" + icon
+				+ "\" android:label=\"@string/app_name\" android:theme=\"@android:style/Theme." + appTheme + "\" >\n"
+				+ "<activity android:name=\"activity0\" android:label=\"@string/app_name\">\n"
+				+ "<intent-filter> <action android:name=\"android.intent.action.MAIN\" />\n"
+				+ "<category android:name=\"android.intent.category.LAUNCHER\" />\n" + "</intent-filter>\n"
+				+ "</activity>\n";
+		for (int i = 1; i < screenTitles.size(); i++) {
+			data += "<activity android:name=\"activity" + i + "\" android:label=\"@string/activity" + i + "\"/>\n";
+		}
+		data += "</application>\n" + "</manifest>";
+		fileCreator(data, "AndroidManifest", ".xml", Constants.PROJECT_PATH + "/apk/");
+		for (int i = 1; i < screenTitles.size(); i++) {
+			fileCreator("", "activity" + i, ".java",
+					Constants.PROJECT_PATH + "/apk/src/com/AndroidFramework/" + Constants.PROJECT_NAME + "/");
+		}
+	}
+	// layout of the application is generated
 
-            start = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-                    + " <ScrollView xmlns:android=\"http://schemas.android.com/apk/res/android\"\n"
-                    + "    xmlns:tools=\"http://schemas.android.com/tools\"\n"
-                    + "    android:layout_width=\"match_parent\" \n"
-                    + "    android:layout_height=\"wrap_content\" \n"
-                    + "    android:gravity=\"center\">\n"
-                    
-                    + "<LinearLayout\n"
-                    + "    android:orientation=\"vertical\"\n"
-                    + "    android:id=\"@+id/activity" + activityNumber + "\"\n"
-                    + "    android:layout_width=\"match_parent\"\n"
-                    + "    android:layout_height=\"match_parent\"\n"
-                    + "    android:gravity=\"center\"\n"
-                    + "    tools:context=\"package com.AndroidFramework." + Constants.PROJECT_NAME
-                    + "    \">\n";
-            for (int i = 0; i < screenComponents.size(); i++) {
-                if (screenComponents.get(i) instanceof Button) {
-                    buttonQueue.add((Button) screenComponents.get(i));
-                    component
-                            += "   <Button\n"
-                            + "    android:text=\"@string/button" + i + "a" + activityNumber + "\"\n"
-                            + "    android:layout_width=\"wrap_content\"\n"
-                            + "    android:layout_height=\"wrap_content\"\n"
-                            + "    android:gravity=\"center\"\n"
-                            + "    android:id=\"@+id/button" + i + "a" + activityNumber + "\"/>\n";
-                } else {
-                    component
-                            += "<TextView\n"
-                            + "      android:id=\"@+id/label" + i + "a" + activityNumber + "\"\n"
-                            + "      android:text=\"@string/label" + i + "a" + activityNumber + "\"\n"
-                            + "      android:layout_width=\"wrap_content\"\n"
-                            + "      android:layout_height=\"wrap_content\"\n"
-                            + "      android:capitalize=\"characters\"\n"
-                            + "      android:gravity=\"left\"\n"
-                            + "      android:padding=\"10dp\"\n"
-                            + "      android:textIsSelectable=\"false\"\n"
-                            + "      android:clickable=\"false\"\n"
-                            + "      android:longClickable=\"false\"\n"
-                            + "      android:autoLink=\"web\"\n"
-                      //      + "      android:singleLine=\"false\"\n"
-                      //      + "      android:autoLink=\"web\"\n"
-                            + "      android:textSize=\"15dp\"/>\n";
-                }
-            }
-            end = "    </LinearLayout>\n</ScrollView>";
+	public static void layoutGenerate(Map<Button, MobileScreen> sceneMap) {
 
-            fileCreator(start + component + end, "activity" + activityNumber, ".xml", Constants.PROJECT_PATH + "/apk/res/layout/");
-            activityNumber++;
-        }
-    }
+		ArrayList<Button> buttonQueue = new ArrayList<>();
+		buttonQueue.add(null);
+		int activityNumber = 0;
 
-    //resource 
-    public static void resourceGenerate(Map<Button, MobileScreen> sceneMap) {
+		while (buttonQueue.size() > 0) {
+			String start = "";
+			String component = "";
+			String end = "";
 
-        ArrayList<Button> buttonQueue = new ArrayList<>();
-        buttonQueue.add(null);
-        int activityNumber = 0;
+			MobileScreen thisScreen = sceneMap.get(buttonQueue.get(0));
+			thisScreen.setActivityNumber(activityNumber);
 
-        String start = "";
-        String component = "";
-        String end = "";
+			buttonQueue.remove(0);
+			ArrayList<Widget> screenComponents = thisScreen.getComponents();
 
-        start = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n";
+			start = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+					+ " <ScrollView xmlns:android=\"http://schemas.android.com/apk/res/android\"\n"
+					+ "    xmlns:tools=\"http://schemas.android.com/tools\"\n"
+					+ "    android:layout_width=\"match_parent\" \n" + "    android:layout_height=\"wrap_content\" \n"
+					+ "    android:gravity=\"center\">\n"
 
-        component = "    <string name=\"app_name\">" + Constants.PROJECT_NAME + "</string>\n";
-        while (buttonQueue.size() > 0) {
-            MobileScreen thisScreen = sceneMap.get(buttonQueue.get(0));
-            buttonQueue.remove(0);
-            ArrayList<Widget> screenComponents = thisScreen.getComponents();
-            component += "    <string name=\"activity" + activityNumber + "\">" + thisScreen.getScreenTitle() + "</string>\n";
-            for (int i = 0; i < screenComponents.size(); i++) {
-                if (screenComponents.get(i) instanceof Button) {
-                    buttonQueue.add((Button) screenComponents.get(i));
-                    component += "    <string name=\"button" + i + "a" + activityNumber + "\">" + screenComponents.get(i) + "</string>\n";
-                } else {
-                    ComponentWidget labelComp = (ComponentWidget) screenComponents.get(i);
-                    JXLabel label = (JXLabel) labelComp.getComponent();
+					+ "<LinearLayout\n" + "    android:orientation=\"vertical\"\n" + "    android:id=\"@+id/activity"
+					+ activityNumber + "\"\n" + "    android:layout_width=\"match_parent\"\n"
+					+ "    android:layout_height=\"match_parent\"\n" + "    android:gravity=\"center\"\n"
+					+ "    tools:context=\"package com.AndroidFramework." + Constants.PROJECT_NAME + "    \">\n";
+			for (int i = 0; i < screenComponents.size(); i++) {
+				if (screenComponents.get(i) instanceof Button) {
+					buttonQueue.add((Button) screenComponents.get(i));
+					component += "   <Button\n" + "    android:text=\"@string/button" + i + "a" + activityNumber
+							+ "\"\n" + "    android:layout_width=\"wrap_content\"\n"
+							+ "    android:layout_height=\"wrap_content\"\n" + "    android:gravity=\"center\"\n"
+							+ "    android:id=\"@+id/button" + i + "a" + activityNumber + "\"/>\n";
+				} else {
+					component += "<WebView\n" + "      android:id=\"@+id/label" + i + "a" + activityNumber + "\"\n"
+							+ "      android:text=\"@string/label" + i + "a" + activityNumber + "\"\n"
+							+ "      android:layout_width=\"wrap_content\"\n"
+							+ "      android:layout_height=\"wrap_content\"/>\n"
+							// + " android:capitalize=\"characters\"\n"
+							+ "      android:gravity=\"left\"\n" + "      android:padding=\"10dp\"\n";
+					// + " android:textIsSelectable=\"false\"\n"
+					// + " android:clickable=\"false\"\n"
+					// + " android:longClickable=\"false\"\n"
+					// + " android:autoLink=\"web\"\n";
+					// + " android:singleLine=\"false\"\n"
+					// + "      android:autoLink=\"web\"\n"
+					// + " android:textSize=\"15dp\"/>\n";
+				}
+			}
+			end = "    </LinearLayout>\n</ScrollView>";
 
-                    component += "    <string name=\"label" + i + "a" + activityNumber + "\">" + label.getText() + "</string>\n";
-                }
-            }
-            activityNumber++;
-        }
+			fileCreator(start + component + end, "activity" + activityNumber, ".xml",
+					Constants.PROJECT_PATH + "/apk/res/layout/");
+			activityNumber++;
+		}
+	}
 
-        end = "</resources>";
-        fileCreator(start + component + end, "strings", ".xml", Constants.PROJECT_PATH + "/apk/res/values/");
-    }
+	// resource
+	public static void resourceGenerate(Map<Button, MobileScreen> sceneMap) {
 
-    /**
-     * Runs the command to make a new android project at the given project path.
-     *
-     */
-    public static void createNewAndroidProject() {
+		ArrayList<Button> buttonQueue = new ArrayList<>();
+		buttonQueue.add(null);
+		int activityNumber = 0;
 
-        CommandLineUtilities.executeCommand(Constants.CREATE_PROJECT_CMD);
-    }
+		String start = "";
+		String component = "";
+		String end = "";
 
-    public static void generateAPK() {
-        String cmdResult;
-        cmdResult = CommandLineUtilities.executeCommand(Constants.GENERATE_APK_CMD);
-        if (cmdResult.contains("BUILD SUCCESSFUL")) {
-            JOptionPane.showMessageDialog(null, "APK Generated Successfully\n\nAPK Path: " + Constants.PROJECT_PATH + "/apk/bin/" + Constants.PROJECT_NAME + "-debug.apk",
-                    "APK Built", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(null, "APK Generation Failed!\n\nPlease see Console Logs!",
-                    "APK Build Failed", JOptionPane.ERROR_MESSAGE);
-            System.out.println(cmdResult);
-        }
-    }
+		start = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n<resources>\n";
+
+		component = "    <string name=\"app_name\">" + Constants.PROJECT_NAME + "</string>\n";
+		while (buttonQueue.size() > 0) {
+			MobileScreen thisScreen = sceneMap.get(buttonQueue.get(0));
+			buttonQueue.remove(0);
+			ArrayList<Widget> screenComponents = thisScreen.getComponents();
+			component += "    <string name=\"activity" + activityNumber + "\">" + thisScreen.getScreenTitle()
+					+ "</string>\n";
+			for (int i = 0; i < screenComponents.size(); i++) {
+				if (screenComponents.get(i) instanceof Button) {
+					buttonQueue.add((Button) screenComponents.get(i));
+					component += "    <string name=\"button" + i + "a" + activityNumber + "\">"
+							+ screenComponents.get(i) + "</string>\n";
+				} else {
+					ComponentWidget labelComp = (ComponentWidget) screenComponents.get(i);
+					JXLabel label = (JXLabel) labelComp.getComponent();
+
+					component += "    <string name=\"label" + i + "a" + activityNumber + "\">" + label.getText()
+							+ "</string>\n";
+				}
+			}
+			activityNumber++;
+		}
+
+		end = "</resources>";
+		fileCreator(start + component + end, "strings", ".xml", Constants.PROJECT_PATH + "/apk/res/values/");
+	}
+
+	/**
+	 * Runs the command to make a new android project at the given project path.
+	 *
+	 */
+	public static void createNewAndroidProject() {
+
+		CommandLineUtilities.executeCommand(Constants.CREATE_PROJECT_CMD);
+	}
+
+	public static void generateAPK() {
+		String cmdResult;
+		cmdResult = CommandLineUtilities.executeCommand(Constants.GENERATE_APK_CMD);
+		if (cmdResult.contains("BUILD SUCCESSFUL")) {
+			JOptionPane
+					.showMessageDialog(null,
+							"APK Generated Successfully\n\nAPK Path: " + Constants.PROJECT_PATH + "/apk/bin/"
+									+ Constants.PROJECT_NAME + "-debug.apk",
+							"APK Built", JOptionPane.INFORMATION_MESSAGE);
+		} else {
+			JOptionPane.showMessageDialog(null, "APK Generation Failed!\n\nPlease see Console Logs!",
+					"APK Build Failed", JOptionPane.ERROR_MESSAGE);
+			System.out.println(cmdResult);
+		}
+	}
 }
