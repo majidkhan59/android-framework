@@ -63,13 +63,13 @@ public class frmColors extends JDialog implements ChangeListener {
         jLabel6 = new javax.swing.JLabel();
         txtHexBackground = new javax.swing.JTextField();
 
-        setBackground(new java.awt.Color(Constants.RED,Constants.GREEN,Constants.BLUE));
         setTitle(Constants.TITLE+" User Preferences");
+        setBackground(new java.awt.Color(Constants.RED,Constants.GREEN,Constants.BLUE));
 
         jLabel7.setBackground(new java.awt.Color(Constants.RED,Constants.GREEN,Constants.BLUE));
         jLabel7.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("Color Settings");
+        jLabel7.setText("Theme Color Settings");
 
         jPanel2.setBackground(new java.awt.Color(Constants.RED,Constants.GREEN,Constants.BLUE));
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());

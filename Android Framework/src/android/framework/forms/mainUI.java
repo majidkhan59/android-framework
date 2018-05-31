@@ -12,6 +12,8 @@ import javax.swing.*;
 
 import javax.swing.border.BevelBorder;
 import android.framework.utilities.Database;
+import java.io.File;
+import java.net.URISyntaxException;
 import org.openide.util.Exceptions;
 
 /**
@@ -25,6 +27,21 @@ public class mainUI extends javax.swing.JFrame {
     JInternalFrame newProjectWindow;
 
     public mainUI() {
+        try {
+			Constants.JAR_PATH = new File(mainUI.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParent();
+			Constants.ANT_PATH = (Constants.JAR_PATH + Constants.ANT_PATH);
+			Constants.SDK_PATH = (Constants.JAR_PATH + Constants.SDK_PATH);
+			Constants.CREATE_PROJECT_CMD = (Constants.JAR_PATH + Constants.CREATE_PROJECT_CMD);
+			Constants.GENERATE_APK_CMD = (Constants.JAR_PATH + Constants.GENERATE_APK_CMD);
+    	} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	System.out.println(Constants.JAR_PATH);
+    	System.out.println(Constants.CREATE_PROJECT_CMD);
+    	System.out.println(Constants.GENERATE_APK_CMD);
+    	System.out.println(Constants.SDK_PATH);
+	
         initComponents();
         Database.setMenuItems();
         this.generateMenuItems();
