@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import org.netbeans.api.visual.action.PopupMenuProvider;
+import org.netbeans.api.visual.widget.ImageWidget;
 import org.netbeans.api.visual.widget.Widget;
 
 /**
@@ -47,8 +48,10 @@ public class ControlPopupMenu implements PopupMenuProvider {
                     toRemove.getConnector().removeFromParent();
                     MobileScreen screenWithButton = MainScene.getMainScene().getMobileScreenByWidget(toRemove.getParentWidget());
                     screenWithButton.removeButton(toRemove);
+                } else if(widget instanceof ImageWidget){
+                  screenToRemove.removeImage(widget);
                 } else {
-                  screenToRemove.removeLabel(widget);
+                    screenToRemove.removeLabel(widget);
                 }
                 if (removeScreen) {
                     screenToRemove.setSelectionStatus(false);

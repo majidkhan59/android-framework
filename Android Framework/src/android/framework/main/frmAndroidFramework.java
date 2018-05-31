@@ -7,6 +7,7 @@ package android.framework.main;
 
 import android.framework.forms.buildAPKInput;
 import android.framework.forms.buttonInput;
+import android.framework.forms.imageInput;
 import android.framework.forms.labelInput;
 import android.framework.utilities.Toolbar;
 import android.framework.utilities.Button;
@@ -50,6 +51,7 @@ public class frmAndroidFramework extends JInternalFrame {
         JButton buildAPK = toolbar.addToolbarButton("Build APK", "Generate APK", 100, 100);
         JButton addButton = toolbar.addToolbarButton("Add Button", "Add new button", 100, 100);
         JButton addLabel = toolbar.addToolbarButton("Add Text", "Add new text", 100, 100);
+        JButton addImage = toolbar.addToolbarButton("Add Image", "Add new image", 100, 100);
 
         addButton.addActionListener(new ActionListener() {
             @Override
@@ -172,11 +174,33 @@ public class frmAndroidFramework extends JInternalFrame {
             }
         });
 
+        addImage.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MobileScreen selectedMobileScreen = scene.getSelectedScreen();
+
+                if (selectedMobileScreen == null) {
+                    JOptionPane.showMessageDialog(null, "Please Select a Screen First!", "Select a Screen", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    imageInput form = new imageInput(null, true);
+                    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                    form.setLocation(screenSize.width / 3, screenSize.height / 3);
+                    form.show();
+                    
+                    if (form.okPressed()) {
+                        String imagePath = form.getImagePath();
+                        FileUtilities.copyIcon(imagePath);
+                        selectedMobileScreen.addImage(imagePath);
+                    }
+                }
+            }
+        });
+        
         add(toolbar, BorderLayout.EAST);
 
         new Thread(new Runnable() {
             @Override
-            public void run() {
+        public void run() {
                 CodeGenerator.createNewAndroidProject();
             }
         }).start();

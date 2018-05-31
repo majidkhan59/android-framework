@@ -8,21 +8,28 @@ package android.framework.main;
 import android.framework.utilities.Button;
 import android.framework.utilities.ControlPopupMenu;
 import android.framework.utilities.SelectMobileScreenProvider;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Paint;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import org.jdesktop.swingx.JXLabel;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.border.BorderFactory;
 import org.netbeans.api.visual.layout.LayoutFactory;
 import org.netbeans.api.visual.widget.ComponentWidget;
+import org.netbeans.api.visual.widget.ImageWidget;
 import org.netbeans.api.visual.widget.LabelWidget;
 import org.netbeans.api.visual.widget.SeparatorWidget;
 import org.netbeans.api.visual.widget.Widget;
+import org.openide.util.Exceptions;
 
 /**
  * This class manages a single screen which is initially generated as well as
@@ -89,7 +96,7 @@ public class MobileScreen {
 
     /**
      * Gets the activity number of this screen,
-     * 
+     *
      * @return The activity number of the screen.
      */
     public int getActivityNumber() {
@@ -98,14 +105,12 @@ public class MobileScreen {
 
     /**
      * Sets the activity number of this screen,
-     * 
+     *
      * @param activityNumber The activity number to set.
      */
     public void setActivityNumber(int activityNumber) {
         this.activityNumber = activityNumber;
     }
-    
-    
 
     /**
      * Gets position of the mobile screen.
@@ -133,7 +138,7 @@ public class MobileScreen {
     public String getScreenTitle() {
         return screenTitle;
     }
-    
+
     /**
      * Returns the components of this screen.
      *
@@ -166,7 +171,7 @@ public class MobileScreen {
      *
      */
     public void addLabel(String text) {
-        
+
         JXLabel label = new JXLabel(text);
         label.setLineWrap(true);
         label.setMaxLineSpan(180);
@@ -174,14 +179,48 @@ public class MobileScreen {
         label.setFont(new Font("", 0, 11));
         label.setTextAlignment(JXLabel.TextAlignment.JUSTIFY);
         ComponentWidget newLabel = new ComponentWidget(mainScene, label);
-        
+
         newLabel.getActions().addAction(ActionFactory.createPopupMenuAction(new ControlPopupMenu(this, false)));
-        
+
         widget.addChild(newLabel);
         screenComponents.add(newLabel);
         mainScene.validate();
     }
-    
+
+    /**
+     * Adds an image on this screen.
+     *
+     * @param imagePath The path of the Image.
+     * @return Returns the new widget made.
+     */
+    public ImageWidget addImage(String imagePath) {
+        try {
+
+            BufferedImage image = new BufferedImage(150, 100, BufferedImage.TYPE_INT_ARGB);
+            BufferedImage resized = new BufferedImage(150, 100, BufferedImage.TYPE_INT_ARGB);
+            
+            image = ImageIO.read(new File(imagePath));
+            Image tmp = image.getScaledInstance(150, 100, Image.SCALE_SMOOTH);
+            
+            Graphics2D g2d = resized.createGraphics();
+            g2d.drawImage(tmp, 0, 0, null);
+            g2d.dispose();
+            
+            ImageIcon imageI = new ImageIcon(imagePath);
+            ImageWidget imageW = new ImageWidget(mainScene, resized);
+            
+            imageW.setPreferredSize(new Dimension(150, 100));
+            imageW.getActions().addAction(ActionFactory.createPopupMenuAction(new ControlPopupMenu(this, false)));
+
+            widget.addChild(imageW);
+            screenComponents.add(imageW);
+            mainScene.validate();
+            return imageW;
+        } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
+            return null;
+        }
+    }
 
     /**
      * Removes this screen and its children from the scene.
@@ -197,8 +236,7 @@ public class MobileScreen {
                 button.getConnector().removeFromParent();
                 MobileScreen childScreen = mainScene.getMobileScreenByButton(button);
                 childScreen.removeScreen();
-            } 
-            // Else this component is text. 
+            } // Else this component is text. 
             else {
                 thisComponent.removeFromParent();
                 screenComponents.remove(thisComponent);
@@ -220,6 +258,15 @@ public class MobileScreen {
      */
     public void removeLabel(Widget labelToRemove) {
         screenComponents.remove(labelToRemove);
+    }
+
+    /**
+     * Removes the given image from the screen.
+     *
+     * @param imageToRemove The label to remove.
+     */
+    public void removeImage(Widget imageToRemove) {
+        screenComponents.remove(imageToRemove);
     }
 
     /**

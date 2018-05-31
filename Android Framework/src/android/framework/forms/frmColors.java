@@ -73,7 +73,7 @@ public class frmColors extends JDialog implements ChangeListener {
         jPanel2.setBackground(new java.awt.Color(Constants.RED,Constants.GREEN,Constants.BLUE));
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        btnSave.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnSave.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnSave.setText("Save");
         btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -82,7 +82,6 @@ public class frmColors extends JDialog implements ChangeListener {
         });
 
         btnExit.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnExit.setForeground(new java.awt.Color(204, 0, 102));
         btnExit.setText("Exit");
         btnExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
