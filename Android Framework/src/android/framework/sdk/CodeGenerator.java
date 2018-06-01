@@ -73,8 +73,7 @@ public class CodeGenerator {
 
 			start = "package com.AndroidFramework." + Constants.PROJECT_NAME + ";\n" + "import android.app.Activity;\n"
 					+ "import android.content.Intent;\n" + "import android.os.Bundle;\n"
-					+ " import android.view.KeyEvent;\n"
-					+ " import android.graphics.Color;\n"
+					+ " import android.view.KeyEvent;\n" + " import android.graphics.Color;\n"
 					+ "import android.view.View;\n"
 
 					+ "import android.widget.Button;\n" + "import android.webkit.WebView;\n"
@@ -88,23 +87,21 @@ public class CodeGenerator {
 				if (screenComponents.get(i) instanceof Button) {
 					buttonQueue.add((Button) screenComponents.get(i));
 					component += "Button button" + i + "a" + activityNumber + " =(Button)findViewById(R.id.button" + i
-							+ "a" + activityNumber + ");\n"
-							+ "button" + i + "a" + activityNumber + ".setBackgroundColor(Color.parseColor(\""+ Constants.HEX_BUTTON + "\"));";
-				} else if (screenComponents.get(i) instanceof ComponentWidget){
+							+ "a" + activityNumber + ");\n" + "button" + i + "a" + activityNumber
+							+ ".setBackgroundColor(Color.parseColor(\"" + Constants.HEX_BUTTON + "\"));";
+				} else if (screenComponents.get(i) instanceof ComponentWidget) {
 					component += "String justifyTag" + i + "a" + activityNumber
-							+ " = \"<html><body style='text-align:justify;'>%s</body></html>\";\n" + "String dataString"
+							+ " = \"<html><body style='text-align:left;'>%s</body></html>\";\n" + "String dataString"
 							+ i + "a" + activityNumber + " = String.format( justifyTag" + i + "a" + activityNumber
 							+ ", getResources().getString(R.string.label" + i + "a" + activityNumber + "));\n"
 							+ "WebView label" + i + "a" + activityNumber + " = (WebView) findViewById(R.id.label" + i
 							+ "a" + activityNumber + ");\n" + "label" + i + "a" + activityNumber
-							+ ".loadData( dataString" + i + "a" + activityNumber + ", \"text/html\", \"iso-8859-1\");"
-							+ "\nlabel" + i + "a" + activityNumber
+							+ ".loadDataWithBaseURL( null,dataString" + i + "a" + activityNumber
+							+ ", \"text/html\", \"iso-8859-1\",null);" + "label" + i + "a" + activityNumber
+							+ ".getSettings();\n" + "label" + i + "a" + activityNumber
+							+ ".setBackgroundColor(Color.white);" + "\nlabel" + i + "a" + activityNumber
 							+ ".setOnLongClickListener(new View.OnLongClickListener() {\n @Override\n public boolean onLongClick(View v) {\nreturn true;\n}\n});\nlabel"
-							+ i + "a" + activityNumber + ".setLongClickable(false);"
-							+ "label" + i + "a" + activityNumber + ".getSettings();\n" +
-                              "label" + i + "a" + activityNumber + ".setBackgroundColor(Color.parseColor(\""+ Constants.HEX_BACKGROUND + "\"));";
-					
-
+							+ i + "a" + activityNumber + ".setLongClickable(false);";
 				}
 			}
 
@@ -186,7 +183,13 @@ public class CodeGenerator {
 							+ "\"\n" + "    android:layout_width=\"wrap_content\"\n"
 							+ "    android:layout_height=\"wrap_content\"\n" + "    android:gravity=\"center\"\n"
 							+ "    android:id=\"@+id/button" + i + "a" + activityNumber + "\"/>\n";
-				} else if (screenComponents.get(i) instanceof ComponentWidget){
+				} else if (screenComponents.get(i) instanceof ImageWidget) {
+
+					component += "<ImageView\n" + "        android:id=\"@+id/image" + i + "a" + activityNumber + "\"\n"
+							+ "        android:layout_width=\"100dp\"\n" + "        android:layout_height=\"100dp\"\n"
+							+ "        android:src=\"@drawable/" + screenComponents.get(i).getToolTipText() + "\" />";
+
+				} else if (screenComponents.get(i) instanceof ComponentWidget) {
 					component += "<WebView\n" + "      android:id=\"@+id/label" + i + "a" + activityNumber + "\"\n"
 							+ "      android:text=\"@string/label" + i + "a" + activityNumber + "\"\n"
 							+ "      android:layout_width=\"wrap_content\"\n"
@@ -220,7 +223,7 @@ public class CodeGenerator {
 		String start = "";
 		String component = "";
 		String end = "";
-		
+
 		// GAP BETWEEN BUTTONS AND SAME WIDTH OF BUTTON / LEFT ALIGN TEXT
 		start = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n<resources>\n";
 
@@ -236,11 +239,11 @@ public class CodeGenerator {
 					buttonQueue.add((Button) screenComponents.get(i));
 					component += "    <string name=\"button" + i + "a" + activityNumber + "\">"
 							+ screenComponents.get(i) + "</string>\n";
-				} /*else if (screenComponents.get(i) instanceof ImageWidget){
+				} else if (screenComponents.get(i) instanceof ImageWidget) {
 					ImageWidget imageComp = (ImageWidget) screenComponents.get(i);
-					component += "    <string name=\"image" + i + "a" + activityNumber + "\">" + imageComp.getToolTipText()
-							+ "</string>\n";
-				} */else if (screenComponents.get(i) instanceof ComponentWidget) {
+					component += "    <string name=\"image" + i + "a" + activityNumber + "\">"
+							+ imageComp.getToolTipText() + "</string>\n";
+				} else if (screenComponents.get(i) instanceof ComponentWidget) {
 					ComponentWidget labelComp = (ComponentWidget) screenComponents.get(i);
 					JXLabel label = (JXLabel) labelComp.getComponent();
 

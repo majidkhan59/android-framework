@@ -145,17 +145,17 @@ public class frmAndroidFramework extends JInternalFrame {
 
                 if (form.okPressed()) {
 
-                    String[] formValues = form.getValue();
+                    String iconPath = form.getValue();
 
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
 
                             // Copy Icon file to required folders.
-                            String iconFileName = (formValues[0].isEmpty()) ? "ic_launcher" : FileUtilities.copyIcon(formValues[0]);
+                            String iconFileName = (iconPath.isEmpty()) ? "ic_launcher" : FileUtilities.copyIcon(iconPath);
 
                             // Generates Android Manifest File along with java classes.
-                            CodeGenerator.manifestGenerate(scene.getMobileScreenTitles(), formValues[4], iconFileName);
+                            CodeGenerator.manifestGenerate(scene.getMobileScreenTitles(), "Light", iconFileName);
 
                             // Generates required Layout files and updates scene map with the activity number.
                             CodeGenerator.layoutGenerate(scene.getSceneMap());
@@ -189,7 +189,6 @@ public class frmAndroidFramework extends JInternalFrame {
                     
                     if (form.okPressed()) {
                         String imagePath = form.getImagePath();
-                        FileUtilities.copyIcon(imagePath);
                         selectedMobileScreen.addImage(imagePath);
                     }
                 }

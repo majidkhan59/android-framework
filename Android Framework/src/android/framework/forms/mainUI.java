@@ -28,20 +28,22 @@ public class mainUI extends javax.swing.JFrame {
 
     public mainUI() {
         try {
-			Constants.JAR_PATH = new File(mainUI.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParent();
-			Constants.ANT_PATH = (Constants.JAR_PATH + Constants.ANT_PATH);
-			Constants.SDK_PATH = (Constants.JAR_PATH + Constants.SDK_PATH);
-			Constants.CREATE_PROJECT_CMD = (Constants.JAR_PATH + Constants.CREATE_PROJECT_CMD);
-			Constants.GENERATE_APK_CMD = (Constants.JAR_PATH + Constants.GENERATE_APK_CMD);
-    	} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	System.out.println(Constants.JAR_PATH);
-    	System.out.println(Constants.CREATE_PROJECT_CMD);
-    	System.out.println(Constants.GENERATE_APK_CMD);
-    	System.out.println(Constants.SDK_PATH);
-	
+            Constants.JAR_PATH = new File(mainUI.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParent();
+            Constants.ANT_PATH = (Constants.JAR_PATH + Constants.ANT_PATH);
+            Constants.SDK_PATH = (Constants.JAR_PATH + Constants.SDK_PATH);
+            Constants.CREATE_PROJECT_CMD = (Constants.JAR_PATH + Constants.CREATE_PROJECT_CMD);
+            Constants.GENERATE_APK_CMD = (Constants.JAR_PATH + Constants.GENERATE_APK_CMD);
+            Constants.HEX_BACKGROUND = "#000000";
+            Constants.HEX_BUTTON = "#d3d3d3";
+        } catch (URISyntaxException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        System.out.println(Constants.JAR_PATH);
+        System.out.println(Constants.CREATE_PROJECT_CMD);
+        System.out.println(Constants.GENERATE_APK_CMD);
+        System.out.println(Constants.SDK_PATH);
+
         initComponents();
         Database.setMenuItems();
         this.generateMenuItems();
@@ -193,7 +195,7 @@ public class mainUI extends javax.swing.JFrame {
                 newProjectWindow.setLocation((desktopSize.width - fmSize.width),
                         (desktopSize.height - fmSize.height) / 2);
                 newProjectWindow.setVisible(true);
-            } else if(!newProjectWindow.isVisible()) {
+            } else if (!newProjectWindow.isVisible()) {
                 newProjectWindow.setVisible(true);
             }
         } catch (ClassNotFoundException ex) {

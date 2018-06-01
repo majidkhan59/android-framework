@@ -7,6 +7,7 @@ package android.framework.main;
 
 import android.framework.utilities.Button;
 import android.framework.utilities.ControlPopupMenu;
+import android.framework.utilities.FileUtilities;
 import android.framework.utilities.SelectMobileScreenProvider;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -208,7 +209,7 @@ public class MobileScreen {
             
             ImageIcon imageI = new ImageIcon(imagePath);
             ImageWidget imageW = new ImageWidget(mainScene, resized);
-            
+            imageW.setToolTipText(FileUtilities.copyIcon(imagePath));
             imageW.setPreferredSize(new Dimension(150, 100));
             imageW.getActions().addAction(ActionFactory.createPopupMenuAction(new ControlPopupMenu(this, false)));
 
