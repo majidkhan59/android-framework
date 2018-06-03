@@ -192,7 +192,7 @@ public class frmPreferences extends javax.swing.JInternalFrame {
             return;
         }
          
-        Constants.PROJECT_NAME = fldProjectName.getText();
+        Constants.PROJECT_NAME = fldProjectName.getText().replaceAll("\\s+","");
         Constants.PROJECT_PATH = fldProjectSavePath.getText() + File.separator + fldProjectName.getText();
         Constants.CREATE_PROJECT_CMD += "-n " + Constants.PROJECT_NAME + " --package com.AndroidFramework." + Constants.PROJECT_NAME + " -p " + Constants.PROJECT_PATH + "\\apk";
         Constants.GENERATE_APK_CMD += Constants.PROJECT_PATH + "\\apk\\build.xml";

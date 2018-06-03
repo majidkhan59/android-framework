@@ -76,13 +76,19 @@ public class CodeGenerator {
 					+ " import android.view.KeyEvent;\n" + " import android.graphics.Color;\n"
 					+ "import android.view.View;\n"
 
-					+ "import android.widget.Button;\n" + "import android.webkit.WebView;\n"
-
+					+ "import android.widget.Button;\n" 
+					+ "import android.webkit.WebView;\n"
+					
 					+ "\n" + "\n" + "public class activity" + activityNumber + " extends Activity {\n" + "    \n"
 					+ "    @Override\n" + "    protected void onCreate(Bundle savedInstanceState) {\n"
 					+ "        super.onCreate(savedInstanceState);\n" + "        setContentView(R.layout.activity"
 					+ activityNumber + ");\n";
-
+			if(!Constants.HEX_TITLE_BAR.isEmpty()) {
+			start += "		View title = getWindow().findViewById(android.R.id.title);\n" 
+					+ "     View titleBar = (View) title.getParent();\n" 
+					+ "     titleBar.setBackgroundColor(Color.parseColor(\"" + Constants.HEX_TITLE_BAR + "\"));\n";		
+			}
+			
 			for (int i = 0; i < screenComponents.size(); i++) {
 				if (screenComponents.get(i) instanceof Button) {
 					buttonQueue.add((Button) screenComponents.get(i));
@@ -90,16 +96,17 @@ public class CodeGenerator {
 							+ "a" + activityNumber + ");\n" + "button" + i + "a" + activityNumber
 							+ ".setBackgroundColor(Color.parseColor(\"" + Constants.HEX_BUTTON + "\"));";
 				} else if (screenComponents.get(i) instanceof ComponentWidget) {
-					component += "String justifyTag" + i + "a" + activityNumber
-							+ " = \"<html><body style='text-align:left;'>%s</body></html>\";\n" + "String dataString"
-							+ i + "a" + activityNumber + " = String.format( justifyTag" + i + "a" + activityNumber
-							+ ", getResources().getString(R.string.label" + i + "a" + activityNumber + "));\n"
-							+ "WebView label" + i + "a" + activityNumber + " = (WebView) findViewById(R.id.label" + i
-							+ "a" + activityNumber + ");\n" + "label" + i + "a" + activityNumber
-							+ ".loadDataWithBaseURL( null,dataString" + i + "a" + activityNumber
-							+ ", \"text/html\", \"iso-8859-1\",null);" + "label" + i + "a" + activityNumber
+					component += "String justifyTag" + i + "a" + activityNumber + " = \"<html><style>body{color:"
+							+ ((Constants.HEX_BACKGROUND.isEmpty()) ? "black" : Constants.HEX_BACKGROUND)
+							+ ";background-color: #FFFFFF;}</style><body style='text-align:left;'>%s</body></html>\";\n"
+							+ "String dataString" + i + "a" + activityNumber + " = String.format( justifyTag" + i + "a"
+							+ activityNumber + ", getResources().getString(R.string.label" + i + "a" + activityNumber
+							+ "));\n" + "WebView label" + i + "a" + activityNumber
+							+ " = (WebView) findViewById(R.id.label" + i + "a" + activityNumber + ");\n" + "label" + i
+							+ "a" + activityNumber + ".loadDataWithBaseURL( null,dataString" + i + "a" + activityNumber
+							+ ", \"text/html\", \"utf-8\",null);" + "label" + i + "a" + activityNumber
 							+ ".getSettings();\n" + "label" + i + "a" + activityNumber
-							+ ".setBackgroundColor(Color.white);" + "\nlabel" + i + "a" + activityNumber
+							+ ".setBackgroundColor(Color.WHITE);" + "\nlabel" + i + "a" + activityNumber
 							+ ".setOnLongClickListener(new View.OnLongClickListener() {\n @Override\n public boolean onLongClick(View v) {\nreturn true;\n}\n});\nlabel"
 							+ i + "a" + activityNumber + ".setLongClickable(false);";
 				}
@@ -132,7 +139,7 @@ public class CodeGenerator {
 				+ "<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\" package=\"com.AndroidFramework."
 				+ Constants.PROJECT_NAME + "\">\n"
 				+ "<application android:allowBackup=\"true\" android:icon=\"@drawable/" + icon
-				+ "\" android:label=\"@string/app_name\" android:theme=\"@android:style/Theme." + appTheme + "\" >\n"
+				+ "\" android:label=\"@string/app_name\" android:theme=\"@style/CustomTheme\">\n"
 				+ "<activity android:name=\"activity0\" android:label=\"@string/app_name\">\n"
 				+ "<intent-filter> <action android:name=\"android.intent.action.MAIN\" />\n"
 				+ "<category android:name=\"android.intent.category.LAUNCHER\" />\n" + "</intent-filter>\n"
@@ -146,6 +153,16 @@ public class CodeGenerator {
 			fileCreator("", "activity" + i, ".java",
 					Constants.PROJECT_PATH + "/apk/src/com/AndroidFramework/" + Constants.PROJECT_NAME + "/");
 		}
+		
+		String customTheme = "<resources>\n" + 
+				"    <style name=\"CustomTheme\" parent=\"android:Theme.Light\">\n" + 
+				"        <item name=\"android:windowTitleSize\">50dp</item>\n" + 
+				"    </style>\n" + 
+				"</resources>";
+		fileCreator(customTheme, "style", ".xml", Constants.PROJECT_PATH + "/apk/res/values/");
+
+		
+		
 	}
 	// layout of the application is generated
 
@@ -180,9 +197,13 @@ public class CodeGenerator {
 				if (screenComponents.get(i) instanceof Button) {
 					buttonQueue.add((Button) screenComponents.get(i));
 					component += "   <Button\n" + "    android:text=\"@string/button" + i + "a" + activityNumber
-							+ "\"\n" + "    android:layout_width=\"wrap_content\"\n"
+							+ "\"\n" + "    android:layout_width=\"fill_parent\"\n"
 							+ "    android:layout_height=\"wrap_content\"\n" + "    android:gravity=\"center\"\n"
-							+ "    android:id=\"@+id/button" + i + "a" + activityNumber + "\"/>\n";
+							+ "	   android:layout_marginTop=\"10dp\"\n" 
+							+ "	   android:layout_marginBottom=\"5dp\"\n" 
+							+ "	   android:layout_marginLeft=\"20dp\"\n"
+							+ "	   android:layout_marginRight=\"20dp\"\n" + "    android:id=\"@+id/button" + i + "a"
+							+ activityNumber + "\"/>\n";
 				} else if (screenComponents.get(i) instanceof ImageWidget) {
 
 					component += "<ImageView\n" + "        android:id=\"@+id/image" + i + "a" + activityNumber + "\"\n"
@@ -201,7 +222,7 @@ public class CodeGenerator {
 					// + " android:longClickable=\"false\"\n"
 					// + " android:autoLink=\"web\"\n";
 					// + " android:singleLine=\"false\"\n"
-					// + "Â Â Â Â Â Â android:autoLink=\"web\"\n"
+					// + "Ã‚Â Ã‚Â Ã‚Â Ã‚Â Ã‚Â Ã‚Â android:autoLink=\"web\"\n"
 					// + " android:textSize=\"15dp\"/>\n";
 				}
 			}
@@ -224,7 +245,6 @@ public class CodeGenerator {
 		String component = "";
 		String end = "";
 
-		// GAP BETWEEN BUTTONS AND SAME WIDTH OF BUTTON / LEFT ALIGN TEXT
 		start = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n<resources>\n";
 
 		component = "    <string name=\"app_name\">" + Constants.PROJECT_NAME + "</string>\n";
