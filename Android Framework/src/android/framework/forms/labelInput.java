@@ -52,6 +52,7 @@ public class labelInput extends javax.swing.JDialog {
         setTitle(org.openide.util.NbBundle.getMessage(labelInput.class, "labelInput.title")); // NOI18N
         setResizable(false);
 
+        textPane.setFont(new java.awt.Font("Arial Unicode MS", 0, 11)); // NOI18N
         jScrollPane1.setViewportView(textPane);
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N

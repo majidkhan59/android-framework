@@ -177,7 +177,7 @@ public class MobileScreen {
         label.setLineWrap(true);
         label.setMaxLineSpan(180);
         label.setMinimumSize(new Dimension(0, 10));
-        label.setFont(new Font("", 0, 11));
+        label.setFont(new Font("Arial Unicode MS", 0, 11));
         label.setTextAlignment(JXLabel.TextAlignment.JUSTIFY);
         ComponentWidget newLabel = new ComponentWidget(mainScene, label);
 

@@ -78,8 +78,10 @@ public class buttonInput extends javax.swing.JDialog {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel2.setText(org.openide.util.NbBundle.getMessage(buttonInput.class, "buttonInput.jLabel2.text")); // NOI18N
 
+        buttonText.setFont(new java.awt.Font("Arial Unicode MS", 0, 11)); // NOI18N
         buttonText.setText(org.openide.util.NbBundle.getMessage(buttonInput.class, "buttonInput.buttonText.text")); // NOI18N
 
+        nxtScreenText.setFont(new java.awt.Font("Arial Unicode MS", 0, 11)); // NOI18N
         nxtScreenText.setText(org.openide.util.NbBundle.getMessage(buttonInput.class, "buttonInput.nxtScreenText.text")); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
@@ -129,7 +131,7 @@ public class buttonInput extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(OkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
