@@ -5,23 +5,29 @@
  */
 package android.framework.sdk;
 
-import android.framework.main.MobileScreen;
-import android.framework.utilities.Button;
-import android.framework.utilities.CommandLineUtilities;
-import android.framework.utilities.Constants;
-
-import java.awt.image.ImageConsumer;
+import java.awt.Font;
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Map;
+
 import javax.swing.JOptionPane;
+
 import org.jdesktop.swingx.JXLabel;
 import org.netbeans.api.visual.widget.ComponentWidget;
 import org.netbeans.api.visual.widget.ImageWidget;
 import org.netbeans.api.visual.widget.Widget;
 import org.openide.util.Exceptions;
+
+import android.framework.main.MobileScreen;
+import android.framework.utilities.Button;
+import android.framework.utilities.CommandLineUtilities;
+import android.framework.utilities.Constants;
 
 /**
  *
@@ -33,20 +39,23 @@ public class CodeGenerator {
 	public static void fileCreator(String data, String fileName, String fileType, String path) {
 		try {
 			File f;
+			Writer fstream = null;	
+			BufferedWriter out = null;
 			f = new File(path + fileName + fileType);
+			
 
 			if (!f.exists())// check if the file already exists
 			{
 				f.createNewFile();
-				FileWriter writer = new FileWriter(f);
-				writer.write(data);
-				writer.close();
+				fstream = new OutputStreamWriter(new FileOutputStream(f), StandardCharsets.UTF_8);
+				fstream.write(data);
+				fstream.close();
 			} else {
 				f.delete();
 				f.createNewFile();
-				FileWriter writer = new FileWriter(f);
-				writer.write(data);
-				writer.close();
+				fstream = new OutputStreamWriter(new FileOutputStream(f), StandardCharsets.UTF_8);
+				fstream.write(data);
+				fstream.close();
 			}
 
 		} catch (IOException ex) {
@@ -75,9 +84,10 @@ public class CodeGenerator {
 					+ "import android.content.Intent;\n" + "import android.os.Bundle;\n"
 					+ " import android.view.KeyEvent;\n" + " import android.graphics.Color;\n"
 					+ "import android.view.View;\n"
-
+					+ "import java.net.URLEncoder;\n"
 					+ "import android.widget.Button;\n" 
 					+ "import android.webkit.WebView;\n"
+					+ "import java.io.UnsupportedEncodingException;\n"
 					
 					+ "\n" + "\n" + "public class activity" + activityNumber + " extends Activity {\n" + "    \n"
 					+ "    @Override\n" + "    protected void onCreate(Bundle savedInstanceState) {\n"
@@ -88,6 +98,8 @@ public class CodeGenerator {
 					+ "     View titleBar = (View) title.getParent();\n" 
 					+ "     titleBar.setBackgroundColor(Color.parseColor(\"" + Constants.HEX_TITLE_BAR + "\"));\n";		
 			}
+			
+		//	start += "try {";
 			
 			for (int i = 0; i < screenComponents.size(); i++) {
 				if (screenComponents.get(i) instanceof Button) {
@@ -103,10 +115,11 @@ public class CodeGenerator {
 							+ activityNumber + ", getResources().getString(R.string.label" + i + "a" + activityNumber
 							+ "));\n" + "WebView label" + i + "a" + activityNumber
 							+ " = (WebView) findViewById(R.id.label" + i + "a" + activityNumber + ");\n" + "label" + i
-							+ "a" + activityNumber + ".loadDataWithBaseURL( null,dataString" + i + "a" + activityNumber
+							+ "a" + activityNumber + ".loadDataWithBaseURL( null,dataString"  + i + "a" + activityNumber 
 							+ ", \"text/html\", \"utf-8\",null);" + "label" + i + "a" + activityNumber
 							+ ".getSettings();\n" + "label" + i + "a" + activityNumber
-							+ ".setBackgroundColor(Color.WHITE);" + "\nlabel" + i + "a" + activityNumber
+							+ ".setBackgroundColor(Color.WHITE);" 
+							+ "\nlabel" + i + "a" + activityNumber
 							+ ".setOnLongClickListener(new View.OnLongClickListener() {\n @Override\n public boolean onLongClick(View v) {\nreturn true;\n}\n});\nlabel"
 							+ i + "a" + activityNumber + ".setLongClickable(false);";
 				}
@@ -122,6 +135,7 @@ public class CodeGenerator {
 							+ "                startActivity(intent);\n" + "            }\n" + "        });\n ";
 				}
 			}
+//			end = "\n} catch (UnsupportedEncodingException e)\n {\nreturn;\n}\n";
 
 			end = "}@Override\n" + "public boolean onKeyDown(int keyCode, KeyEvent event)\n" + "{\n"
 					+ "    if ((keyCode == KeyEvent.KEYCODE_BACK))\n" + "    {\n" + "        finish();\n" + "    }\n"
@@ -156,12 +170,12 @@ public class CodeGenerator {
 		
 		String customTheme = "<resources>\n" + 
 				"    <style name=\"CustomTheme\" parent=\"android:Theme.Light\">\n" + 
-				"        <item name=\"android:windowTitleSize\">50dp</item>\n" + 
+				"        <item name=\"android:windowTitleSize\">50dp</item>\n" +
+				"		 <item name=\"android:gravity\">center</item>\n" +		
 				"    </style>\n" + 
 				"</resources>";
 		fileCreator(customTheme, "style", ".xml", Constants.PROJECT_PATH + "/apk/res/values/");
 
-		
 		
 	}
 	// layout of the application is generated
@@ -245,7 +259,7 @@ public class CodeGenerator {
 		String component = "";
 		String end = "";
 
-		start = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n<resources>\n";
+		start = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n";
 
 		component = "    <string name=\"app_name\">" + Constants.PROJECT_NAME + "</string>\n";
 		while (buttonQueue.size() > 0) {
@@ -266,6 +280,7 @@ public class CodeGenerator {
 				} else if (screenComponents.get(i) instanceof ComponentWidget) {
 					ComponentWidget labelComp = (ComponentWidget) screenComponents.get(i);
 					JXLabel label = (JXLabel) labelComp.getComponent();
+					label.setFont(new Font("Arial Unicode MS", Font.PLAIN, 11));
 
 					component += "    <string name=\"label" + i + "a" + activityNumber + "\">" + label.getText()
 							+ "</string>\n";
