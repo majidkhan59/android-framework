@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileSystemView;
 import android.framework.utilities.Constants;
 import java.io.File;
+import javax.swing.JFrame;
 
 /**
  *
@@ -215,6 +216,10 @@ public class frmPreferences extends javax.swing.JInternalFrame {
             frame.setSize(screenSize.width, screenSize.height);
             JDesktopPane desktopPane = getDesktopPane();
             desktopPane.add(frame);
+            JFrame parentFrame = (JFrame) desktopPane.getParent().getParent().getParent().getParent();
+            parentFrame.getJMenuBar().getMenu(0).remove(0);
+            parentFrame.getJMenuBar().getMenu(0).getItem(0).setEnabled(true);
+            System.out.println(desktopPane.getParent().getParent().getParent().getParent().toString());
             frame.setVisible(true);
             this.dispose();
         } else {

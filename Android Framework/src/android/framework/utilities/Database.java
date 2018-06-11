@@ -19,6 +19,13 @@ public class Database {
             Constants.MENU_ITEMS_FORMS.put(0,"android.framework.forms.frmPreferences");
             Constants.MENU_ITEMS_NAMES.put(0,"New Project");
             
+            Constants.MENU_ITEMS_FORMS.put(1,"android.framework.forms.saveProject");
+            Constants.MENU_ITEMS_NAMES.put(1,"Save Project");
+            
+            Constants.MENU_ITEMS_FORMS.put(2,"android.framework.forms.loadProject");
+            Constants.MENU_ITEMS_NAMES.put(2,"Load Project");
+            
+            
             
             //Constants.MENU_ITEMS_FORMS.put(1,"Form.General.frmPreferences");
             //Constants.MENU_ITEMS_NAMES.put(1,"Preferences");

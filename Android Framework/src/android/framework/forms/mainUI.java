@@ -25,6 +25,8 @@ public class mainUI extends javax.swing.JFrame {
     JMenuBar menuBar = new JMenuBar();
     FileUtilities user = new FileUtilities();
     JInternalFrame newProjectWindow;
+    JInternalFrame loadProjectWindow;
+    JInternalFrame saveProjectWindow;
 
     public mainUI() {
         try {
@@ -62,7 +64,7 @@ public class mainUI extends javax.swing.JFrame {
         lblMessage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("Diagnostic Centre Management System");
+        setTitle("Android Framework");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 WindowClosing(evt);
@@ -78,7 +80,6 @@ public class mainUI extends javax.swing.JFrame {
         desktopPane.setBackground(javax.swing.UIManager.getDefaults().getColor("window"));
         desktopPane.setAutoscrolls(true);
         desktopPane.setName("frmMDIJDesktop"); // NOI18N
-        desktopPane.setLayout(null);
 
         lblMessage.setFont(new java.awt.Font("Arial", 1, 48)); // NOI18N
         lblMessage.setForeground(new java.awt.Color(0, 0, 51));
@@ -147,7 +148,7 @@ public class mainUI extends javax.swing.JFrame {
         menu.setText("File");
         menu.setName("File");
         menu.setMnemonic('F');
-        JMenuItem item = new JMenuItem();
+        JMenuItem item;
 
         //Adding more menu menuItems 
         HashMap menuItems = Constants.MENU_ITEMS_NAMES;
@@ -157,6 +158,10 @@ public class mainUI extends javax.swing.JFrame {
 
             item.setText(menuName);
             item.setName(menuName);
+            item.setMnemonic(menuName.charAt(0));
+            if(item.getName().contains("Save")){
+                item.setEnabled(false);
+            }
 
             item.addActionListener(new DetectComp(item.getName(),
                     Constants.MENU_ITEMS_FORMS.get(j)));
@@ -168,6 +173,7 @@ public class mainUI extends javax.swing.JFrame {
         item = new JMenuItem();
         item.setText("Exit");
         item.setName("Exit");
+        item.setMnemonic('E');
         item.addActionListener(new ActionListener() {
 
             @Override
@@ -176,6 +182,7 @@ public class mainUI extends javax.swing.JFrame {
                 System.exit(0);
             }
         });
+        menu.add(new JSeparator());
         menu.add(item);
 
         menuBar.add(menu);
@@ -185,18 +192,49 @@ public class mainUI extends javax.swing.JFrame {
     public void openNewWindow(String className) {
 
         try {
-            if (newProjectWindow == null) {
+            if (className.contains("frmPreferences")) {
+                if (newProjectWindow == null) {
+                    Class c = Class.forName(className);
+                    newProjectWindow = (JInternalFrame) c.newInstance();
+                    desktopPane.add(newProjectWindow);
+                    newProjectWindow.moveToFront();
+                    Dimension desktopSize = desktopPane.getSize();
+                    Dimension fmSize = newProjectWindow.getSize();
+                    newProjectWindow.setLocation((desktopSize.width - fmSize.width),
+                            (desktopSize.height - fmSize.height) / 2);
+                    newProjectWindow.setVisible(true);
+                } else if (!newProjectWindow.isVisible()) {
+                    newProjectWindow.setVisible(true);
+                }
+            } else if (className.contains("load")){
+                if (loadProjectWindow == null) {
                 Class c = Class.forName(className);
-                newProjectWindow = (JInternalFrame) c.newInstance();
-                desktopPane.add(newProjectWindow);
-                newProjectWindow.moveToFront();
+                loadProjectWindow = (JInternalFrame) c.newInstance();
+                desktopPane.add(loadProjectWindow);
+                loadProjectWindow.moveToFront();
                 Dimension desktopSize = desktopPane.getSize();
-                Dimension fmSize = newProjectWindow.getSize();
-                newProjectWindow.setLocation((desktopSize.width - fmSize.width),
+                Dimension fmSize = loadProjectWindow.getSize();
+                loadProjectWindow.setLocation((desktopSize.width - fmSize.width) / 2,
                         (desktopSize.height - fmSize.height) / 2);
-                newProjectWindow.setVisible(true);
-            } else if (!newProjectWindow.isVisible()) {
-                newProjectWindow.setVisible(true);
+                loadProjectWindow.setVisible(true);
+                } else if (!loadProjectWindow.isVisible()) {
+                    loadProjectWindow.setVisible(true);
+                }
+            } else {
+                if (saveProjectWindow == null) {
+                Class c = Class.forName(className);
+                saveProjectWindow = (JInternalFrame) c.newInstance();
+                desktopPane.add(saveProjectWindow);
+                saveProjectWindow.moveToFront();
+                Dimension desktopSize = desktopPane.getSize();
+                Dimension fmSize = saveProjectWindow.getSize();
+                saveProjectWindow.setLocation((desktopSize.width - fmSize.width) / 2,
+                        (desktopSize.height - fmSize.height) / 2);
+                saveProjectWindow.setVisible(true);
+                } else if (!saveProjectWindow.isVisible()) {
+                    saveProjectWindow.setVisible(true);
+                }
+                
             }
         } catch (ClassNotFoundException ex) {
             Exceptions.printStackTrace(ex);
