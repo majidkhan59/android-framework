@@ -22,6 +22,7 @@ public class Constants {
     public static final String FOOTER_ALL_SCREEN = "APPLIED RESEARCH PROJECT";
     public static final String TITLE = "Android Framework";
     public static String PROJECT_NAME = "";
+    public static String APP_NAME = "";
 
     public static String LOV_DESCRIPTION = "DESCRIPTION";
     public static String LOV_ID = "ID";

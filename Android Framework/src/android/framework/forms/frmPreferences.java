@@ -192,12 +192,13 @@ public class frmPreferences extends javax.swing.JInternalFrame {
             return;
         }
          
-        Constants.PROJECT_NAME = fldProjectName.getText().replaceAll("\\s+","");
-        Constants.PROJECT_PATH = fldProjectSavePath.getText() + File.separator + fldProjectName.getText();
+        Constants.APP_NAME = fldProjectName.getText();
+        Constants.PROJECT_NAME = fldProjectName.getText().replaceAll("\\s+","_");
+        Constants.PROJECT_PATH = fldProjectSavePath.getText() + File.separator + Constants.PROJECT_NAME;
         Constants.CREATE_PROJECT_CMD += "-n " + Constants.PROJECT_NAME + " --package com.AndroidFramework." + Constants.PROJECT_NAME + " -p " + Constants.PROJECT_PATH + "\\apk";
         Constants.GENERATE_APK_CMD += Constants.PROJECT_PATH + "\\apk\\build.xml";
         
-        strPref.add(fldProjectName.getText());
+        strPref.add(Constants.PROJECT_NAME);
         
         //Now make Project Folder and CSV file to save preferences
         if (!FileUtilities.createProjectFolder()){

@@ -261,7 +261,7 @@ public class CodeGenerator {
 
 		start = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n";
 
-		component = "    <string name=\"app_name\">" + Constants.PROJECT_NAME + "</string>\n";
+		component = "    <string name=\"app_name\">" + Constants.APP_NAME + "</string>\n";
 		while (buttonQueue.size() > 0) {
 			MobileScreen thisScreen = sceneMap.get(buttonQueue.get(0));
 			buttonQueue.remove(0);
