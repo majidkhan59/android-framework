@@ -1,6 +1,6 @@
 package android.framework.forms;
 
-import android.framework.utilities.FileUtilities; 
+import android.framework.utilities.FileUtilities;
 import android.framework.main.frmAndroidFramework;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -13,12 +13,11 @@ import android.framework.utilities.Constants;
 import java.io.File;
 
 /**
- * 
+ *
  * @author majidkhan
  */
 public class frmPreferences extends javax.swing.JInternalFrame {
-    
-    
+
     private String projectSavePath = "";
 
     public String getProjectSavePath() {
@@ -28,7 +27,7 @@ public class frmPreferences extends javax.swing.JInternalFrame {
     public void setProjectSavePath(String projectSavePath) {
         this.projectSavePath = projectSavePath;
     }
-    
+
     public frmPreferences() {
 
         initComponents();
@@ -185,28 +184,33 @@ public class frmPreferences extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        
+
         ArrayList<String> strPref = new ArrayList();
-        if(fldProjectSavePath.getText().isEmpty() || 
-                fldProjectName.getText().isEmpty() ){
+        if (fldProjectSavePath.getText().isEmpty()
+                || fldProjectName.getText().isEmpty()) {
             return;
         }
-         
+
         Constants.APP_NAME = fldProjectName.getText();
-        Constants.PROJECT_NAME = fldProjectName.getText().replaceAll("\\s+","_");
+        Constants.PROJECT_NAME = fldProjectName.getText().replaceAll("\\s+", "_");
         Constants.PROJECT_PATH = fldProjectSavePath.getText() + File.separator + Constants.PROJECT_NAME;
-        Constants.CREATE_PROJECT_CMD += "-n " + Constants.PROJECT_NAME + " --package com.AndroidFramework." + Constants.PROJECT_NAME + " -p " + Constants.PROJECT_PATH + "\\apk";
-        Constants.GENERATE_APK_CMD += Constants.PROJECT_PATH + "\\apk\\build.xml";
-        
+
         strPref.add(Constants.PROJECT_NAME);
-        
+        boolean projectNotFound = FileUtilities.createProjectFolder();
+
         //Now make Project Folder and CSV file to save preferences
-        if (!FileUtilities.createProjectFolder()){
-            JOptionPane.showMessageDialog(null, "Error! Please Select Different Project Name or Path", "Project Exists", JOptionPane.ERROR_MESSAGE);
+        if (!projectNotFound) {
+            JOptionPane.showMessageDialog(this, "Error! Please Select Different Project Name or Path", "Project Exists",
+                    JOptionPane.ERROR_MESSAGE);
+        } else {
+            Constants.CREATE_PROJECT_CMD += "-n " + Constants.PROJECT_NAME + " --package com.AndroidFramework."
+                    + Constants.PROJECT_NAME + " -p " + Constants.PROJECT_PATH + "\\apk";
+            Constants.GENERATE_APK_CMD += Constants.PROJECT_PATH + "\\apk\\build.xml";
         }
-        else if (FileUtilities.createAPKFolder() && FileUtilities.writePreferencesToCSV(strPref)) {
-            JOptionPane.showMessageDialog(null, "Preferences Saved!"); 
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();            
+
+        if (projectNotFound && FileUtilities.createAPKFolder() && FileUtilities.writePreferencesToCSV(strPref)) {
+            JOptionPane.showMessageDialog(null, "Preferences Saved!");
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             frmAndroidFramework frame = new frmAndroidFramework();
             frame.setSize(screenSize.width, screenSize.height);
             JDesktopPane desktopPane = getDesktopPane();
@@ -214,13 +218,15 @@ public class frmPreferences extends javax.swing.JInternalFrame {
             frame.setVisible(true);
             this.dispose();
         } else {
-             JOptionPane.showMessageDialog(null, "Error! Unable to save Preferences", "Preferences not Saved", JOptionPane.ERROR_MESSAGE);
-       }
+            JOptionPane.showMessageDialog(null, "Error! Unable to save Preferences", "Preferences not Saved",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
 
 }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-       this.hide();
+        this.hide();
 }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBrowseActionPerformed
@@ -228,7 +234,7 @@ public class frmPreferences extends javax.swing.JInternalFrame {
         JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
         jfc.setDialogTitle("Choose a directory to save your file: ");
         jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        
+
         int returnValue = jfc.showSaveDialog(null);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             if (jfc.getSelectedFile().isDirectory()) {
