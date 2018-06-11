@@ -204,8 +204,8 @@ public class frmPreferences extends javax.swing.JInternalFrame {
                     JOptionPane.ERROR_MESSAGE);
         } else {
             Constants.CREATE_PROJECT_CMD += "-n " + Constants.PROJECT_NAME + " --package com.AndroidFramework."
-                    + Constants.PROJECT_NAME + " -p " + Constants.PROJECT_PATH + "\\apk";
-            Constants.GENERATE_APK_CMD += Constants.PROJECT_PATH + "\\apk\\build.xml";
+                    + Constants.PROJECT_NAME + " -p " + Constants.PROJECT_PATH + File.separator + "apk";
+            Constants.GENERATE_APK_CMD += Constants.PROJECT_PATH + File.separator + "apk" + File.separator + "build.xml";
         }
 
         if (projectNotFound && FileUtilities.createAPKFolder() && FileUtilities.writePreferencesToCSV(strPref)) {

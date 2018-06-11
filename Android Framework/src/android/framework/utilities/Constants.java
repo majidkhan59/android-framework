@@ -5,6 +5,7 @@
  */
 package android.framework.utilities;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -43,8 +44,8 @@ public class Constants {
     public static String PROJECT_PATH = "";
     public static String JAR_PATH = "";
     public static String PREFERENCE_FILE = "preferences.csv";
-    public static String SDK_PATH = JAR_PATH + "\\sdk\\tools\\";
-    public static String ANT_PATH = JAR_PATH + "\\ant\\bin\\";
+    public static String SDK_PATH = JAR_PATH + File.separator + "sdk" + File.separator +"tools" + File.separator;
+    public static String ANT_PATH = JAR_PATH + File.separator + "ant" + File.separator + "bin" + File.separator;
     public static String CREATE_PROJECT_CMD = SDK_PATH + "android.bat create project -a MainActivity -t android-19 ";
     public static String GENERATE_APK_CMD = ANT_PATH + "ant.bat debug -f ";
 
