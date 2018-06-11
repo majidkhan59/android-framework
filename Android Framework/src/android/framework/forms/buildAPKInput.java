@@ -7,6 +7,7 @@ package android.framework.forms;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -157,8 +158,21 @@ public class buildAPKInput extends javax.swing.JDialog {
     }//GEN-LAST:event_CancelButtonActionPerformed
 
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
+        if (!appIconPath.getText().isEmpty()) {
+            if (appIconPath.getText().length() > 123) {
+                JOptionPane.showMessageDialog(this, "Error! Please Select Icon with Shorter File Path",
+                        "Icon path too long", JOptionPane.ERROR_MESSAGE);
+            } else if (Character.isDigit(new File(appIconPath.getText()).getName().charAt(0))) {
+                JOptionPane.showMessageDialog(this, "Error! Please Select File starting with a Letter",
+                        "Filename Not Valid", JOptionPane.ERROR_MESSAGE);
+            } else {
+                pressedButton = "Ok";
+                this.dispose();
+            }
+        } else {
             pressedButton = "Ok";
             this.dispose();
+        }
     }//GEN-LAST:event_OkButtonActionPerformed
 
     private void browseBTN1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseBTN1ActionPerformed
@@ -180,12 +194,12 @@ public class buildAPKInput extends javax.swing.JDialog {
 
     private void btnCustomColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomColorActionPerformed
         // TODO add your handling code here:
-        frmColors form = new frmColors(this,true);
-        
+        frmColors form = new frmColors(this, true);
+
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         form.setLocation(screenSize.width / 4, screenSize.height / 4);
         form.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        
+
         form.setVisible(true);
         //form.show();
     }//GEN-LAST:event_btnCustomColorActionPerformed

@@ -5,10 +5,8 @@
  */
 package android.framework.forms;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.io.File;
 import javax.imageio.ImageIO;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
@@ -144,7 +142,14 @@ public class imageInput extends javax.swing.JDialog {
 
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
         if (imagePath.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Error! Please Select Image", "Image not selected", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error! Please Select Image", "Image not selected",
+                    JOptionPane.ERROR_MESSAGE);
+        } else if (imagePath.getText().length() > 123) {
+            JOptionPane.showMessageDialog(this, "Error! Please Select Image with Shorter File Path",
+                    "Image path too long", JOptionPane.ERROR_MESSAGE);
+        } else if (Character.isDigit(new File(imagePath.getText()).getName().charAt(0))) {
+            JOptionPane.showMessageDialog(this, "Error! Please Select File starting with a Letter",
+                    "Filename Not Valid", JOptionPane.ERROR_MESSAGE);
         } else {
             pressedButton = "Ok";
             this.dispose();
