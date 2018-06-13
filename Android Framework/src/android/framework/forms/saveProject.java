@@ -6,6 +6,7 @@
 package android.framework.forms;
 
 import android.framework.utilities.Constants;
+import java.io.File;
 import javax.swing.JInternalFrame;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -26,7 +27,7 @@ public class saveProject extends JInternalFrame {
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
-        projectPath.setText("Your Project will be saved at " + Constants.PREFERENCE_FILE + "\nUse this file to load your Project later on");
+        projectPath.setText("Your Project will be saved at " + Constants.PROJECT_PATH + File.separator + Constants.PREFERENCE_FILE + "\nUse this file to load your Project later on");
     }
 
     /**
@@ -69,6 +70,7 @@ public class saveProject extends JInternalFrame {
             }
         });
 
+        jScrollPane1.setBorder(null);
         jScrollPane1.setEnabled(false);
 
         projectPath.setEditable(false);

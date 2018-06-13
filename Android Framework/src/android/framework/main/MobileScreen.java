@@ -68,7 +68,9 @@ public class MobileScreen {
         widget.getActions().addAction(ActionFactory.createSelectAction(new SelectMobileScreenProvider(this, scene)));
         widget.getActions().addAction(ActionFactory.createMoveAction());
         widget.addChild(new LabelWidget(scene));
-        widget.addChild(new LabelWidget(scene, title));
+        LabelWidget labelTitle = new LabelWidget(scene, title);
+        labelTitle.setFont(new Font("Arial Unicode MS",0,14));
+        widget.addChild(labelTitle);
         SeparatorWidget separator = new SeparatorWidget(scene, SeparatorWidget.Orientation.HORIZONTAL);
         separator.setThickness(3);
         separator.setPreferredSize(new Dimension(200, 2));
@@ -157,7 +159,7 @@ public class MobileScreen {
      */
     public Button addButton(String text) {
         Button newButton = new Button(mainScene, text);
-        newButton.setFont(new Font("", 0, 14));
+        newButton.setFont(new Font("Arial Unicode MS", 0, 14));
         newButton.setBorder(org.netbeans.api.visual.border.BorderFactory.createBevelBorder(true));
         widget.addChild(newButton);
         screenComponents.add(newButton);
@@ -178,7 +180,7 @@ public class MobileScreen {
         label.setMaxLineSpan(180);
         label.setMinimumSize(new Dimension(0, 10));
         label.setFont(new Font("Arial Unicode MS", 0, 11));
-        label.setTextAlignment(JXLabel.TextAlignment.JUSTIFY);
+        label.setTextAlignment(JXLabel.TextAlignment.LEFT);
         ComponentWidget newLabel = new ComponentWidget(mainScene, label);
 
         newLabel.getActions().addAction(ActionFactory.createPopupMenuAction(new ControlPopupMenu(this, false)));

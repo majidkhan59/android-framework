@@ -195,8 +195,10 @@ public class frmPreferences extends javax.swing.JInternalFrame {
         Constants.APP_NAME = fldProjectName.getText();
         Constants.PROJECT_NAME = fldProjectName.getText().replaceAll("\\s+", "_");
         Constants.PROJECT_PATH = fldProjectSavePath.getText() + File.separator + Constants.PROJECT_NAME;
-
-        strPref.add(Constants.PROJECT_NAME);
+        
+        strPref.add(Constants.PROJECT_PATH);
+        strPref.add(Constants.APP_NAME);
+        
         boolean projectNotFound = FileUtilities.createProjectFolder();
 
         //Now make Project Folder and CSV file to save preferences
@@ -209,6 +211,10 @@ public class frmPreferences extends javax.swing.JInternalFrame {
             Constants.GENERATE_APK_CMD += Constants.PROJECT_PATH + File.separator + "apk" + File.separator + "build.xml";
         }
 
+        strPref.add(Constants.PROJECT_PATH);
+        strPref.add(Constants.APP_NAME);
+  
+        
         if (projectNotFound && FileUtilities.createAPKFolder() && FileUtilities.writePreferencesToCSV(strPref)) {
             JOptionPane.showMessageDialog(null, "Preferences Saved!");
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -219,7 +225,6 @@ public class frmPreferences extends javax.swing.JInternalFrame {
             JFrame parentFrame = (JFrame) desktopPane.getParent().getParent().getParent().getParent();
             parentFrame.getJMenuBar().getMenu(0).remove(0);
             parentFrame.getJMenuBar().getMenu(0).getItem(0).setEnabled(true);
-            System.out.println(desktopPane.getParent().getParent().getParent().getParent().toString());
             frame.setVisible(true);
             this.dispose();
         } else {

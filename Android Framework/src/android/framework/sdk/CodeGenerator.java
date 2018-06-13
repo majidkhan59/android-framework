@@ -270,8 +270,7 @@ public class CodeGenerator {
                     JXLabel label = (JXLabel) labelComp.getComponent();
                     label.setFont(new Font("Arial Unicode MS", Font.PLAIN, 11));
 
-                    component += "    <string name=\"label" + i + "a" + activityNumber + "\">" + label.getText()
-                            + "</string>\n";
+                    component += "    <string name=\"label" + i + "a" + activityNumber + "\">" + " <![CDATA[" + label.getText() + "]]>" + "</string>\n";
                 }
             }
             activityNumber++;
